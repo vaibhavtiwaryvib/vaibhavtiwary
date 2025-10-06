@@ -3,231 +3,1469 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Vaibhav Tiwary — PhD Researcher</title>
+  <title>Vaibhav Tiwary — PhD Researcher in Aging Biology</title>
+  <meta name="description" content="PhD researcher studying mitochondrial signaling, epigenetics, and aging biology in Drosophila melanogaster at University of Rostock, Germany.">
+  <meta name="keywords" content="aging biology, epigenetics, mitochondria, Drosophila, optogenetics, stress resilience">
   <script src="https://cdn.tailwindcss.com"></script>
-  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Merriweather:wght@700&family=Inter:wght@400;500&display=swap">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Merriweather:wght@300;400;700&family=Inter:wght@300;400;500;600;700&display=swap">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: {
+              50: '#f0fdfa',
+              500: '#14b8a6',
+              600: '#0d9488',
+              700: '#0f766e'
+            },
+            secondary: {
+              500: '#3b82f6',
+              600: '#2563eb',
+              700: '#1d4ed8'
+            }
+          },
+          animation: {
+            'fade-in-up': 'fadeInUp 0.8s ease-out',
+            'fade-in-down': 'fadeInDown 0.8s ease-out',
+            'slide-in-left': 'slideInLeft 0.8s ease-out',
+            'slide-in-right': 'slideInRight 0.8s ease-out'
+          }
+        }
+      }
+    }
+  </script>
 </head>
 <body class="font-['Inter'] bg-white text-gray-800 scroll-smooth">
 
-  <!-- Navbar -->
-  <nav class="bg-gradient-to-r from-teal-500 to-blue-600 sticky top-0 z-50 shadow-lg">
-    <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
-      <a href="#home" class="font-['Merriweather'] text-white text-2xl font-bold">Vaibhav Tiwary</a>
-      <ul class="hidden md:flex space-x-6 text-white font-medium">
-        <li><a href="#home" class="hover:text-yellow-300 transition">Home</a></li>
-        <li><a href="#research" class="hover:text-yellow-300 transition">Research</a></li>
-        <li><a href="#publications" class="hover:text-yellow-300 transition">Publications</a></li>
-        <li><a href="#skills" class="hover:text-yellow-300 transition">Skills</a></li>
-        <li><a href="#cv" class="hover:text-yellow-300 transition">CV</a></li>
-        <li><a href="#conferences" class="hover:text-yellow-300 transition">Conferences</a></li>
-        <li><a href="#contact" class="hover:text-yellow-300 transition">Contact</a></li>
-      </ul>
+  <!-- Enhanced Navigation -->
+  <nav class="bg-gradient-to-r from-primary-600 via-primary-500 to-secondary-600 sticky top-0 z-50 shadow-xl backdrop-blur-sm">
+    <div class="max-w-7xl mx-auto px-4 py-4">
+      <div class="flex justify-between items-center">
+        <a href="#home" class="font-['Merriweather'] text-white text-2xl font-bold hover:text-yellow-300 transition-colors duration-300">
+          Vaibhav Tiwary
+        </a>
+        <div class="hidden md:flex space-x-8">
+          <a href="#home" class="text-white hover:text-yellow-300 transition-colors duration-300 font-medium">Home</a>
+          <a href="#about" class="text-white hover:text-yellow-300 transition-colors duration-300 font-medium">About</a>
+          <a href="#research" class="text-white hover:text-yellow-300 transition-colors duration-300 font-medium">Research</a>
+          <a href="#publications" class="text-white hover:text-yellow-300 transition-colors duration-300 font-medium">Publications</a>
+          <a href="#experience" class="text-white hover:text-yellow-300 transition-colors duration-300 font-medium">Experience</a>
+          <a href="#education" class="text-white hover:text-yellow-300 transition-colors duration-300 font-medium">Education</a>
+          <a href="#skills" class="text-white hover:text-yellow-300 transition-colors duration-300 font-medium">Skills</a>
+          <a href="#contact" class="text-white hover:text-yellow-300 transition-colors duration-300 font-medium">Contact</a>
+        </div>
+        <button class="md:hidden text-white" id="mobile-menu-button">
+          <i class="fas fa-bars text-xl"></i>
+        </button>
+      </div>
+      <!-- Mobile Menu -->
+      <div class="md:hidden hidden mt-4 pb-4" id="mobile-menu">
+        <div class="flex flex-col space-y-2">
+          <a href="#home" class="text-white hover:text-yellow-300 transition-colors duration-300 py-2">Home</a>
+          <a href="#about" class="text-white hover:text-yellow-300 transition-colors duration-300 py-2">About</a>
+          <a href="#research" class="text-white hover:text-yellow-300 transition-colors duration-300 py-2">Research</a>
+          <a href="#publications" class="text-white hover:text-yellow-300 transition-colors duration-300 py-2">Publications</a>
+          <a href="#experience" class="text-white hover:text-yellow-300 transition-colors duration-300 py-2">Experience</a>
+          <a href="#education" class="text-white hover:text-yellow-300 transition-colors duration-300 py-2">Education</a>
+          <a href="#skills" class="text-white hover:text-yellow-300 transition-colors duration-300 py-2">Skills</a>
+          <a href="#contact" class="text-white hover:text-yellow-300 transition-colors duration-300 py-2">Contact</a>
+        </div>
+      </div>
     </div>
   </nav>
 
-  <!-- Hero Section -->
-  <section id="home" class="flex flex-col md:flex-row items-center justify-center md:justify-between max-w-7xl mx-auto px-6 py-20 gap-8 bg-gradient-to-r from-teal-50 to-blue-50">
-    <img src="profile.jpeg" alt="Vaibhav Tiwary" class="w-48 h-48 rounded-full shadow-xl border-4 border-teal-500 object-cover animate-fadeIn">
-    <div class="md:w-1/2 text-center md:text-left animate-fadeIn delay-200">
-      <h1 class="text-4xl md:text-5xl font-['Merriweather'] font-bold mb-4">Vaibhav Tiwary</h1>
-      <p class="text-lg md:text-xl leading-relaxed">
-        PhD researcher studying how <span class="font-semibold text-teal-600">mitochondrial signaling</span>, <span class="font-semibold text-blue-600">pharmacological interventions</span>, and <span class="font-semibold text-teal-600">transgenerational epigenetic inheritance</span> shape aging in <em>Drosophila melanogaster</em>.
-      </p>
-      <div class="mt-6 flex justify-center md:justify-start gap-4">
-        <a href="https://linkedin.com/in/vaibhavtiwary1397" target="_blank" class="text-blue-700 hover:text-blue-900 text-2xl"><i class="fab fa-linkedin"></i></a>
-        <a href="https://orcid.org/0000-0002-5337-5565" target="_blank" class="text-green-600 hover:text-green-800 text-2xl"><i class="fas fa-id-badge"></i></a>
-        <a href="mailto:vaibhavtiwary1397@gmail.com" class="text-red-600 hover:text-red-800 text-2xl"><i class="fas fa-envelope"></i></a>
+  <!-- Enhanced Hero Section -->
+  <section id="home" class="min-h-screen flex items-center bg-gradient-to-br from-primary-50 via-white to-blue-50">
+    <div class="max-w-7xl mx-auto px-6 py-20">
+      <div class="flex flex-col lg:flex-row items-center justify-between gap-12">
+        <div class="lg:w-1/2 animate-fade-in-up">
+          <h1 class="text-5xl lg:text-6xl font-['Merriweather'] font-bold mb-6 bg-gradient-to-r from-primary-600 to-secondary-600 bg-clip-text text-transparent">
+            Vaibhav Tiwary
+          </h1>
+          <h2 class="text-2xl lg:text-3xl text-gray-700 mb-6 font-light">
+            PhD Researcher in Aging Biology
+          </h2>
+          <p class="text-lg lg:text-xl leading-relaxed text-gray-600 mb-8">
+            Investigating how <span class="font-semibold text-primary-600">mitochondrial signaling</span>, 
+            <span class="font-semibold text-secondary-600">optogenetic interventions</span>, and 
+            <span class="font-semibold text-primary-600">transgenerational epigenetic inheritance</span> 
+            shape aging and stress resilience in <em>Drosophila melanogaster</em>.
+          </p>
+          <div class="flex flex-wrap gap-4 mb-8">
+            <span class="px-4 py-2 bg-primary-100 text-primary-700 rounded-full text-sm font-medium">Epigenetics</span>
+            <span class="px-4 py-2 bg-secondary-100 text-secondary-700 rounded-full text-sm font-medium">Aging Biology</span>
+            <span class="px-4 py-2 bg-primary-100 text-primary-700 rounded-full text-sm font-medium">Mitochondria</span>
+            <span class="px-4 py-2 bg-secondary-100 text-secondary-700 rounded-full text-sm font-medium">Optogenetics</span>
+          </div>
+          
+          <!-- Enhanced Contact Icons in Hero -->
+          <div class="flex flex-wrap gap-4 mb-6">
+            <a href="mailto:vaibhavtiwary1397@gmail.com" 
+               class="flex items-center gap-2 px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-all duration-300 transform hover:scale-105 shadow-lg">
+              <i class="fas fa-envelope text-lg"></i>
+              <span class="font-medium">Email</span>
+            </a>
+            <a href="https://linkedin.com/in/vaibhavtiwary1397" target="_blank" 
+               class="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-all duration-300 transform hover:scale-105 shadow-lg">
+              <i class="fab fa-linkedin text-lg"></i>
+              <span class="font-medium">LinkedIn</span>
+            </a>
+            <a href="https://orcid.org/0000-0002-5337-5565" target="_blank" 
+               class="flex items-center gap-2 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-all duration-300 transform hover:scale-105 shadow-lg">
+              <i class="fas fa-id-badge text-lg"></i>
+              <span class="font-medium">ORCID</span>
+            </a>
+          </div>
+          
+          <div class="flex flex-wrap gap-4">
+            <a href="#contact" class="px-6 py-3 bg-gradient-to-r from-primary-600 to-primary-500 text-white rounded-lg font-medium hover:from-primary-700 hover:to-primary-600 transition-all duration-300 transform hover:scale-105 shadow-lg">
+              Get In Touch
+            </a>
+            <a href="#publications" class="px-6 py-3 border-2 border-primary-600 text-primary-600 rounded-lg font-medium hover:bg-primary-600 hover:text-white transition-all duration-300">
+              View Publications
+            </a>
+          </div>
+        </div>
+        <div class="lg:w-1/2 flex justify-center animate-fade-in-down">
+          <div class="relative">
+            <img src="profile.jpeg" alt="Vaibhav Tiwary" class="w-80 h-80 rounded-full shadow-2xl border-8 border-white object-cover">
+            <div class="absolute -bottom-4 -right-4 bg-gradient-to-r from-primary-500 to-secondary-500 text-white px-4 py-2 rounded-full shadow-lg">
+              <span class="text-sm font-medium">PhD Candidate</span>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </section>
 
-  <!-- Research Section -->
-  <section id="research" class="max-w-7xl mx-auto px-6 py-20">
-    <h2 class="text-3xl font-['Merriweather'] font-bold text-teal-600 mb-6">Research & Projects</h2>
-    <p class="mb-6">
-      My research focuses on mitochondrial signaling, pharmacological interventions, and transgenerational epigenetic inheritance to understand aging in <em>Drosophila melanogaster</em>. I explore how light-activated proton pumps, drug treatments, and inherited epigenetic modifications influence lifespan, stress resilience, and behavior.
-    </p>
-    <div class="grid md:grid-cols-2 gap-6">
-      <div class="p-6 border rounded-lg shadow hover:shadow-lg transition flex items-start gap-3">
-        <i class="fas fa-flask text-teal-600 text-2xl mt-1"></i>
-        <div>
-          <h3 class="font-semibold text-xl text-blue-600 mb-2">Master Thesis</h3>
-          <p>Role of Polycomb (PcG) and Trithorax (TrxG) proteins in transgenerational inheritance induced by heat-stress (CSIR-CCMB, 2020).</p>
+  <!-- About Section -->
+  <section id="about" class="py-20 bg-gray-50">
+    <div class="max-w-7xl mx-auto px-6">
+      <div class="text-center mb-12">
+        <h2 class="text-4xl font-['Merriweather'] font-bold text-gray-800 mb-4">About Me</h2>
+        <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+          A dedicated researcher passionate about understanding the molecular mechanisms of aging and developing interventions to promote healthy longevity.
+        </p>
+      </div>
+      <div class="grid lg:grid-cols-2 gap-12 items-center">
+        <div class="animate-slide-in-left">
+          <h3 class="text-2xl font-bold text-gray-800 mb-6">Research Philosophy</h3>
+          <p class="text-gray-600 leading-relaxed mb-6">
+            My research focuses on the intersection of <strong>epigenetics</strong>, <strong>mitochondrial biology</strong>, and <strong>aging</strong>. 
+            I believe that understanding how cellular stress responses are inherited across generations will unlock new strategies for promoting healthy aging.
+          </p>
+          <p class="text-gray-600 leading-relaxed mb-6">
+            Currently pursuing my PhD at the University of Rostock and Leibniz Institute of Farm Animal Biology (FBN), 
+            I investigate how light-activated proton pumps can modulate cellular energetics and influence lifespan in <em>Drosophila melanogaster</em>.
+          </p>
+          <div class="grid grid-cols-2 gap-4">
+            <div class="text-center p-4 bg-white rounded-lg shadow">
+              <div class="text-2xl font-bold text-primary-600">5</div>
+              <div class="text-sm text-gray-600">Publications</div>
+            </div>
+            <div class="text-center p-4 bg-white rounded-lg shadow">
+              <div class="text-2xl font-bold text-secondary-600">4+</div>
+              <div class="text-sm text-gray-600">Years Research</div>
+            </div>
+          </div>
+        </div>
+        <div class="animate-slide-in-right">
+          <div class="bg-white p-8 rounded-2xl shadow-xl">
+            <h3 class="text-xl font-bold text-gray-800 mb-6">Personal Information</h3>
+            <div class="space-y-4">
+              <div class="flex items-center gap-3">
+                <div class="w-10 h-10 bg-primary-100 rounded-full flex items-center justify-center flex-shrink-0">
+                  <i class="fas fa-flag text-primary-600"></i>
+                </div>
+                <span><strong>Nationality:</strong> Indian</span>
+              </div>
+              <div class="flex items-center gap-3">
+                <div class="w-10 h-10 bg-primary-100 rounded-full flex items-center justify-center flex-shrink-0">
+                  <i class="fas fa-map-marker-alt text-primary-600"></i>
+                </div>
+                <span><strong>Location:</strong> Rostock, Germany</span>
+              </div>
+              <div class="flex items-center gap-3">
+                <div class="w-10 h-10 bg-primary-100 rounded-full flex items-center justify-center flex-shrink-0">
+                  <i class="fas fa-language text-primary-600"></i>
+                </div>
+                <span><strong>Languages:</strong> Hindi (Native), English (C2), German (A1.1)</span>
+              </div>
+            </div>
+            <div class="mt-6 pt-6 border-t">
+              <h4 class="font-semibold text-gray-800 mb-4">Connect with me:</h4>
+              <div class="flex gap-4">
+                <a href="mailto:vaibhavtiwary1397@gmail.com" 
+                   class="w-12 h-12 bg-red-500 text-white rounded-full flex items-center justify-center hover:bg-red-600 transition-all transform hover:scale-110 shadow-lg" 
+                   title="Email">
+                  <i class="fas fa-envelope text-lg"></i>
+                </a>
+                <a href="https://linkedin.com/in/vaibhavtiwary1397" target="_blank" 
+                   class="w-12 h-12 bg-blue-600 text-white rounded-full flex items-center justify-center hover:bg-blue-700 transition-all transform hover:scale-110 shadow-lg" 
+                   title="LinkedIn">
+                  <i class="fab fa-linkedin text-lg"></i>
+                </a>
+                <a href="https://orcid.org/0000-0002-5337-5565" target="_blank" 
+                   class="w-12 h-12 bg-green-600 text-white rounded-full flex items-center justify-center hover:bg-green-700 transition-all transform hover:scale-110 shadow-lg" 
+                   title="ORCID">
+                  <i class="fas fa-id-badge text-lg"></i>
+                </a>
+                <a href="https://www.uni-rostock.de/en/" target="_blank" 
+                   class="w-12 h-12 bg-indigo-600 text-white rounded-full flex items-center justify-center hover:bg-indigo-700 transition-all transform hover:scale-110 shadow-lg" 
+                   title="University">
+                  <i class="fas fa-university text-lg"></i>
+                </a>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
-      <div class="p-6 border rounded-lg shadow hover:shadow-lg transition flex items-start gap-3">
-        <i class="fas fa-dna text-teal-600 text-2xl mt-1"></i>
-        <div>
-          <h3 class="font-semibold text-xl text-blue-600 mb-2">Gene Expression in Drosophila</h3>
-          <p>Study of lifespan extension in Drosophila treated with ellagic acid (VIT, 2019).</p>
+    </div>
+  </section>
+
+  <!-- Research Interests Section -->
+  <section id="research" class="py-20">
+    <div class="max-w-7xl mx-auto px-6">
+      <div class="text-center mb-12">
+        <h2 class="text-4xl font-['Merriweather'] font-bold text-gray-800 mb-4">Research Focus</h2>
+        <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+          My research spans multiple interconnected areas of aging biology, from molecular mechanisms to translational applications.
+        </p>
+      </div>
+      <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+        <div class="text-center p-6 bg-gradient-to-br from-primary-500 to-primary-600 text-white rounded-xl shadow-lg transform hover:scale-105 transition-all duration-300">
+          <i class="fas fa-dna text-4xl mb-4"></i>
+          <h3 class="text-xl font-bold mb-2">Epigenetics</h3>
+          <p class="text-primary-100">Transgenerational inheritance and chromatin remodeling</p>
+        </div>
+        <div class="text-center p-6 bg-gradient-to-br from-secondary-500 to-secondary-600 text-white rounded-xl shadow-lg transform hover:scale-105 transition-all duration-300">
+          <i class="fas fa-heartbeat text-4xl mb-4"></i>
+          <h3 class="text-xl font-bold mb-2">Aging Biology</h3>
+          <p class="text-blue-100">Molecular mechanisms of longevity and healthspan</p>
+        </div>
+        <div class="text-center p-6 bg-gradient-to-br from-primary-500 to-primary-600 text-white rounded-xl shadow-lg transform hover:scale-105 transition-all duration-300">
+          <i class="fas fa-bolt text-4xl mb-4"></i>
+          <h3 class="text-xl font-bold mb-2">Mitochondria</h3>
+          <p class="text-primary-100">Cellular energetics and metabolic regulation</p>
+        </div>
+        <div class="text-center p-6 bg-gradient-to-br from-secondary-500 to-secondary-600 text-white rounded-xl shadow-lg transform hover:scale-105 transition-all duration-300">
+          <i class="fas fa-shield-alt text-4xl mb-4"></i>
+          <h3 class="text-xl font-bold mb-2">Stress Resilience</h3>
+          <p class="text-blue-100">Heat stress response and survival mechanisms</p>
         </div>
       </div>
-      <div class="p-6 border rounded-lg shadow hover:shadow-lg transition flex items-start gap-3">
-        <i class="fas fa-vial text-teal-600 text-2xl mt-1"></i>
-        <div>
-          <h3 class="font-semibold text-xl text-blue-600 mb-2">Cytotoxic Studies</h3>
-          <p>Effect of bioaccessible fractions of Piper nigrum, Zingiber officinale, Phyllanthus emblica, Ocimum sanctum against MCF-7 cells (VIT, 2019).</p>
-        </div>
-      </div>
-      <div class="p-6 border rounded-lg shadow hover:shadow-lg transition flex items-start gap-3">
-        <i class="fas fa-fish text-teal-600 text-2xl mt-1"></i>
-        <div>
-          <h3 class="font-semibold text-xl text-blue-600 mb-2">Zebrafish Development</h3>
-          <p>Effect of cobalt chloride on development of Zebrafish embryos (VIT, 2018).</p>
+
+      <!-- Current Research Projects -->
+      <div class="bg-gray-50 rounded-2xl p-8">
+        <h3 class="text-2xl font-bold text-gray-800 mb-8 text-center">Current & Past Research Projects</h3>
+        <div class="grid lg:grid-cols-2 gap-8">
+          
+          <!-- PhD Research -->
+          <div class="bg-white p-6 rounded-xl shadow-lg border-l-4 border-primary-500">
+            <div class="flex items-center mb-4">
+              <i class="fas fa-lightbulb text-primary-600 text-2xl mr-3"></i>
+              <h4 class="text-xl font-bold text-gray-800">PhD Research (2021-2025)</h4>
+            </div>
+            <h5 class="font-semibold text-gray-700 mb-3">Light-Activated Proton Pump Characterization</h5>
+            <p class="text-gray-600 mb-3">
+              Investigating the role of optogenetic tools in modulating mitochondrial function and their implications 
+              for aging in <em>Drosophila melanogaster</em>.
+            </p>
+            <div class="text-sm text-gray-500">
+              <strong>Institution:</strong> University of Rostock / Leibniz Institute FBN<br>
+              <strong>Focus:</strong> Optogenetics, Mitochondrial Biology, Aging
+            </div>
+          </div>
+
+          <!-- Master Thesis -->
+          <div class="bg-white p-6 rounded-xl shadow-lg border-l-4 border-secondary-500">
+            <div class="flex items-center mb-4">
+              <i class="fas fa-fire text-secondary-600 text-2xl mr-3"></i>
+              <h4 class="text-xl font-bold text-gray-800">Master Thesis (2019-2020)</h4>
+            </div>
+            <h5 class="font-semibold text-gray-700 mb-3">Transgenerational Epigenetic Inheritance</h5>
+            <p class="text-gray-600 mb-3">
+              Role of Polycomb (PcG) and Trithorax (TrxG) proteins in transgenerational inheritance 
+              of epigenetic memory induced by heat-stress.
+            </p>
+            <div class="text-sm text-gray-500">
+              <strong>Institution:</strong> CSIR-CCMB, Hyderabad<br>
+              <strong>Supervisor:</strong> Dr. Rakesh Mishra
+            </div>
+          </div>
+
+          <!-- Cancer Research -->
+          <div class="bg-white p-6 rounded-xl shadow-lg border-l-4 border-primary-500">
+            <div class="flex items-center mb-4">
+              <i class="fas fa-vial text-primary-600 text-2xl mr-3"></i>
+              <h4 class="text-xl font-bold text-gray-800">Cancer Research (2019)</h4>
+            </div>
+            <h5 class="font-semibold text-gray-700 mb-3">Phytochemical Cytotoxicity</h5>
+            <p class="text-gray-600 mb-3">
+              Cytotoxic effect of bioaccessible fractions of combined medicinal plants 
+              (Piper nigrum, Zingiber officinale, Phyllanthus emblica, Ocimum sanctum) against MCF-7 cells.
+            </p>
+            <div class="text-sm text-gray-500">
+              <strong>Institution:</strong> VIT, Vellore<br>
+              <strong>Supervisor:</strong> Dr. Gothandam K.M.
+            </div>
+          </div>
+
+          <!-- Longevity Research -->
+          <div class="bg-white p-6 rounded-xl shadow-lg border-l-4 border-secondary-500">
+            <div class="flex items-center mb-4">
+              <i class="fas fa-bug text-secondary-600 text-2xl mr-3"></i>
+              <h4 class="text-xl font-bold text-gray-800">Longevity Research (2019)</h4>
+            </div>
+            <h5 class="font-semibold text-gray-700 mb-3">Ellagic Acid Lifespan Extension</h5>
+            <p class="text-gray-600 mb-3">
+              Gene expression analysis in lifespan extension of <em>Drosophila</em> treated with ellagic acid, 
+              identifying molecular pathways involved in longevity.
+            </p>
+            <div class="text-sm text-gray-500">
+              <strong>Institution:</strong> VIT, Vellore<br>
+              <strong>Supervisor:</strong> Dr. Kavitha Thirumurugan
+            </div>
+          </div>
+
+          <!-- Developmental Biology -->
+          <div class="bg-white p-6 rounded-xl shadow-lg border-l-4 border-primary-500">
+            <div class="flex items-center mb-4">
+              <i class="fas fa-fish text-primary-600 text-2xl mr-3"></i>
+              <h4 class="text-xl font-bold text-gray-800">Developmental Biology (2018)</h4>
+            </div>
+            <h5 class="font-semibold text-gray-700 mb-3">Zebrafish Toxicology</h5>
+            <p class="text-gray-600 mb-3">
+              Effect of Cobalt Chloride on development of Zebrafish embryos, studying 
+              developmental toxicity and teratogenic effects.
+            </p>
+            <div class="text-sm text-gray-500">
+              <strong>Institution:</strong> VIT, Vellore<br>
+              <strong>Supervisor:</strong> Dr. Everette Remington N.
+            </div>
+          </div>
+
+          <!-- Genetic Polymorphism -->
+          <div class="bg-white p-6 rounded-xl shadow-lg border-l-4 border-secondary-500">
+            <div class="flex items-center mb-4">
+              <i class="fas fa-search text-secondary-600 text-2xl mr-3"></i>
+              <h4 class="text-xl font-bold text-gray-800">Genetic Analysis (2017)</h4>
+            </div>
+            <h5 class="font-semibold text-gray-700 mb-3">XRCC1 Polymorphism Study</h5>
+            <p class="text-gray-600 mb-3">
+              XRCC1 Arg399Gln polymorphism analysis in Chronic Kidney Disease patients, 
+              investigating genetic susceptibility factors.
+            </p>
+            <div class="text-sm text-gray-500">
+              <strong>Institution:</strong> NTHRYS Lab, Hyderabad<br>
+              <strong>Supervisor:</strong> Dr. Sabitha Kotra
+            </div>
+          </div>
+
         </div>
       </div>
     </div>
   </section>
 
   <!-- Publications Section -->
-  <section id="publications" class="max-w-7xl mx-auto px-6 py-20 bg-gray-50">
-    <h2 class="text-3xl font-['Merriweather'] font-bold text-teal-600 mb-8">Publications</h2>
-    <div class="grid md:grid-cols-2 gap-6">
-      <div class="p-6 border-l-4 border-teal-500 bg-white shadow hover:shadow-lg transition">
-        <p class="font-semibold">
-          <a href="https://www.biorxiv.org/content/10.1101/2025.08.20.671049v1" target="_blank" class="hover:text-blue-600">
-            Tiwary, V., Trakooljul, N., Peleg, S. (2025)
-          </a>
-        </p>
-        <p>Reserpine prolongs lifespan but compromises heat-stress resilience in Drosophila melanogaster. <em>bioRxiv 2025.08.20.671049</em></p>
+  <section id="publications" class="py-20 bg-gray-50">
+    <div class="max-w-7xl mx-auto px-6">
+      <div class="text-center mb-12">
+        <h2 class="text-4xl font-['Merriweather'] font-bold text-gray-800 mb-4">Publications</h2>
+        <p class="text-xl text-gray-600">Peer-reviewed research contributions to the field of aging biology</p>
       </div>
-      <div class="p-6 border-l-4 border-teal-500 bg-white shadow hover:shadow-lg transition">
-        <p class="font-semibold">
-          <a href="https://doi.org/10.1016/j.tibs.2023.09.002" target="_blank" class="hover:text-blue-600">
-            Tiwary, V., Galow, A. M., Wojtovich, A. P., Peleg, S. (2023)
-          </a>
-        </p>
-        <p>Using light to drive energy transduction in metazoan aging. <em>Trends in Biochemical Sciences</em></p>
+
+      <!-- First Author Publications -->
+      <div class="mb-12">
+        <h3 class="text-2xl font-bold text-primary-600 mb-6 flex items-center">
+          <i class="fas fa-star mr-3"></i>First Author Publications
+        </h3>
+        <div class="space-y-6">
+          
+          <div class="bg-white p-6 rounded-xl shadow-lg border-l-4 border-primary-500 hover:shadow-xl transition-shadow duration-300">
+            <div class="flex items-start justify-between mb-3">
+              <div class="flex-1">
+                <h4 class="text-lg font-semibold text-gray-800 mb-2">
+                  Reserpine prolongs lifespan but compromises heat-stress resilience in Drosophila melanogaster
+                </h4>
+                <p class="text-primary-600 font-medium mb-2">
+                  <strong>Tiwary, V.</strong>, Trakooljul, N., Peleg, S. (2025)
+                </p>
+                <p class="text-gray-600 text-sm mb-3">
+                  <em>bioRxiv</em> 2025.08.20.671049
+                </p>
+                <p class="text-gray-700 text-sm leading-relaxed">
+                  Investigation of reserpine's dual effects on longevity and stress resilience, revealing important trade-offs 
+                  in pharmacological interventions for aging.
+                </p>
+              </div>
+              <a href="https://www.biorxiv.org/content/10.1101/2025.08.20.671049v1" target="_blank" 
+                 class="ml-4 px-4 py-2 bg-primary-500 text-white rounded-lg hover:bg-primary-600 transition-colors text-sm flex items-center gap-2">
+                <i class="fas fa-external-link-alt"></i>View
+              </a>
+            </div>
+            <div class="flex flex-wrap gap-2">
+              <span class="px-3 py-1 bg-primary-100 text-primary-700 rounded-full text-xs">Longevity</span>
+              <span class="px-3 py-1 bg-secondary-100 text-secondary-700 rounded-full text-xs">Stress Response</span>
+              <span class="px-3 py-1 bg-primary-100 text-primary-700 rounded-full text-xs">Pharmacology</span>
+            </div>
+          </div>
+
+          <div class="bg-white p-6 rounded-xl shadow-lg border-l-4 border-secondary-500 hover:shadow-xl transition-shadow duration-300">
+            <div class="flex items-start justify-between mb-3">
+              <div class="flex-1">
+                <h4 class="text-lg font-semibold text-gray-800 mb-2">
+                  Using light to drive energy transduction in metazoan aging
+                </h4>
+                <p class="text-secondary-600 font-medium mb-2">
+                  <strong>Tiwary, V.</strong>, Galow, A. M., Wojtovich, A. P., Peleg, S. (2023)
+                </p>
+                <p class="text-gray-600 text-sm mb-3">
+                  <em>Trends in Biochemical Sciences</em>
+                </p>
+                <p class="text-gray-700 text-sm leading-relaxed">
+                  Comprehensive review on optogenetic approaches to manipulate cellular energetics and their 
+                  applications in aging research.
+                </p>
+              </div>
+              <a href="https://doi.org/10.1016/j.tibs.2023.09.002" target="_blank" 
+                 class="ml-4 px-4 py-2 bg-secondary-500 text-white rounded-lg hover:bg-secondary-600 transition-colors text-sm flex items-center gap-2">
+                <i class="fas fa-external-link-alt"></i>View
+              </a>
+            </div>
+            <div class="flex flex-wrap gap-2">
+              <span class="px-3 py-1 bg-secondary-100 text-secondary-700 rounded-full text-xs">Optogenetics</span>
+              <span class="px-3 py-1 bg-primary-100 text-primary-700 rounded-full text-xs">Mitochondria</span>
+              <span class="px-3 py-1 bg-secondary-100 text-secondary-700 rounded-full text-xs">Review</span>
+            </div>
+          </div>
+
+          <div class="bg-white p-6 rounded-xl shadow-lg border-l-4 border-primary-500 hover:shadow-xl transition-shadow duration-300">
+            <div class="flex items-start justify-between mb-3">
+              <div class="flex-1">
+                <h4 class="text-lg font-semibold text-gray-800 mb-2">
+                  Naringenin and ellagic acid reduce tetrazolium salt in the absence of cells
+                </h4>
+                <p class="text-primary-600 font-medium mb-2">
+                  <strong>Tiwary, V.</strong>, Sarkar, P., & Thirumurugan, K. (2020)
+                </p>
+                <p class="text-gray-600 text-sm mb-3">
+                  <em>The Natural Products Journal</em>, 10
+                </p>
+                <p class="text-gray-700 text-sm leading-relaxed">
+                  Important methodological study highlighting potential artifacts in cell viability assays 
+                  with natural compounds.
+                </p>
+              </div>
+              <a href="https://doi.org/10.2174/2210315509666190723151916" target="_blank" 
+                 class="ml-4 px-4 py-2 bg-primary-500 text-white rounded-lg hover:bg-primary-600 transition-colors text-sm flex items-center gap-2">
+                <i class="fas fa-external-link-alt"></i>View
+              </a>
+            </div>
+            <div class="flex flex-wrap gap-2">
+              <span class="px-3 py-1 bg-primary-100 text-primary-700 rounded-full text-xs">Natural Products</span>
+              <span class="px-3 py-1 bg-secondary-100 text-secondary-700 rounded-full text-xs">Methodology</span>
+              <span class="px-3 py-1 bg-primary-100 text-primary-700 rounded-full text-xs">Cell Biology</span>
+            </div>
+          </div>
+
+        </div>
       </div>
-      <div class="p-6 border-l-4 border-teal-500 bg-white shadow hover:shadow-lg transition">
-        <p class="font-semibold">
-          <a href="https://doi.org/10.3390/cancers13164166" target="_blank" class="hover:text-blue-600">
-            Kumarasamy, C., Tiwary, V., et al. (2021)
-          </a>
-        </p>
-        <p>Prognostic Utility of Platelet-Lymphocyte Ratio, Neutrophil-Lymphocyte Ratio and Monocyte-Lymphocyte Ratio in Head and Neck Cancers. <em>Cancers, 13(16), 4166</em></p>
-      </div>
-      <div class="p-6 border-l-4 border-teal-500 bg-white shadow hover:shadow-lg transition">
-        <p class="font-semibold">
-          <a href="https://doi.org/10.1007/s11357-019-00172-x" target="_blank" class="hover:text-blue-600">
-            Kharat, P., Sarkar, P., Mouliganesh, S., Tiwary, V., et al. (2020)
-          </a>
-        </p>
-        <p>Ellagic acid prolongs the lifespan of Drosophila melanogaster. <em>GeroScience, 42(1), 271–285</em></p>
-      </div>
-      <div class="p-6 border-l-4 border-teal-500 bg-white shadow hover:shadow-lg transition">
-        <p class="font-semibold">
-          <a href="https://doi.org/10.2174/2210315509666190723151916" target="_blank" class="hover:text-blue-600">
-            Tiwary, V., Sarkar, P., & Thirumurugan, K. (2020)
-          </a>
-        </p>
-        <p>Naringenin and ellagic acid reduce tetrazolium salt in the absence of cells. <em>The Natural Products Journal, 10</em></p>
+
+      <!-- Co-Author Publications -->
+      <div>
+        <h3 class="text-2xl font-bold text-secondary-600 mb-6 flex items-center">
+          <i class="fas fa-users mr-3"></i>Co-Author Publications
+        </h3>
+        <div class="space-y-6">
+          
+          <div class="bg-white p-6 rounded-xl shadow-lg border-l-4 border-secondary-500 hover:shadow-xl transition-shadow duration-300">
+            <div class="flex items-start justify-between mb-3">
+              <div class="flex-1">
+                <h4 class="text-lg font-semibold text-gray-800 mb-2">
+                  Prognostic Utility of Platelet-Lymphocyte Ratio, Neutrophil-Lymphocyte Ratio and Monocyte-Lymphocyte Ratio in Head and Neck Cancers
+                </h4>
+                <p class="text-secondary-600 font-medium mb-2">
+                  Kumarasamy, C., <strong>Tiwary, V.</strong>, et al. (2021)
+                </p>
+                <p class="text-gray-600 text-sm mb-3">
+                  <em>Cancers</em>, 13(16), 4166
+                </p>
+                <p class="text-gray-700 text-sm leading-relaxed">
+                  Systematic review and meta-analysis of inflammatory markers as prognostic indicators in head and neck cancers.
+                </p>
+              </div>
+              <a href="https://doi.org/10.3390/cancers13164166" target="_blank" 
+                 class="ml-4 px-4 py-2 bg-secondary-500 text-white rounded-lg hover:bg-secondary-600 transition-colors text-sm flex items-center gap-2">
+                <i class="fas fa-external-link-alt"></i>View
+              </a>
+            </div>
+            <div class="flex flex-wrap gap-2">
+              <span class="px-3 py-1 bg-secondary-100 text-secondary-700 rounded-full text-xs">Cancer</span>
+              <span class="px-3 py-1 bg-primary-100 text-primary-700 rounded-full text-xs">Meta-analysis</span>
+              <span class="px-3 py-1 bg-secondary-100 text-secondary-700 rounded-full text-xs">Biomarkers</span>
+            </div>
+          </div>
+
+          <div class="bg-white p-6 rounded-xl shadow-lg border-l-4 border-primary-500 hover:shadow-xl transition-shadow duration-300">
+            <div class="flex items-start justify-between mb-3">
+              <div class="flex-1">
+                <h4 class="text-lg font-semibold text-gray-800 mb-2">
+                  Ellagic acid prolongs the lifespan of Drosophila melanogaster
+                </h4>
+                <p class="text-primary-600 font-medium mb-2">
+                  Kharat, P., Sarkar, P., Mouliganesh, S., <strong>Tiwary, V.</strong>, et al. (2020)
+                </p>
+                <p class="text-gray-600 text-sm mb-3">
+                  <em>GeroScience</em>, 42(1), 271–285
+                </p>
+                <p class="text-gray-700 text-sm leading-relaxed">
+                  Comprehensive study on ellagic acid's life-extending properties and underlying molecular mechanisms 
+                  in Drosophila.
+                </p>
+              </div>
+              <a href="https://doi.org/10.1007/s11357-019-00172-x" target="_blank" 
+                 class="ml-4 px-4 py-2 bg-primary-500 text-white rounded-lg hover:bg-primary-600 transition-colors text-sm flex items-center gap-2">
+                <i class="fas fa-external-link-alt"></i>View
+              </a>
+            </div>
+            <div class="flex flex-wrap gap-2">
+              <span class="px-3 py-1 bg-primary-100 text-primary-700 rounded-full text-xs">Longevity</span>
+              <span class="px-3 py-1 bg-secondary-100 text-secondary-700 rounded-full text-xs">Natural Products</span>
+              <span class="px-3 py-1 bg-primary-100 text-primary-700 rounded-full text-xs">Drosophila</span>
+            </div>
+          </div>
+
+        </div>
       </div>
     </div>
   </section>
 
-  <!-- Skills Section -->
-  <section id="skills" class="max-w-7xl mx-auto px-6 py-20">
-    <h2 class="text-3xl font-['Merriweather'] font-bold text-teal-600 mb-8">Skills & Expertise</h2>
-    <div class="grid md:grid-cols-3 gap-6">
-      <div class="p-6 border rounded-lg shadow hover:shadow-lg transition flex items-center gap-3">
-        <i class="fas fa-dna text-teal-600 text-2xl"></i>
-        <p>Molecular Biology: PCR, qPCR, Western blot, DNA/RNA extraction, gene expression</p>
+  <!-- Experience Section -->
+  <section id="experience" class="py-20">
+    <div class="max-w-7xl mx-auto px-6">
+      <div class="text-center mb-12">
+        <h2 class="text-4xl font-['Merriweather'] font-bold text-gray-800 mb-4">Professional Experience</h2>
+        <p class="text-xl text-gray-600">Research positions and academic collaborations</p>
       </div>
-      <div class="p-6 border rounded-lg shadow hover:shadow-lg transition flex items-center gap-3">
-        <i class="fas fa-microscope text-blue-600 text-2xl"></i>
-        <p>Cell Biology: Cell culture, viability assays, fluorescence microscopy</p>
-      </div>
-      <div class="p-6 border rounded-lg shadow hover:shadow-lg transition flex items-center gap-3">
-        <i class="fas fa-bug text-teal-600 text-2xl"></i>
-        <p>Model Systems: Drosophila, Zebrafish embryos, mammalian cell lines</p>
-      </div>
-      <div class="p-6 border rounded-lg shadow hover:shadow-lg transition flex items-center gap-3">
-        <i class="fas fa-chart-bar text-blue-600 text-2xl"></i>
-        <p>Bioinformatics: R, GraphPad Prism, statistical analysis, omics data</p>
-      </div>
-      <div class="p-6 border rounded-lg shadow hover:shadow-lg transition flex items-center gap-3">
-        <i class="fas fa-lightbulb text-teal-600 text-2xl"></i>
-        <p>Optogenetics & Imaging: Light-activated proton pumps, confocal microscopy</p>
-      </div>
-      <div class="p-6 border rounded-lg shadow hover:shadow-lg transition flex items-center gap-3">
-        <i class="fas fa-pen-nib text-blue-600 text-2xl"></i>
-        <p>Scientific Writing: Peer-reviewed publications, grant writing, reviews</p>
+
+      <div class="space-y-8">
+        
+        <!-- PhD Researcher -->
+        <div class="bg-white p-8 rounded-xl shadow-lg border-l-4 border-primary-500">
+          <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between mb-4">
+            <div>
+              <h3 class="text-2xl font-bold text-gray-800">PhD Researcher</h3>
+              <p class="text-primary-600 font-semibold text-lg">University of Rostock / Leibniz Institute FBN</p>
+              <p class="text-gray-600">Dummerstorf, Germany</p>
+            </div>
+            <div class="text-gray-500 font-medium">Sept 2021 – Aug 2025</div>
+          </div>
+          <p class="text-gray-700 mb-4">
+            <strong>Focus:</strong> Characterization of light-activated proton pump in <em>Drosophila melanogaster</em> 
+            and its implications on aging.
+          </p>
+          <div class="grid md:grid-cols-2 gap-4">
+            <div>
+              <h4 class="font-semibold text-gray-800 mb-2">Key Achievements:</h4>
+              <ul class="text-gray-600 space-y-1">
+                <li>• Published first-author paper on reserpine effects on longevity</li>
+                <li>• Co-authored review in Trends in Biochemical Sciences</li>
+                <li>• Presented at Gordon Research Conference 2024</li>
+                <li>• Developed novel optogenetic aging assays</li>
+              </ul>
+            </div>
+            <div>
+              <h4 class="font-semibold text-gray-800 mb-2">Technical Skills Applied:</h4>
+              <ul class="text-gray-600 space-y-1">
+                <li>• Optogenetic manipulation of cellular energetics</li>
+                <li>• Advanced Drosophila genetics and behavior assays</li>
+                <li>• RNA-seq data analysis and interpretation</li>
+                <li>• Confocal microscopy and imaging</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- Project Trainee -->
+        <div class="bg-white p-8 rounded-xl shadow-lg border-l-4 border-secondary-500">
+          <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between mb-4">
+            <div>
+              <h3 class="text-2xl font-bold text-gray-800">Project Trainee</h3>
+              <p class="text-secondary-600 font-semibold text-lg">CSIR–Centre for Cellular and Molecular Biology (CCMB)</p>
+              <p class="text-gray-600">Hyderabad, India</p>
+            </div>
+            <div class="text-gray-500 font-medium">July 2020 – March 2021</div>
+          </div>
+          <p class="text-gray-700 mb-4">
+            <strong>Focus:</strong> Transgenerational epigenetic inheritance via male germ line in 
+            <em>Drosophila melanogaster</em> induced by heat-stress.
+          </p>
+          <div class="grid md:grid-cols-2 gap-4">
+            <div>
+              <h4 class="font-semibold text-gray-800 mb-2">Key Contributions:</h4>
+              <ul class="text-gray-600 space-y-1">
+                <li>• Investigated PcG and TrxG protein roles in epigenetic inheritance</li>
+                <li>• Established heat-stress paradigms for transgenerational studies</li>
+                <li>• Analyzed chromatin modifications across generations</li>
+                <li>• Contributed to understanding of epigenetic memory</li>
+              </ul>
+            </div>
+            <div>
+              <h4 class="font-semibold text-gray-800 mb-2">Research Methods:</h4>
+              <ul class="text-gray-600 space-y-1">
+                <li>• ChIP-seq analysis for histone modifications</li>
+                <li>• qRT-PCR for gene expression analysis</li>
+                <li>• Immunostaining and fluorescence microscopy</li>
+                <li>• Statistical analysis of multi-generational data</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- Intern -->
+        <div class="bg-white p-8 rounded-xl shadow-lg border-l-4 border-primary-500">
+          <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between mb-4">
+            <div>
+              <h3 class="text-2xl font-bold text-gray-800">Research Intern</h3>
+              <p class="text-primary-600 font-semibold text-lg">ICMR–National Institute for Cancer Prevention and Research (NICPR)</p>
+              <p class="text-gray-600">Noida, India</p>
+            </div>
+            <div class="text-gray-500 font-medium">May 2019 – June 2019</div>
+          </div>
+          <p class="text-gray-700 mb-4">
+            <strong>Focus:</strong> Screening of cervical samples for HPV detection in the context of cervical cancer prevention.
+          </p>
+          <div class="grid md:grid-cols-2 gap-4">
+            <div>
+              <h4 class="font-semibold text-gray-800 mb-2">Clinical Experience:</h4>
+              <ul class="text-gray-600 space-y-1">
+                <li>• HPV DNA detection using molecular methods</li>
+                <li>• Cervical cytology sample processing</li>
+                <li>• Quality control in diagnostic procedures</li>
+                <li>• Data management and patient record maintenance</li>
+              </ul>
+            </div>
+            <div>
+              <h4 class="font-semibold text-gray-800 mb-2">Technical Skills:</h4>
+              <ul class="text-gray-600 space-y-1">
+                <li>• PCR-based HPV genotyping</li>
+                <li>• Microscopy for cytological analysis</li>
+                <li>• Sample preparation and DNA extraction</li>
+                <li>• Clinical laboratory safety protocols</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
       </div>
     </div>
   </section>
 
-  <!-- CV Section -->
-  <section id="cv" class="max-w-7xl mx-auto px-6 py-20 bg-gray-50">
-    <h2 class="text-3xl font-['Merriweather'] font-bold text-teal-600 mb-6">CV</h2>
-    <p class="mb-4"><strong>Education Highlights:</strong></p>
-    <ul class="list-disc ml-6 mb-4">
-      <li>Ph.D. in Metabolism and Aging, University of Rostock / FBN, Germany (2021–2025)</li>
-      <li>M.Sc. Biotechnology, VIT, India (2018–2020)</li>
-      <li>B.Sc. Biotechnology (Hons.), St. Xavier’s College, India (2015–2018)</li>
-    </ul>
-    <a href="Vaibhav_Tiwary_CV.pdf" class="inline-block px-6 py-3 bg-gradient-to-r from-teal-500 to-blue-600 text-white rounded-lg font-medium hover:scale-105 transition transform" target="_blank">Download Full CV (PDF)</a>
-  </section>
+  <!-- Education Section -->
+  <section id="education" class="py-20 bg-gray-50">
+    <div class="max-w-7xl mx-auto px-6">
+      <div class="text-center mb-12">
+        <h2 class="text-4xl font-['Merriweather'] font-bold text-gray-800 mb-4">Education</h2>
+        <p class="text-xl text-gray-600">Academic foundation in biotechnology and aging biology</p>
+      </div>
 
-  <!-- Conferences & Workshops Section -->
-  <section id="conferences" class="max-w-7xl mx-auto px-6 py-20">
-    <h2 class="text-3xl font-['Merriweather'] font-bold text-teal-600 mb-8">Conferences & Workshops</h2>
-    <div class="grid md:grid-cols-2 gap-6">
-      <div class="p-6 border rounded-lg shadow hover:shadow-lg transition flex items-start gap-3">
-        <i class="fas fa-chalkboard-teacher text-blue-600 text-2xl mt-1"></i>
-        <div>
-          <h3 class="font-semibold text-xl text-teal-600 mb-2">Gordon Research Conference - Systems Aging</h3>
-          <p>Barcelona, June 02–07, 2024. Focus: Systems Modeling, Aging Biomarkers, and Longevity Interventions</p>
+      <div class="space-y-8">
+        
+        <!-- PhD -->
+        <div class="bg-white p-8 rounded-xl shadow-lg border-l-4 border-primary-500">
+          <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between mb-4">
+            <div>
+              <h3 class="text-2xl font-bold text-gray-800 flex items-center gap-2">
+                <i class="fas fa-graduation-cap text-primary-600"></i>
+                Ph.D. in Metabolism and Aging
+              </h3>
+              <p class="text-primary-600 font-semibold text-lg">University of Rostock / Leibniz Institute FBN</p>
+              <p class="text-gray-600">Dummerstorf, Germany</p>
+            </div>
+            <div class="text-gray-500 font-medium">Sept 2021 – Aug 2025</div>
+          </div>
+          <div class="grid md:grid-cols-2 gap-4">
+            <div>
+              <h4 class="font-semibold text-gray-800 mb-2">Research Focus:</h4>
+              <ul class="text-gray-600 space-y-1">
+                <li>• Optogenetics in aging research</li>
+                <li>• Mitochondrial biology and energetics</li>
+                <li>• Drosophila genetics and longevity</li>
+                <li>• Systems biology approaches to aging</li>
+              </ul>
+            </div>
+            <div>
+              <h4 class="font-semibold text-gray-800 mb-2">Advanced Training:</h4>
+              <ul class="text-gray-600 space-y-1">
+                <li>• International summer schools on aging</li>
+                <li>• Advanced Drosophila genetics workshops</li>
+                <li>• Bioinformatics and omics data analysis</li>
+                <li>• Scientific writing and presentation skills</li>
+              </ul>
+            </div>
+          </div>
         </div>
-      </div>
-      <div class="p-6 border rounded-lg shadow hover:shadow-lg transition flex items-start gap-3">
-        <i class="fas fa-chalkboard-teacher text-blue-600 text-2xl mt-1"></i>
-        <div>
-          <h3 class="font-semibold text-xl text-teal-600 mb-2">Gordon Research Seminar - Systems Aging</h3>
-          <p>Barcelona, June 01–02, 2024. Focus: Integrative Omic Methods to Measure Stochastic and Programmed Aspects of Aging</p>
+
+        <!-- Master's -->
+        <div class="bg-white p-8 rounded-xl shadow-lg border-l-4 border-secondary-500">
+          <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between mb-4">
+            <div>
+              <h3 class="text-2xl font-bold text-gray-800 flex items-center gap-2">
+                <i class="fas fa-microscope text-secondary-600"></i>
+                M.Sc. Biotechnology
+              </h3>
+              <p class="text-secondary-600 font-semibold text-lg">Vellore Institute of Technology</p>
+              <p class="text-gray-600">Vellore, India</p>
+            </div>
+            <div class="text-gray-500 font-medium">July 2018 – June 2020</div>
+          </div>
+          <div class="flex items-center mb-4">
+            <span class="bg-secondary-100 text-secondary-700 px-3 py-1 rounded-full font-semibold">CGPA: 8.6/10.0</span>
+          </div>
+          <div class="grid md:grid-cols-2 gap-4">
+            <div>
+              <h4 class="font-semibold text-gray-800 mb-2">Core Subjects:</h4>
+              <ul class="text-gray-600 space-y-1">
+                <li>• Molecular biology and genetic engineering</li>
+                <li>• Cell biology and tissue culture</li>
+                <li>• Bioinformatics and computational biology</li>
+                <li>• Cancer biology and immunology</li>
+              </ul>
+            </div>
+            <div>
+              <h4 class="font-semibold text-gray-800 mb-2">Practical Experience:</h4>
+              <ul class="text-gray-600 space-y-1">
+                <li>• Multiple research projects in cancer biology</li>
+                <li>• Natural products and phytochemistry</li>
+                <li>• Zebrafish developmental biology</li>
+                <li>• Advanced molecular biology techniques</li>
+              </ul>
+            </div>
+          </div>
         </div>
-      </div>
-      <div class="p-6 border rounded-lg shadow hover:shadow-lg transition flex items-start gap-3">
-        <i class="fas fa-chalkboard-teacher text-blue-600 text-2xl mt-1"></i>
-        <div>
-          <h3 class="font-semibold text-xl text-teal-600 mb-2">EMSI Annual Conference, VIT</h3>
-          <p>2019. Poster: Effect of ellagic acid on HeLa & HEK 293 cells</p>
+
+        <!-- Bachelor's -->
+        <div class="bg-white p-8 rounded-xl shadow-lg border-l-4 border-primary-500">
+          <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between mb-4">
+            <div>
+              <h3 class="text-2xl font-bold text-gray-800 flex items-center gap-2">
+                <i class="fas fa-dna text-primary-600"></i>
+                B.Sc. Biotechnology (Hons.)
+              </h3>
+              <p class="text-primary-600 font-semibold text-lg">St. Xavier's College</p>
+              <p class="text-gray-600">Ranchi, India</p>
+            </div>
+            <div class="text-gray-500 font-medium">July 2015 – June 2018</div>
+          </div>
+          <div class="flex items-center mb-4">
+            <span class="bg-primary-100 text-primary-700 px-3 py-1 rounded-full font-semibold">CGPA: 7.92/10.0</span>
+          </div>
+          <div class="grid md:grid-cols-2 gap-4">
+            <div>
+              <h4 class="font-semibold text-gray-800 mb-2">Foundation Subjects:</h4>
+              <ul class="text-gray-600 space-y-1">
+                <li>• General biology and biochemistry</li>
+                <li>• Microbiology and genetics</li>
+                <li>• Chemistry and organic chemistry</li>
+                <li>• Mathematics and biostatistics</li>
+              </ul>
+            </div>
+            <div>
+              <h4 class="font-semibold text-gray-800 mb-2">Early Research:</h4>
+              <ul class="text-gray-600 space-y-1">
+                <li>• XRCC1 polymorphism project</li>
+                <li>• Introduction to molecular techniques</li>
+                <li>• Basic laboratory skills development</li>
+                <li>• Scientific writing and analysis</li>
+              </ul>
+            </div>
+          </div>
         </div>
-      </div>
-      <div class="p-6 border rounded-lg shadow hover:shadow-lg transition flex items-start gap-3">
-        <i class="fas fa-chalkboard-teacher text-blue-600 text-2xl mt-1"></i>
-        <div>
-          <h3 class="font-semibold text-xl text-teal-600 mb-2">ICSET, VIT</h3>
-          <p>2018–2019. Presentations & Posters on cytotoxic effects and zebrafish development</p>
-        </div>
+
       </div>
     </div>
   </section>
 
-  <!-- Contact Section -->
-  <section id="contact" class="max-w-7xl mx-auto px-6 py-20">
-    <h2 class="text-3xl font-['Merriweather'] font-bold text-teal-600 mb-6">Contact</h2>
-    <div class="flex flex-col md:flex-row gap-6 md:gap-12">
-      <a href="mailto:vaibhavtiwary1397@gmail.com" class="px-6 py-3 bg-teal-500 text-white rounded-lg font-medium hover:bg-blue-600 transition text-center flex items-center gap-2"><i class="fas fa-envelope"></i>Email</a>
-      <a href="https://orcid.org/0000-0002-5337-5565" target="_blank" class="px-6 py-3 bg-teal-500 text-white rounded-lg font-medium hover:bg-blue-600 transition text-center flex items-center gap-2"><i class="fas fa-id-badge"></i>ORCID</a>
-      <a href="https://linkedin.com/in/vaibhavtiwary1397" target="_blank" class="px-6 py-3 bg-teal-500 text-white rounded-lg font-medium hover:bg-blue-600 transition text-center flex items-center gap-2"><i class="fab fa-linkedin"></i>LinkedIn</a>
+  <!-- Conferences and Leadership Section -->
+  <section id="conferences" class="py-20">
+    <div class="max-w-7xl mx-auto px-6">
+      <div class="text-center mb-12">
+        <h2 class="text-4xl font-['Merriweather'] font-bold text-gray-800 mb-4">Conferences & Leadership</h2>
+        <p class="text-xl text-gray-600">Scientific presentations and organizational contributions</p>
+      </div>
+
+      <div class="grid lg:grid-cols-2 gap-8">
+        
+        <!-- Conferences -->
+        <div>
+          <h3 class="text-2xl font-bold text-primary-600 mb-6 flex items-center">
+            <i class="fas fa-microphone mr-3"></i>Conference Presentations
+          </h3>
+          <div class="space-y-6">
+            
+            <div class="bg-white p-6 rounded-xl shadow-lg border-l-4 border-primary-500">
+              <h4 class="text-lg font-bold text-gray-800 mb-2">Gordon Research Conference (GRC) - Systems Aging</h4>
+              <p class="text-primary-600 font-semibold mb-2">Barcelona, Spain • June 2-7, 2024</p>
+              <p class="text-gray-600 text-sm mb-3">
+                <strong>Focus:</strong> Systems Modeling, Aging Biomarkers, and Longevity Interventions
+              </p>
+              <p class="text-gray-700 text-sm">
+                Participated in discussions on cutting-edge systems approaches to understanding aging, 
+                including computational models and biomarker development.
+              </p>
+            </div>
+
+            <div class="bg-white p-6 rounded-xl shadow-lg border-l-4 border-secondary-500">
+              <h4 class="text-lg font-bold text-gray-800 mb-2">Gordon Research Seminar (GRS) - Systems Aging</h4>
+              <p class="text-secondary-600 font-semibold mb-2">Barcelona, Spain • June 1-2, 2024</p>
+              <p class="text-gray-600 text-sm mb-3">
+                <strong>Focus:</strong> Integrative Omic Methods to Measure Stochastic and Programmed Aspects of Aging
+              </p>
+              <p class="text-gray-700 text-sm">
+                Presented research and engaged in scientific discussions with early-career researchers 
+                on multi-omics approaches in aging biology.
+              </p>
+            </div>
+
+            <div class="bg-white p-6 rounded-xl shadow-lg border-l-4 border-primary-500">
+              <h4 class="text-lg font-bold text-gray-800 mb-2">43rd Annual EMSI Conference</h4>
+              <p class="text-primary-600 font-semibold mb-2">VIT, Vellore, India • 2019</p>
+              <p class="text-gray-600 text-sm mb-3">
+                <strong>Presentation Type:</strong> Poster
+              </p>
+              <p class="text-gray-700 text-sm">
+                <strong>Title:</strong> "Effect of ellagic acid on HeLa & HEK 293 cells" - 
+                Investigating cytotoxic effects of natural compounds on cancer cell lines.
+              </p>
+            </div>
+
+            <div class="bg-white p-6 rounded-xl shadow-lg border-l-4 border-secondary-500">
+              <h4 class="text-lg font-bold text-gray-800 mb-2">International Conference on Science, Engineering and Technology (ICSET)</h4>
+              <p class="text-secondary-600 font-semibold mb-2">VIT, Vellore, India • 2019</p>
+              <p class="text-gray-600 text-sm mb-3">
+                <strong>Presentation Type:</strong> Oral Presentation
+              </p>
+              <p class="text-gray-700 text-sm">
+                <strong>Title:</strong> "Cytotoxic effect of bioaccessible fractions of phytochemicals on breast cancer cells" - 
+                Research on medicinal plant compounds and cancer treatment.
+              </p>
+            </div>
+
+            <div class="bg-white p-6 rounded-xl shadow-lg border-l-4 border-primary-500">
+              <h4 class="text-lg font-bold text-gray-800 mb-2">International Conference on Science, Engineering and Technology (ICSET)</h4>
+              <p class="text-primary-600 font-semibold mb-2">VIT, Vellore, India • 2018</p>
+              <p class="text-gray-600 text-sm mb-3">
+                <strong>Presentation Type:</strong> Poster
+              </p>
+              <p class="text-gray-700 text-sm">
+                <strong>Title:</strong> "Effect of cobalt chloride on development of zebrafish embryos" - 
+                Developmental toxicology study using zebrafish model system.
+              </p>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Leadership -->
+        <div>
+          <h3 class="text-2xl font-bold text-secondary-600 mb-6 flex items-center">
+            <i class="fas fa-crown mr-3"></i>Leadership & Organization
+          </h3>
+          <div class="space-y-6">
+            
+            <div class="bg-white p-6 rounded-xl shadow-lg border-l-4 border-secondary-500">
+              <h4 class="text-lg font-bold text-gray-800 mb-2 flex items-center gap-2">
+                <i class="fas fa-users text-secondary-600"></i>
+                Organizer
+              </h4>
+              <p class="text-secondary-600 font-semibold mb-2">8th International Bio Summit, 2019</p>
+              <p class="text-gray-600 text-sm mb-3">VIT, Vellore, India</p>
+              <div class="text-gray-700 text-sm">
+                <h5 class="font-semibold mb-2">Key Responsibilities:</h5>
+                <ul class="space-y-1">
+                  <li>• Coordinated international biotechnology conference</li>
+                  <li>• Managed speaker invitations and logistics</li>
+                  <li>• Supervised registration and participant management</li>
+                  <li>• Ensured smooth execution of scientific sessions</li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="bg-white p-6 rounded-xl shadow-lg border-l-4 border-primary-500">
+              <h4 class="text-lg font-bold text-gray-800 mb-2 flex items-center gap-2">
+                <i class="fas fa-cogs text-primary-600"></i>
+                Coordinator
+              </h4>
+              <p class="text-primary-600 font-semibold mb-2">43rd Annual EMSI Conference, 2019</p>
+              <p class="text-gray-600 text-sm mb-3">VIT, Vellore, India</p>
+              <div class="text-gray-700 text-sm">
+                <h5 class="font-semibold mb-2">Key Contributions:</h5>
+                <ul class="space-y-1">
+                  <li>• Organized Environmental Mutagen Society conference</li>
+                  <li>• Facilitated poster and presentation sessions</li>
+                  <li>• Managed participant registration and attendance</li>
+                  <li>• Coordinated with national research societies</li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="bg-white p-6 rounded-xl shadow-lg border-l-4 border-secondary-500">
+              <h4 class="text-lg font-bold text-gray-800 mb-2 flex items-center gap-2">
+                <i class="fas fa-tasks text-secondary-600"></i>
+                Coordinator
+              </h4>
+              <p class="text-secondary-600 font-semibold mb-2">7th International Bio Summit, 2018</p>
+              <p class="text-gray-600 text-sm mb-3">VIT, Vellore, India</p>
+              <div class="text-gray-700 text-sm">
+                <h5 class="font-semibold mb-2">Leadership Experience:</h5>
+                <ul class="space-y-1">
+                  <li>• Early leadership role in scientific conference organization</li>
+                  <li>• Developed event management and coordination skills</li>
+                  <li>• Gained experience in academic event planning</li>
+                  <li>• Built network within biotechnology research community</li>
+                </ul>
+              </div>
+            </div>
+
+            <!-- Additional Leadership Qualities -->
+            <div class="bg-gradient-to-br from-primary-500 to-secondary-500 text-white p-6 rounded-xl shadow-lg">
+              <h4 class="text-lg font-bold mb-3 flex items-center gap-2">
+                <i class="fas fa-trophy"></i>
+                Leadership Impact
+              </h4>
+              <div class="space-y-2 text-sm">
+                <div class="flex items-center gap-2">
+                  <i class="fas fa-users"></i>
+                  <span>Successfully organized events with 200+ participants</span>
+                </div>
+                <div class="flex items-center gap-2">
+                  <i class="fas fa-globe"></i>
+                  <span>Coordinated international scientific conferences</span>
+                </div>
+                <div class="flex items-center gap-2">
+                  <i class="fas fa-handshake"></i>
+                  <span>Built collaborative networks in research community</span>
+                </div>
+                <div class="flex items-center gap-2">
+                  <i class="fas fa-trophy"></i>
+                  <span>Developed strong project management skills</span>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Enhanced Skills Section -->
+  <section id="skills" class="py-20 bg-gray-50">
+    <div class="max-w-7xl mx-auto px-6">
+      <div class="text-center mb-12">
+        <h2 class="text-4xl font-['Merriweather'] font-bold text-gray-800 mb-4">Technical Skills & Expertise</h2>
+        <p class="text-xl text-gray-600">Comprehensive technical capabilities across multiple research domains</p>
+      </div>
+
+      <div class="grid lg:grid-cols-2 gap-8">
+        
+        <!-- Technical Skills -->
+        <div class="space-y-6">
+          <h3 class="text-2xl font-bold text-primary-600 mb-6 flex items-center">
+            <i class="fas fa-flask mr-3"></i>Laboratory Techniques
+          </h3>
+          
+          <div class="bg-white p-6 rounded-xl shadow-lg">
+            <h4 class="text-lg font-bold text-gray-800 mb-4 flex items-center">
+              <i class="fas fa-dna text-primary-600 mr-3"></i>Molecular Biology
+            </h4>
+            <div class="grid grid-cols-2 gap-3 text-sm text-gray-600">
+              <span class="flex items-center gap-2"><i class="fas fa-check text-primary-500"></i>PCR & qPCR</span>
+              <span class="flex items-center gap-2"><i class="fas fa-check text-primary-500"></i>Western Blotting</span>
+              <span class="flex items-center gap-2"><i class="fas fa-check text-primary-500"></i>DNA/RNA Extraction</span>
+              <span class="flex items-center gap-2"><i class="fas fa-check text-primary-500"></i>Gene Expression Analysis</span>
+              <span class="flex items-center gap-2"><i class="fas fa-check text-primary-500"></i>mRNA Data Analysis</span>
+              <span class="flex items-center gap-2"><i class="fas fa-check text-primary-500"></i>Genetic Engineering</span>
+            </div>
+          </div>
+
+          <div class="bg-white p-6 rounded-xl shadow-lg">
+            <h4 class="text-lg font-bold text-gray-800 mb-4 flex items-center">
+              <i class="fas fa-microscope text-secondary-600 mr-3"></i>Cell Biology
+            </h4>
+            <div class="grid grid-cols-2 gap-3 text-sm text-gray-600">
+              <span class="flex items-center gap-2"><i class="fas fa-check text-secondary-500"></i>Cell Culture</span>
+              <span class="flex items-center gap-2"><i class="fas fa-check text-secondary-500"></i>Viability Assays</span>
+              <span class="flex items-center gap-2"><i class="fas fa-check text-secondary-500"></i>Fluorescence Microscopy</span>
+              <span class="flex items-center gap-2"><i class="fas fa-check text-secondary-500"></i>Confocal Microscopy</span>
+              <span class="flex items-center gap-2"><i class="fas fa-check text-secondary-500"></i>Immunostaining</span>
+              <span class="flex items-center gap-2"><i class="fas fa-check text-secondary-500"></i>Cell Imaging</span>
+            </div>
+          </div>
+
+          <div class="bg-white p-6 rounded-xl shadow-lg">
+            <h4 class="text-lg font-bold text-gray-800 mb-4 flex items-center">
+              <i class="fas fa-lightbulb text-primary-600 mr-3"></i>Advanced Techniques
+            </h4>
+            <div class="grid grid-cols-2 gap-3 text-sm text-gray-600">
+              <span class="flex items-center gap-2"><i class="fas fa-check text-primary-500"></i>Optogenetics</span>
+              <span class="flex items-center gap-2"><i class="fas fa-check text-primary-500"></i>Light-Activated Proton Pumps</span>
+              <span class="flex items-center gap-2"><i class="fas fa-check text-primary-500"></i>HPV Detection Methods</span>
+              <span class="flex items-center gap-2"><i class="fas fa-check text-primary-500"></i>Cervical Cancer Screening</span>
+              <span class="flex items-center gap-2"><i class="fas fa-check text-primary-500"></i>ChIP-seq Analysis</span>
+              <span class="flex items-center gap-2"><i class="fas fa-check text-primary-500"></i>Epigenetic Analysis</span>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Computational Skills -->
+        <div class="space-y-6">
+          <h3 class="text-2xl font-bold text-secondary-600 mb-6 flex items-center">
+            <i class="fas fa-laptop-code mr-3"></i>Computational Skills
+          </h3>
+          
+          <div class="bg-white p-6 rounded-xl shadow-lg">
+            <h4 class="text-lg font-bold text-gray-800 mb-4 flex items-center">
+              <i class="fas fa-chart-bar text-secondary-600 mr-3"></i>Data Analysis & Statistics
+            </h4>
+            <div class="grid grid-cols-2 gap-3 text-sm text-gray-600">
+              <span class="flex items-center gap-2"><i class="fas fa-check text-secondary-500"></i>R Programming</span>
+              <span class="flex items-center gap-2"><i class="fas fa-check text-secondary-500"></i>GraphPad Prism</span>
+              <span class="flex items-center gap-2"><i class="fas fa-check text-secondary-500"></i>Statistical Analysis</span>
+              <span class="flex items-center gap-2"><i class="fas fa-check text-secondary-500"></i>Omics Data Interpretation</span>
+              <span class="flex items-center gap-2"><i class="fas fa-check text-secondary-500"></i>RNA-seq Analysis</span>
+              <span class="flex items-center gap-2"><i class="fas fa-check text-secondary-500"></i>Multi-generational Data</span>
+            </div>
+          </div>
+
+          <div class="bg-white p-6 rounded-xl shadow-lg">
+            <h4 class="text-lg font-bold text-gray-800 mb-4 flex items-center">
+              <i class="fas fa-palette text-primary-600 mr-3"></i>Scientific Visualization
+            </h4>
+            <div class="grid grid-cols-2 gap-3 text-sm text-gray-600">
+              <span class="flex items-center gap-2"><i class="fas fa-check text-primary-500"></i>BioRender</span>
+              <span class="flex items-center gap-2"><i class="fas fa-check text-primary-500"></i>Scientific Figure Preparation</span>
+              <span class="flex items-center gap-2"><i class="fas fa-check text-primary-500"></i>Data Visualization</span>
+              <span class="flex items-center gap-2"><i class="fas fa-check text-primary-500"></i>Graphical Abstracts</span>
+              <span class="flex items-center gap-2"><i class="fas fa-check text-primary-500"></i>Presentation Design</span>
+              <span class="flex items-center gap-2"><i class="fas fa-check text-primary-500"></i>Publication Graphics</span>
+            </div>
+          </div>
+
+          <div class="bg-white p-6 rounded-xl shadow-lg">
+            <h4 class="text-lg font-bold text-gray-800 mb-4 flex items-center">
+              <i class="fas fa-pen-nib text-secondary-600 mr-3"></i>Scientific Communication
+            </h4>
+            <div class="grid grid-cols-2 gap-3 text-sm text-gray-600">
+              <span class="flex items-center gap-2"><i class="fas fa-check text-secondary-500"></i>Peer-Reviewed Publications</span>
+              <span class="flex items-center gap-2"><i class="fas fa-check text-secondary-500"></i>Grant Writing</span>
+              <span class="flex items-center gap-2"><i class="fas fa-check text-secondary-500"></i>Scientific Reviews</span>
+              <span class="flex items-center gap-2"><i class="fas fa-check text-secondary-500"></i>Conference Presentations</span>
+              <span class="flex items-center gap-2"><i class="fas fa-check text-secondary-500"></i>Manuscript Preparation</span>
+              <span class="flex items-center gap-2"><i class="fas fa-check text-secondary-500"></i>Science Communication</span>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- Model Systems -->
+      <div class="mt-12">
+        <h3 class="text-2xl font-bold text-gray-800 mb-6 text-center flex items-center justify-center">
+          <i class="fas fa-bug mr-3"></i>Model Systems Expertise
+        </h3>
+        <div class="grid md:grid-cols-3 gap-6">
+          
+          <div class="bg-white p-6 rounded-xl shadow-lg text-center border-t-4 border-primary-500">
+            <i class="fas fa-bug text-primary-600 text-4xl mb-4"></i>
+            <h4 class="text-xl font-bold text-gray-800 mb-2">Drosophila melanogaster</h4>
+            <p class="text-gray-600 text-sm mb-3">Primary expertise in fly genetics, aging assays, and behavior analysis</p>
+            <div class="text-xs text-gray-500">
+              <p>• Advanced genetic crosses</p>
+              <p>• Longevity and survival assays</p>
+              <p>• Optogenetic manipulations</p>
+              <p>• Stress resilience testing</p>
+            </div>
+          </div>
+
+          <div class="bg-white p-6 rounded-xl shadow-lg text-center border-t-4 border-secondary-500">
+            <i class="fas fa-fish text-secondary-600 text-4xl mb-4"></i>
+            <h4 class="text-xl font-bold text-gray-800 mb-2">Zebrafish Embryos</h4>
+            <p class="text-gray-600 text-sm mb-3">Developmental biology and toxicology studies</p>
+            <div class="text-xs text-gray-500">
+              <p>• Embryonic development</p>
+              <p>• Toxicity assessments</p>
+              <p>• Morphological analysis</p>
+              <p>• Chemical screening</p>
+            </div>
+          </div>
+
+          <div class="bg-white p-6 rounded-xl shadow-lg text-center border-t-4 border-primary-500">
+            <i class="fas fa-circle text-primary-600 text-4xl mb-4"></i>
+            <h4 class="text-xl font-bold text-gray-800 mb-2">Mammalian Cell Lines</h4>
+            <p class="text-gray-600 text-sm mb-3">Cancer research and cell biology applications</p>
+            <div class="text-xs text-gray-500">
+              <p>• MCF-7, HeLa, HEK 293</p>
+              <p>• Cytotoxicity assays</p>
+              <p>• Drug screening</p>
+              <p>• Cell viability studies</p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Language Skills -->
+      <div class="mt-12 bg-gradient-to-r from-primary-500 to-secondary-500 p-8 rounded-2xl text-white">
+        <h3 class="text-2xl font-bold mb-6 text-center flex items-center justify-center">
+          <i class="fas fa-globe mr-3"></i>Language Proficiency
+        </h3>
+        <div class="grid md:grid-cols-3 gap-6 text-center">
+          <div>
+            <h4 class="text-xl font-bold mb-2">Hindi</h4>
+            <p class="text-blue-100">Mother Tongue</p>
+            <div class="mt-2 bg-white bg-opacity-20 rounded-full h-2">
+              <div class="bg-white h-2 rounded-full" style="width: 100%"></div>
+            </div>
+          </div>
+          <div>
+            <h4 class="text-xl font-bold mb-2">English</h4>
+            <p class="text-blue-100">C2 Level (All Skills)</p>
+            <div class="mt-2 bg-white bg-opacity-20 rounded-full h-2">
+              <div class="bg-white h-2 rounded-full" style="width: 95%"></div>
+            </div>
+          </div>
+          <div>
+            <h4 class="text-xl font-bold mb-2">German</h4>
+            <p class="text-blue-100">A1.1 Level (Beginner)</p>
+            <div class="mt-2 bg-white bg-opacity-20 rounded-full h-2">
+              <div class="bg-white h-2 rounded-full" style="width: 20%"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Enhanced Contact Section -->
+  <section id="contact" class="py-20 bg-gradient-to-br from-primary-500 via-primary-600 to-secondary-600 text-white">
+    <div class="max-w-7xl mx-auto px-6">
+      <div class="text-center mb-12">
+        <h2 class="text-4xl font-['Merriweather'] font-bold mb-4">Get In Touch</h2>
+        <p class="text-xl text-blue-100">
+          Open to collaborations, postdoc opportunities, and scientific discussions
+        </p>
+      </div>
+
+      <div class="grid lg:grid-cols-2 gap-12 items-center">
+        
+        <div>
+          <h3 class="text-2xl font-bold mb-6">Let's Connect</h3>
+          <p class="text-blue-100 mb-8 leading-relaxed">
+            I'm always interested in discussing research collaborations, potential postdoc positions, 
+            or simply sharing ideas about aging biology and epigenetics. Feel free to reach out 
+            through any of the channels below.
+          </p>
+          
+          <div class="space-y-4">
+            <a href="mailto:vaibhavtiwary1397@gmail.com" class="flex items-center gap-4 p-4 bg-white bg-opacity-10 rounded-lg hover:bg-opacity-20 transition-all">
+              <div class="bg-white bg-opacity-20 p-3 rounded-full">
+                <i class="fas fa-envelope text-xl"></i>
+              </div>
+              <div>
+                <p class="font-semibold">Email</p>
+                <p class="text-blue-100 text-sm">vaibhavtiwary1397@gmail.com</p>
+              </div>
+            </a>
+            
+            <a href="https://linkedin.com/in/vaibhavtiwary1397" target="_blank" class="flex items-center gap-4 p-4 bg-white bg-opacity-10 rounded-lg hover:bg-opacity-20 transition-all">
+              <div class="bg-white bg-opacity-20 p-3 rounded-full">
+                <i class="fab fa-linkedin text-xl"></i>
+              </div>
+              <div>
+                <p class="font-semibold">LinkedIn</p>
+                <p class="text-blue-100 text-sm">linkedin.com/in/vaibhavtiwary1397</p>
+              </div>
+            </a>
+            
+            <a href="https://orcid.org/0000-0002-5337-5565" target="_blank" class="flex items-center gap-4 p-4 bg-white bg-opacity-10 rounded-lg hover:bg-opacity-20 transition-all">
+              <div class="bg-white bg-opacity-20 p-3 rounded-full">
+                <i class="fas fa-id-badge text-xl"></i>
+              </div>
+              <div>
+                <p class="font-semibold">ORCID</p>
+                <p class="text-blue-100 text-sm">0000-0002-5337-5565</p>
+              </div>
+            </a>
+            
+            <div class="flex items-center gap-4 p-4 bg-white bg-opacity-10 rounded-lg">
+              <div class="bg-white bg-opacity-20 p-3 rounded-full">
+                <i class="fas fa-map-marker-alt text-xl"></i>
+              </div>
+              <div>
+                <p class="font-semibold">Location</p>
+                <p class="text-blue-100 text-sm">Rostock, Germany</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-white bg-opacity-10 backdrop-blur-sm p-8 rounded-2xl">
+          <h3 class="text-2xl font-bold mb-6">Quick Links</h3>
+          <div class="grid grid-cols-2 gap-4">
+            <a href="https://linkedin.com/in/vaibhavtiwary1397" target="_blank" 
+               class="flex flex-col items-center gap-3 p-4 bg-white bg-opacity-20 rounded-lg hover:bg-opacity-30 transition-all text-center">
+              <i class="fab fa-linkedin text-3xl"></i>
+              <span class="text-sm">LinkedIn Profile</span>
+            </a>
+            <a href="https://orcid.org/0000-0002-5337-5565" target="_blank" 
+               class="flex flex-col items-center gap-3 p-4 bg-white bg-opacity-20 rounded-lg hover:bg-opacity-30 transition-all text-center">
+              <i class="fas fa-id-badge text-3xl"></i>
+              <span class="text-sm">ORCID Profile</span>
+            </a>
+            <a href="mailto:vaibhavtiwary1397@gmail.com" 
+               class="flex flex-col items-center gap-3 p-4 bg-white bg-opacity-20 rounded-lg hover:bg-opacity-30 transition-all text-center">
+              <i class="fas fa-envelope text-3xl"></i>
+              <span class="text-sm">Send Email</span>
+            </a>
+            <a href="Vaibhav_Tiwary_CV.pdf" target="_blank" 
+               class="flex flex-col items-center gap-3 p-4 bg-white bg-opacity-20 rounded-lg hover:bg-opacity-30 transition-all text-center">
+              <i class="fas fa-download text-3xl"></i>
+              <span class="text-sm">Download CV</span>
+            </a>
+          </div>
+          
+          <div class="mt-6 pt-6 border-t border-white border-opacity-20">
+            <p class="text-blue-100 text-sm">
+              <strong>Current Status:</strong> PhD completion expected August 2025, 
+              actively seeking postdoc positions in Europe
+            </p>
+          </div>
+        </div>
+
+      </div>
     </div>
   </section>
 
   <!-- Footer -->
-  <footer class="bg-gray-100 text-center py-6 mt-12">
-    <p>© 2025 Vaibhav Tiwary</p>
+  <footer class="bg-gray-900 text-gray-300 py-12">
+    <div class="max-w-7xl mx-auto px-6">
+      <div class="grid md:grid-cols-3 gap-8">
+        
+        <div>
+          <h3 class="text-xl font-bold text-white mb-4">Vaibhav Tiwary</h3>
+          <p class="text-gray-400 leading-relaxed">
+            PhD researcher in aging biology, specializing in epigenetics, 
+            mitochondrial signaling, and optogenetic interventions in Drosophila.
+          </p>
+        </div>
+        
+        <div>
+          <h4 class="text-lg font-semibold text-white mb-4">Quick Navigation</h4>
+          <div class="space-y-2">
+            <a href="#research" class="block text-gray-400 hover:text-white transition-colors">Research</a>
+            <a href="#publications" class="block text-gray-400 hover:text-white transition-colors">Publications</a>
+            <a href="#experience" class="block text-gray-400 hover:text-white transition-colors">Experience</a>
+            <a href="#skills" class="block text-gray-400 hover:text-white transition-colors">Skills</a>
+          </div>
+        </div>
+        
+        <div>
+          <h4 class="text-lg font-semibold text-white mb-4">Connect</h4>
+          <div class="flex gap-4 mb-4">
+            <a href="https://linkedin.com/in/vaibhavtiwary1397" target="_blank" 
+               class="w-10 h-10 bg-gray-700 rounded-full flex items-center justify-center text-gray-400 hover:text-white hover:bg-gray-600 transition-all">
+              <i class="fab fa-linkedin"></i>
+            </a>
+            <a href="https://orcid.org/0000-0002-5337-5565" target="_blank" 
+               class="w-10 h-10 bg-gray-700 rounded-full flex items-center justify-center text-gray-400 hover:text-white hover:bg-gray-600 transition-all">
+              <i class="fas fa-id-badge"></i>
+            </a>
+            <a href="mailto:vaibhavtiwary1397@gmail.com" 
+               class="w-10 h-10 bg-gray-700 rounded-full flex items-center justify-center text-gray-400 hover:text-white hover:bg-gray-600 transition-all">
+              <i class="fas fa-envelope"></i>
+            </a>
+          </div>
+          <p class="text-gray-400 text-sm">vaibhavtiwary1397@gmail.com</p>
+        </div>
+        
+      </div>
+      
+      <div class="border-t border-gray-700 mt-8 pt-8 text-center">
+        <p class="text-gray-400">
+          © 2025 Vaibhav Tiwary. All rights reserved. | 
+          <span class="text-primary-400">Pursuing excellence in aging biology research</span>
+        </p>
+      </div>
+    </div>
   </footer>
 
-  <!-- Tailwind Animation -->
+  <!-- Enhanced JavaScript -->
+  <script>
+    // Mobile menu toggle
+    document.getElementById('mobile-menu-button').addEventListener('click', function() {
+      const mobileMenu = document.getElementById('mobile-menu');
+      mobileMenu.classList.toggle('hidden');
+    });
+
+    // Smooth scrolling for navigation links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+          target.scrollIntoView({
+            behavior: 'smooth',
+            block: 'start'
+          });
+          // Close mobile menu if open
+          document.getElementById('mobile-menu').classList.add('hidden');
+        }
+      });
+    });
+
+    // Intersection Observer for animations
+    const observerOptions = {
+      threshold: 0.1,
+      rootMargin: '0px 0px -50px 0px'
+    };
+
+    const observer = new IntersectionObserver(function(entries) {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.style.opacity = '1';
+          entry.target.style.transform = 'translateY(0)';
+        }
+      });
+    }, observerOptions);
+
+    // Apply observer to elements
+    document.querySelectorAll('section').forEach(section => {
+      section.style.opacity = '0';
+      section.style.transform = 'translateY(20px)';
+      section.style.transition = 'opacity 0.6s ease-out, transform 0.6s ease-out';
+      observer.observe(section);
+    });
+
+    // Active navigation highlighting
+    window.addEventListener('scroll', function() {
+      const sections = document.querySelectorAll('section[id]');
+      const navLinks = document.querySelectorAll('nav a[href^="#"]');
+      
+      let current = '';
+      sections.forEach(section => {
+        const sectionTop = section.offsetTop - 100;
+        if (scrollY >= sectionTop) {
+          current = section.getAttribute('id');
+        }
+      });
+
+      navLinks.forEach(link => {
+        link.classList.remove('text-yellow-300');
+        if (link.getAttribute('href') === '#' + current) {
+          link.classList.add('text-yellow-300');
+        }
+      });
+    });
+
+    // Add loading animation
+    window.addEventListener('load', function() {
+      document.body.style.opacity = '1';
+    });
+  </script>
+
+  <!-- Enhanced CSS -->
   <style>
-    .animate-fadeIn { 
-      opacity: 0; 
-      animation: fadeIn 1s forwards; 
+    body {
+      opacity: 0;
+      transition: opacity 0.3s ease-in;
     }
-    .delay-200 { animation-delay: 0.2s; }
-    @keyframes fadeIn { to { opacity: 1; } }
+
+    /* Custom animations */
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes fadeInDown {
+      from {
+        opacity: 0;
+        transform: translateY(-30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes slideInLeft {
+      from {
+        opacity: 0;
+        transform: translateX(-30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+
+    @keyframes slideInRight {
+      from {
+        opacity: 0;
+        transform: translateX(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+
+    /* Smooth scroll behavior */
+    html {
+      scroll-behavior: smooth;
+    }
+
+    /* Custom scrollbar */
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: #f1f1f1;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: linear-gradient(to bottom, #14b8a6, #3b82f6);
+      border-radius: 4px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: linear-gradient(to bottom, #0d9488, #2563eb);
+    }
+
+    /* Enhanced hover effects */
+    .hover\:scale-105:hover {
+      transform: scale(1.05);
+    }
+
+    /* Print styles */
+    @media print {
+      nav, footer { display: none; }
+      section { page-break-inside: avoid; }
+    }
   </style>
 
 </body>
