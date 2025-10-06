@@ -4,7 +4,7 @@ body {
   margin: 0;
   padding: 0;
   background: #ffffff;
-  color: #333333;
+  color: #333;
   scroll-behavior: smooth;
 }
 
@@ -16,6 +16,7 @@ body {
   position: sticky;
   top: 0;
   z-index: 100;
+  border-bottom: 2px solid #ddd;
 }
 
 .nav-container {
@@ -42,10 +43,11 @@ body {
   color: white;
   text-decoration: none;
   font-weight: 500;
+  transition: color 0.3s ease;
 }
 
 .nav-links a:hover {
-  text-decoration: underline;
+  color: #ffff80;
 }
 
 /* Hero Section */
@@ -56,7 +58,7 @@ body {
   justify-content: center;
   padding: 5rem 2rem;
   text-align: center;
-  background: #f9f9f9;
+  background: linear-gradient(to right, #e0f7fa, #f1f8e9);
 }
 
 .profile-photo {
@@ -66,6 +68,7 @@ body {
   border-radius: 50%;
   border: 4px solid teal;
   margin-bottom: 1rem;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.2);
 }
 
 .hero h1 {
@@ -78,7 +81,7 @@ body {
 .tagline {
   font-size: 1.2rem;
   max-width: 700px;
-  line-height: 1.5;
+  line-height: 1.6;
   animation: fadeIn 1.5s ease-in;
 }
 
@@ -96,9 +99,14 @@ body {
   color: teal;
 }
 
-.publication-list {
-  list-style-type: disc;
-  padding-left: 1.5rem;
+.publication-list, .update-list {
+  list-style-type: none;
+  padding-left: 0;
+}
+
+.publication-list li, .update-list li {
+  padding: 0.5rem 0;
+  border-bottom: 1px solid #ddd;
 }
 
 /* Buttons */
@@ -110,11 +118,12 @@ body {
   font-weight: 500;
   border-radius: 12px;
   text-decoration: none;
-  transition: background 0.3s ease;
+  transition: background 0.3s ease, transform 0.2s ease;
 }
 
 .btn:hover {
   background: royalblue;
+  transform: scale(1.05);
 }
 
 /* Footer */
@@ -123,6 +132,7 @@ footer {
   padding: 2rem;
   background: #f1f1f1;
   margin-top: 2rem;
+  font-size: 0.9rem;
 }
 
 /* Animations */
