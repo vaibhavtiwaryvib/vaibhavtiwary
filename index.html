@@ -4,96 +4,141 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Vaibhav Tiwary — PhD Researcher</title>
-  <link rel="stylesheet" href="style.css">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=Merriweather:wght@700&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Merriweather:wght@700&family=Inter:wght@400;500&display=swap">
 </head>
-<body>
-  <!-- Navigation -->
-  <nav class="navbar">
-    <div class="nav-container">
-      <a href="#home" class="nav-logo">Vaibhav Tiwary</a>
-      <ul class="nav-links">
-        <li><a href="#home">Home</a></li>
-        <li><a href="#research">Research</a></li>
-        <li><a href="#publications">Publications</a></li>
-        <li><a href="#cv">CV</a></li>
-        <li><a href="#updates">Updates</a></li>
-        <li><a href="#contact">Contact</a></li>
+<body class="font-['Inter'] bg-white text-gray-800 scroll-smooth">
+
+  <!-- Navbar -->
+  <nav class="bg-gradient-to-r from-teal-500 to-blue-600 sticky top-0 z-50 shadow-lg">
+    <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
+      <a href="#home" class="font-['Merriweather'] text-white text-2xl font-bold">Vaibhav Tiwary</a>
+      <ul class="hidden md:flex space-x-6 text-white font-medium">
+        <li><a href="#home" class="hover:text-yellow-300 transition">Home</a></li>
+        <li><a href="#research" class="hover:text-yellow-300 transition">Research</a></li>
+        <li><a href="#publications" class="hover:text-yellow-300 transition">Publications</a></li>
+        <li><a href="#cv" class="hover:text-yellow-300 transition">CV</a></li>
+        <li><a href="#updates" class="hover:text-yellow-300 transition">Updates</a></li>
+        <li><a href="#contact" class="hover:text-yellow-300 transition">Contact</a></li>
       </ul>
     </div>
   </nav>
 
   <!-- Hero Section -->
-  <section id="home" class="hero">
-    <div class="hero-content">
-      <img src="profile.jpeg" alt="Vaibhav Tiwary" class="profile-photo">
-      <h1>Vaibhav Tiwary</h1>
-      <p class="tagline">
-        PhD researcher studying how mitochondrial signaling, pharmacological interventions, and transgenerational epigenetic inheritance shape aging in <em>Drosophila melanogaster</em>.
+  <section id="home" class="flex flex-col md:flex-row items-center justify-center md:justify-between max-w-7xl mx-auto px-6 py-20 gap-8 bg-gradient-to-r from-teal-50 to-blue-50">
+    <img src="profile.jpeg" alt="Vaibhav Tiwary" class="w-48 h-48 rounded-full shadow-xl border-4 border-teal-500 object-cover animate-fadeIn">
+    <div class="md:w-1/2 text-center md:text-left animate-fadeIn delay-200">
+      <h1 class="text-4xl md:text-5xl font-['Merriweather'] font-bold mb-4">Vaibhav Tiwary</h1>
+      <p class="text-lg md:text-xl leading-relaxed">
+        PhD researcher studying how <span class="font-semibold text-teal-600">mitochondrial signaling</span>, <span class="font-semibold text-blue-600">pharmacological interventions</span>, and <span class="font-semibold text-teal-600">transgenerational epigenetic inheritance</span> shape aging in <em>Drosophila melanogaster</em>.
       </p>
     </div>
   </section>
 
   <!-- Research Section -->
-  <section id="research" class="section">
-    <h2>Research</h2>
-    <p>
+  <section id="research" class="max-w-7xl mx-auto px-6 py-20">
+    <h2 class="text-3xl font-['Merriweather'] font-bold text-teal-600 mb-6">Research & Projects</h2>
+    <p class="mb-6">
       My research focuses on mitochondrial signaling, pharmacological interventions, and transgenerational epigenetic inheritance to understand aging in <em>Drosophila melanogaster</em>. I explore how light-activated proton pumps, drug treatments, and inherited epigenetic modifications influence lifespan, stress resilience, and behavior.
     </p>
-    <h3>Projects</h3>
-    <ul>
-      <li>Master Thesis: Role of Polycomb (PcG) and Trithorax (TrxG) proteins in transgenerational inheritance induced by heat-stress (CSIR-CCMB, 2020)</li>
-      <li>Gene expression in lifespan extension of Drosophila treated with ellagic acid (VIT, 2019)</li>
-      <li>Cytotoxic effect of bioaccessible fraction of Piper nigrum, Zingiber officinale, Phyllanthus emblica, Ocimum sanctum on MCF-7 cells (VIT, 2019)</li>
-      <li>Effect of cobalt chloride on development of ZebraFish embryos (VIT, 2018)</li>
-      <li>XRCC1 Arg399Gln polymorphism in Chronic Kidney Disease (VIT, 2017)</li>
-    </ul>
+    <div class="grid md:grid-cols-2 gap-6">
+      <div class="p-6 border rounded-lg shadow hover:shadow-lg transition">
+        <h3 class="font-semibold text-xl text-blue-600 mb-2">Master Thesis</h3>
+        <p>Role of Polycomb (PcG) and Trithorax (TrxG) proteins in transgenerational inheritance induced by heat-stress (CSIR-CCMB, 2020).</p>
+      </div>
+      <div class="p-6 border rounded-lg shadow hover:shadow-lg transition">
+        <h3 class="font-semibold text-xl text-blue-600 mb-2">Gene Expression in Drosophila</h3>
+        <p>Study of lifespan extension in Drosophila treated with ellagic acid (VIT, 2019).</p>
+      </div>
+      <div class="p-6 border rounded-lg shadow hover:shadow-lg transition">
+        <h3 class="font-semibold text-xl text-blue-600 mb-2">Cytotoxic Studies</h3>
+        <p>Effect of bioaccessible fractions of Piper nigrum, Zingiber officinale, Phyllanthus emblica, Ocimum sanctum against MCF-7 cells (VIT, 2019).</p>
+      </div>
+      <div class="p-6 border rounded-lg shadow hover:shadow-lg transition">
+        <h3 class="font-semibold text-xl text-blue-600 mb-2">Zebrafish Development</h3>
+        <p>Effect of cobalt chloride on development of Zebrafish embryos (VIT, 2018).</p>
+      </div>
+    </div>
   </section>
 
   <!-- Publications Section -->
-  <section id="publications" class="section">
-    <h2>Publications</h2>
-    <ul class="publication-list">
-      <li>Tiwary, V., Trakooljul, N., Peleg, S. (2025). Reserpine prolongs lifespan but compromises heat-stress resilience in Drosophila melanogaster. <em>bioRxiv</em> 2025.08.20.671049.</li>
-      <li>Tiwary, V., Galow, A. M., Wojtovich, A. P., Peleg, S. (2023). Using light to drive energy transduction in metazoan aging. <em>Trends in Biochemical Sciences</em>.</li>
-      <li>Kumarasamy, C., Tiwary, V., et al. (2021). Prognostic Utility of Platelet-Lymphocyte Ratio, Neutrophil-Lymphocyte Ratio and Monocyte-Lymphocyte Ratio in Head and Neck Cancers: A PRISMA Systematic Review and Meta-Analysis. <em>Cancers</em>, 13(16), 4166.</li>
-      <li>Kharat, P., Sarkar, P., Mouliganesh, S., Tiwary, V., et al. (2020). Ellagic acid prolongs the lifespan of Drosophila melanogaster. <em>GeroScience</em>, 42(1), 271–285.</li>
-      <li>Tiwary, V., Sarkar, P., & Thirumurugan, K. (2020). Naringenin and ellagic acid reduce tetrazolium salt in the absence of cells. <em>The Natural Products Journal</em>, 10.</li>
-    </ul>
+  <section id="publications" class="max-w-7xl mx-auto px-6 py-20 bg-gray-50">
+    <h2 class="text-3xl font-['Merriweather'] font-bold text-teal-600 mb-8">Publications</h2>
+    <div class="grid md:grid-cols-2 gap-6">
+      <div class="p-6 border-l-4 border-teal-500 bg-white shadow hover:shadow-lg transition">
+        <p class="font-semibold">Tiwary, V., Trakooljul, N., Peleg, S. (2025)</p>
+        <p>Reserpine prolongs lifespan but compromises heat-stress resilience in Drosophila melanogaster. <em>bioRxiv 2025.08.20.671049</em></p>
+      </div>
+      <div class="p-6 border-l-4 border-teal-500 bg-white shadow hover:shadow-lg transition">
+        <p class="font-semibold">Tiwary, V., Galow, A. M., Wojtovich, A. P., Peleg, S. (2023)</p>
+        <p>Using light to drive energy transduction in metazoan aging. <em>Trends in Biochemical Sciences</em></p>
+      </div>
+      <div class="p-6 border-l-4 border-teal-500 bg-white shadow hover:shadow-lg transition">
+        <p class="font-semibold">Kumarasamy, C., Tiwary, V., et al. (2021)</p>
+        <p>Prognostic Utility of Platelet-Lymphocyte Ratio, Neutrophil-Lymphocyte Ratio and Monocyte-Lymphocyte Ratio in Head and Neck Cancers. <em>Cancers, 13(16), 4166</em></p>
+      </div>
+      <div class="p-6 border-l-4 border-teal-500 bg-white shadow hover:shadow-lg transition">
+        <p class="font-semibold">Kharat, P., Sarkar, P., Mouliganesh, S., Tiwary, V., et al. (2020)</p>
+        <p>Ellagic acid prolongs the lifespan of Drosophila melanogaster. <em>GeroScience, 42(1), 271–285</em></p>
+      </div>
+      <div class="p-6 border-l-4 border-teal-500 bg-white shadow hover:shadow-lg transition">
+        <p class="font-semibold">Tiwary, V., Sarkar, P., & Thirumurugan, K. (2020)</p>
+        <p>Naringenin and ellagic acid reduce tetrazolium salt in the absence of cells. <em>The Natural Products Journal, 10</em></p>
+      </div>
+    </div>
   </section>
 
   <!-- CV Section -->
-  <section id="cv" class="section">
-    <h2>CV</h2>
-    <p>
-      <strong>Education Highlights:</strong><br>
-      Ph.D. in Metabolism and Aging, University of Rostock / FBN, Germany (2021–2025)<br>
-      M.Sc. Biotechnology, VIT, India (2018–2020)<br>
-      B.Sc. Biotechnology (Hons.), St. Xavier’s College, India (2015–2018)
-    </p>
-    <a href="Vaibhav_Tiwary_CV.pdf" class="btn" target="_blank">Download Full CV (PDF)</a>
+  <section id="cv" class="max-w-7xl mx-auto px-6 py-20">
+    <h2 class="text-3xl font-['Merriweather'] font-bold text-teal-600 mb-6">CV</h2>
+    <p class="mb-4"><strong>Education Highlights:</strong></p>
+    <ul class="list-disc ml-6 mb-4">
+      <li>Ph.D. in Metabolism and Aging, University of Rostock / FBN, Germany (2021–2025)</li>
+      <li>M.Sc. Biotechnology, VIT, India (2018–2020)</li>
+      <li>B.Sc. Biotechnology (Hons.), St. Xavier’s College, India (2015–2018)</li>
+    </ul>
+    <a href="Vaibhav_Tiwary_CV.pdf" class="inline-block px-6 py-3 bg-gradient-to-r from-teal-500 to-blue-600 text-white rounded-lg font-medium hover:scale-105 transition transform" target="_blank">Download Full CV (PDF)</a>
   </section>
 
   <!-- Updates Section -->
-  <section id="updates" class="section">
-    <h2>Updates</h2>
-    <ul class="update-list">
-      <li><strong>Oct 6, 2025:</strong> Added new publication on mitochondrial signaling in Drosophila.</li>
-      <li><strong>Sep 15, 2025:</strong> Completed preliminary data for transgenerational epigenetic study.</li>
-      <li><strong>Aug 30, 2025:</strong> Presented poster at Aging Research Conference 2025.</li>
-    </ul>
+  <section id="updates" class="max-w-7xl mx-auto px-6 py-20 bg-gray-50">
+    <h2 class="text-3xl font-['Merriweather'] font-bold text-teal-600 mb-6">Updates</h2>
+    <div class="space-y-4">
+      <div class="p-4 border-l-4 border-blue-600 bg-white shadow hover:shadow-lg transition">
+        <p><strong>Oct 6, 2025:</strong> Added new publication on mitochondrial signaling in Drosophila.</p>
+      </div>
+      <div class="p-4 border-l-4 border-blue-600 bg-white shadow hover:shadow-lg transition">
+        <p><strong>Sep 15, 2025:</strong> Completed preliminary data for transgenerational epigenetic study.</p>
+      </div>
+      <div class="p-4 border-l-4 border-blue-600 bg-white shadow hover:shadow-lg transition">
+        <p><strong>Aug 30, 2025:</strong> Presented poster at Aging Research Conference 2025.</p>
+      </div>
+    </div>
   </section>
 
   <!-- Contact Section -->
-  <section id="contact" class="section">
-    <h2>Contact</h2>
-    <p>Email: <a href="mailto:vaibhavtiwary1397@gmail.com">vaibhavtiwary1397@gmail.com</a></p>
-    <p>ORCID: <a href="https://orcid.org/0000-0002-5337-5565" target="_blank">0000-0002-5337-5565</a></p>
-    <p>LinkedIn: <a href="https://linkedin.com/in/vaibhavtiwary" target="_blank">linkedin.com/in/vaibhavtiwary</a></p>
+  <section id="contact" class="max-w-7xl mx-auto px-6 py-20">
+    <h2 class="text-3xl font-['Merriweather'] font-bold text-teal-600 mb-6">Contact</h2>
+    <div class="flex flex-col md:flex-row gap-6 md:gap-12">
+      <a href="mailto:vaibhavtiwary1397@gmail.com" class="px-6 py-3 bg-teal-500 text-white rounded-lg font-medium hover:bg-blue-600 transition text-center">Email</a>
+      <a href="https://orcid.org/0000-0002-5337-5565" target="_blank" class="px-6 py-3 bg-teal-500 text-white rounded-lg font-medium hover:bg-blue-600 transition text-center">ORCID</a>
+      <a href="https://linkedin.com/in/vaibhavtiwary" target="_blank" class="px-6 py-3 bg-teal-500 text-white rounded-lg font-medium hover:bg-blue-600 transition text-center">LinkedIn</a>
+    </div>
   </section>
 
-  <footer>
+  <!-- Footer -->
+  <footer class="bg-gray-100 text-center py-6 mt-12">
     <p>© 2025 Vaibhav Tiwary</p>
   </footer>
+
+  <!-- Tailwind Animation -->
+  <style>
+    .animate-fadeIn { 
+      opacity: 0; 
+      animation: fadeIn 1s forwards; 
+    }
+    .delay-200 { animation-delay: 0.2s; }
+    @keyframes fadeIn { to { opacity: 1; } }
+  </style>
 </body>
 </html>
