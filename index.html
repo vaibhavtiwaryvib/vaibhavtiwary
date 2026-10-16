@@ -242,6 +242,11 @@
     @keyframes ap { 0%, 100% { transform: scale(1); } 80% { transform: scale(.55); } 88% { transform: scale(1); } }
     .plane { offset-path: path('M30 72 Q200 -6 370 72'); offset-rotate: auto; animation: fly 6s ease-in-out infinite; }
     @keyframes fly { 0% { offset-distance: 0%; opacity: 0; } 8% { opacity: 1; } 92% { opacity: 1; } 100% { offset-distance: 100%; opacity: 0; } }
+    .say { opacity: 0; animation: say 6s infinite; }
+    .say.s2 { animation-delay: 2s; } .say.s3 { animation-delay: 4s; }
+    @keyframes say { 0% { opacity: 0; } 5%, 28% { opacity: 1; } 33%, 100% { opacity: 0; } }
+    .wobble { transform-box: fill-box; transform-origin: center bottom; animation: wobble 2s ease-in-out infinite; }
+    @keyframes wobble { 0%, 100% { transform: rotate(-3deg); } 50% { transform: rotate(3deg); } }
     @media (max-width: 760px) { .interests { grid-template-columns: 1fr; } .interests li.wide { grid-column: auto; } }
     @media (prefers-reduced-motion: reduce) { .ivz * { animation: none !important; } .plane { offset-distance: 50%; } }
 
@@ -682,8 +687,8 @@
               <svg class="ivz" viewBox="0 0 200 90" aria-hidden="true">
                 <g class="bobh"><circle cx="100" cy="52" r="7" fill="#fbbf24"/><path d="M93 49 H107" stroke="#3b82f6" stroke-width="3"/></g>
                 <path class="arm" d="M100 54 L100 30" stroke="#fbbf24" stroke-width="3.5" stroke-linecap="round"/>
-                <g class="wave"><path d="M0 60 q10 -6 20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 V90 H0Z" fill="#1d4ed8" opacity=".85"/></g>
-                <g class="wave slow"><path d="M0 68 q10 -5 20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 V90 H0Z" fill="#3fe0f5" opacity=".55"/></g>
+                <g class="wave"><path d="M-40 60 q10 -6 20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 V90 H-40Z" fill="#1d4ed8" opacity=".85"/></g>
+                <g class="wave slow"><path d="M-40 68 q10 -5 20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 V90 H-40Z" fill="#3fe0f5" opacity=".55"/></g>
               </svg>
               <h4>Swimming, learned as an adult</h4>
               <p>I only learned to swim during my PhD. It turned out to be a good lesson in being a beginner again, and now it's one of my favourite ways to switch off.</p>
@@ -712,6 +717,20 @@
               </svg>
               <h4>Photography</h4>
               <p>I enjoy capturing places and moments, especially while travelling.</p>
+            </li>
+            <li>
+              <svg class="ivz" viewBox="0 0 200 90" aria-hidden="true">
+                <g class="wobble"><rect x="18" y="14" width="78" height="34" rx="12" fill="#1f2937" stroke="#4ade80" stroke-width="1.5"/><path d="M36 48 L32 60 L48 48Z" fill="#1f2937" stroke="#4ade80" stroke-width="1.5" stroke-linejoin="round"/><path d="M36 47 H48" stroke="#1f2937" stroke-width="3"/></g>
+                <g class="wobble" style="animation-delay:1s"><rect x="104" y="34" width="78" height="34" rx="12" fill="#1f2937" stroke="#ff5fb0" stroke-width="1.5"/><path d="M164 68 L168 80 L152 68Z" fill="#1f2937" stroke="#ff5fb0" stroke-width="1.5" stroke-linejoin="round"/><path d="M152 67 H164" stroke="#1f2937" stroke-width="3"/></g>
+                <text class="say" x="57" y="36" text-anchor="middle" style="fill:#e5e7eb;font-size:13px;font-family:var(--sans)">Hallo!</text>
+                <text class="say s2" x="57" y="36" text-anchor="middle" style="fill:#e5e7eb;font-size:13px;font-family:var(--sans)">नमस्ते!</text>
+                <text class="say s3" x="57" y="36" text-anchor="middle" style="fill:#e5e7eb;font-size:13px;font-family:var(--sans)">…and then?</text>
+                <text class="say" x="143" y="56" text-anchor="middle" style="fill:#e5e7eb;font-size:13px;font-family:var(--sans)">Hola!</text>
+                <text class="say s2" x="143" y="56" text-anchor="middle" style="fill:#e5e7eb;font-size:13px;font-family:var(--sans)">Bonjour!</text>
+                <text class="say s3" x="143" y="56" text-anchor="middle" style="fill:#facc15;font-size:13px;font-family:var(--sans)">haha… wait?</text>
+              </svg>
+              <h4>People from everywhere</h4>
+              <p>I love talking to people from different cultures and backgrounds. Fair warning: my sense of humour is a bit weird.</p>
             </li>
             <li class="wide">
               <svg class="ivz" viewBox="0 0 400 90" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
