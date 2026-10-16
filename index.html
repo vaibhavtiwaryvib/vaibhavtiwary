@@ -167,6 +167,29 @@
     @keyframes travel { 0% { transform: translateX(0); opacity: 0; } 10% { opacity: 1; } 90% { opacity: 1; } 100% { transform: translateX(180px); opacity: 0; } }
     @media (prefers-reduced-motion: reduce) { .viz * { animation: none !important; } .curve { stroke-dashoffset: 0; } }
 
+    /* ---------- Big research cards ---------- */
+    .themes { grid-template-columns: 1fr !important; gap: 28px !important; margin-top: 16px; }
+    .theme { display: grid; grid-template-columns: 1fr 1fr; gap: 36px; align-items: center; padding: 32px 36px !important;
+      background: linear-gradient(135deg, #fff 55%, color-mix(in srgb, var(--c) 8%, #fff)) !important; }
+    .theme.flip .tvis { order: 2; }
+    .theme::before { top: 32px !important; bottom: 32px !important; }
+    .theme .viz { height: 230px; margin: 0; }
+    .theme h3 { font-size: 1.55rem !important; margin-bottom: 12px !important; }
+    .theme .tbody > p:not(.num) { font-size: 1.02rem !important; }
+    .theme details { margin-top: 18px; border-top: 1px solid var(--line); padding-top: 14px; }
+    .theme summary { cursor: pointer; list-style: none; font-family: var(--mono); font-size: .78rem; letter-spacing: .06em; text-transform: uppercase; color: var(--c); display: inline-flex; align-items: center; gap: 8px; }
+    .theme summary::-webkit-details-marker { display: none; }
+    .theme summary::before { content: "+"; display: inline-grid; place-items: center; width: 20px; height: 20px; border: 1px solid var(--c); border-radius: 50%; font-size: .9rem; transition: transform .25s; }
+    .theme details[open] summary::before { transform: rotate(45deg); }
+    .theme dl { margin-top: 14px; display: grid; gap: 12px; }
+    .theme dt { font-weight: 600; font-size: .88rem; color: var(--ink); }
+    .theme dd { color: var(--ink-soft); font-size: .95rem; }
+    .theme dd a { color: var(--c); text-decoration: underline; text-underline-offset: 3px; }
+    @media (max-width: 900px) {
+      .theme { grid-template-columns: 1fr; gap: 20px; padding: 24px !important; }
+      .theme.flip .tvis { order: 0; }
+      .theme .viz { height: 180px; }
+    }
     /* Publications */
     .pubs { list-style: none; }
     .pub { display: grid; grid-template-columns: 64px 1fr; gap: 20px; padding: 24px 0; border-bottom: 1px solid var(--line); }
@@ -379,12 +402,9 @@
             <p class="prose" style="margin-bottom:32px">Using <em>Drosophila</em> as a model, I combine optogenetics, pharmacology, imaging and genomics to ask how cellular energy, epigenetic state and organ function shape lifespan and stress resilience.</p>
           </div>
         </div>
-        <div class="section-head">
-          <div></div>
-          <div class="themes">
-            <article class="theme current t-mag reveal">
-              <p class="num">CH1 · POSTDOC · CURRENT</p>
-              <svg class="viz" viewBox="0 0 260 130" role="img" aria-label="Cartoon of the slit diaphragm letting small molecules through and blocking a large protein">
+        <div class="themes">
+            <article class="theme t-mag reveal">
+              <div class="tvis"><svg class="viz" viewBox="0 0 260 130" role="img" aria-label="Cartoon of the slit diaphragm letting small molecules through and blocking a large protein">
                 <defs><filter id="glowM"><feGaussianBlur stdDeviation="1.5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>
                 <!-- foot processes -->
                 <path d="M14 58 Q14 48 26 48 H116 Q123 48 123 58 V96 Q123 104 115 104 H26 Q14 104 14 94Z" fill="rgba(74,222,128,.22)" stroke="#4ade80" stroke-width="1.2"/>
@@ -406,13 +426,22 @@
                 <text x="188" y="120">foot process</text>
                 <text x="190" y="22" style="fill:#3fe0f5">small: through</text>
                 <text x="16" y="22" style="fill:#ff5fb0">big: blocked</text>
-              </svg>
-              <h3>Nephrocytes and the slit diaphragm</h3>
-              <p>Using fly nephrocytes to understand how the kidney's filtration barrier is formed and maintained, to model autoimmune podocytopathy, and to see what happens to the barrier in disease and aging.</p>
+              </svg></div>
+              <div class="tbody">
+                <p class="num">CH1 · POSTDOC · CURRENT</p>
+                <h3>Nephrocytes and the slit diaphragm</h3>
+                <p>Using fly nephrocytes to understand how the kidney's filtration barrier is formed and maintained, to model autoimmune podocytopathy, and to see what happens to the barrier in disease and aging.</p>
+                <details><summary>More about this project</summary>
+                  <dl>
+                    <dt>The question</dt><dd>How do nephrocytes form and maintain their slit diaphragm, and what happens when the immune system turns against it, as in autoimmune podocytopathy?</dd>
+                    <dt>Why the fly</dt><dd>Nephrocytes share the core slit diaphragm proteins with human podocytes, and fly genetics makes it fast to test many genes and conditions.</dd>
+                    <dt>Methods</dt><dd>Nephrocyte dissection, confocal imaging and electron microscopy sample preparation.</dd>
+                  </dl>
+                </details>
+              </div>
             </article>
-            <article class="theme t-gfp reveal">
-              <p class="num">CH2 · PHD</p>
-              <svg class="viz" viewBox="0 0 260 130" role="img" aria-label="Cartoon of light activating a proton pump in a mitochondrion to make ATP">
+            <article class="theme t-gfp flip reveal">
+              <div class="tvis"><svg class="viz" viewBox="0 0 260 130" role="img" aria-label="Cartoon of light activating a proton pump in a mitochondrion to make ATP">
                 <!-- light bolt -->
                 <polygon class="bolt" points="134,2 124,18 131,18 126,30 140,12 132,12 138,2" fill="#facc15"/>
                 <!-- outer membrane -->
@@ -431,13 +460,22 @@
                 <text x="144" y="12" style="fill:#facc15">light</text>
                 <text x="144" y="27" style="fill:#ff5fb0">proton pump</text>
                 <text x="8" y="124">mitochondrion</text>
-              </svg>
-              <h3>Optogenetic reprogramming of mitochondria</h3>
-              <p>Light-activated proton pumps that partially take over ATP production, bypassing the electron transport chain to test how mitochondrial energetics drive aging.</p>
+              </svg></div>
+              <div class="tbody">
+                <p class="num">CH2 · PHD</p>
+                <h3>Optogenetic reprogramming of mitochondria</h3>
+                <p>Light-activated proton pumps that partially take over ATP production, bypassing the electron transport chain to test how mitochondrial energetics drive aging.</p>
+                <details><summary>More about this project</summary>
+                  <dl>
+                    <dt>The question</dt><dd>Can light-driven proton pumping take over part of the mitochondria's energy production, and what does that do to aging?</dd>
+                    <dt>Approach</dt><dd>Mitochondria-targeted, light-activated proton pumps in flies, custom LED setups and ATP assays.</dd>
+                    <dt>Read more</dt><dd><a href="https://doi.org/10.1016/j.tibs.2023.09.002" target="_blank" rel="noopener">Using light to drive energy transduction in metazoan aging</a>, Trends in Biochemical Sciences (2023)</dd>
+                  </dl>
+                </details>
+              </div>
             </article>
             <article class="theme t-cy reveal">
-              <p class="num">CH3 · PHD</p>
-              <svg class="viz" viewBox="0 0 260 130" role="img" aria-label="Cartoon fruit fly next to survival curves showing longer lifespan">
+              <div class="tvis"><svg class="viz" viewBox="0 0 260 130" role="img" aria-label="Cartoon fruit fly next to survival curves showing longer lifespan">
                 <!-- fly -->
                 <g class="anim flybody">
                   <g transform="translate(14 0)">
@@ -460,13 +498,22 @@
                 <text x="222" y="124">age</text>
                 <text x="146" y="98" style="fill:#8b95a1">control</text>
                 <text x="206" y="40" style="fill:#3fe0f5">reserpine</text>
-              </svg>
-              <h3>Pharmacology of aging</h3>
-              <p>Reserpine-induced monoamine depletion extends lifespan in <em>Drosophila</em>, but at a cost to heat-stress resilience.</p>
+              </svg></div>
+              <div class="tbody">
+                <p class="num">CH3 · PHD</p>
+                <h3>Pharmacology of aging</h3>
+                <p>Reserpine-induced monoamine depletion extends lifespan in <em>Drosophila</em>, but at a cost to heat-stress resilience.</p>
+                <details><summary>More about this project</summary>
+                  <dl>
+                    <dt>The finding</dt><dd>Reserpine, which depletes monoamines, extends lifespan in flies, but the same flies cope worse with heat stress. Longer life and robustness don't always go together.</dd>
+                    <dt>Approach</dt><dd>Lifespan and heat-stress assays in <em>Drosophila</em>.</dd>
+                    <dt>Read more</dt><dd><a href="https://www.nature.com/articles/s41514-026-00329-1" target="_blank" rel="noopener">Reserpine prolongs lifespan but compromises heat-stress resilience</a>, npj Aging (2026)</dd>
+                  </dl>
+                </details>
+              </div>
             </article>
-            <article class="theme current t-violet reveal" style="background:linear-gradient(135deg,#fff 60%,#f5f3ff)">
-              <p class="num">CH4 · MASTER'S THESIS</p>
-              <svg class="viz" viewBox="0 0 260 130" role="img" aria-label="Cartoon of DNA with epigenetic marks passed from generation F0 to F1 to F2">
+            <article class="theme t-violet flip reveal">
+              <div class="tvis"><svg class="viz" viewBox="0 0 260 130" role="img" aria-label="Cartoon of DNA with epigenetic marks passed from generation F0 to F1 to F2">
                 <!-- DNA strands -->
                 <path d="M10 62 C30 32 50 32 70 62 S110 92 130 62 S170 32 190 62 S230 92 250 62" fill="none" stroke="#8b5cf6" stroke-width="2"/>
                 <path d="M10 62 C30 92 50 92 70 62 S110 32 130 62 S170 92 190 62 S230 32 250 62" fill="none" stroke="#3fe0f5" stroke-width="2" opacity=".75"/>
@@ -482,11 +529,19 @@
                 <text x="124" y="124">F1</text>
                 <text x="214" y="124">F2</text>
                 <text x="150" y="18" style="fill:#ff5fb0">heat-stress memory</text>
-              </svg>
-              <h3>Transgenerational epigenetic inheritance</h3>
-              <p>How heat-stress memory is transmitted through the male germline, with a focus on Polycomb/Trithorax group proteins.</p>
+              </svg></div>
+              <div class="tbody">
+                <p class="num">CH4 · MASTER'S THESIS</p>
+                <h3>Transgenerational epigenetic inheritance</h3>
+                <p>How heat-stress memory is transmitted through the male germline, with a focus on Polycomb/Trithorax group proteins.</p>
+                <details><summary>More about this project</summary>
+                  <dl>
+                    <dt>The question</dt><dd>Can a heat-stress experience in fathers leave a molecular memory in their offspring?</dd>
+                    <dt>Focus</dt><dd>The male germline and Polycomb/Trithorax group proteins, which help keep genes switched on or off across cell divisions.</dd>
+                  </dl>
+                </details>
+              </div>
             </article>
-          </div>
         </div>
       </div>
     </section>
