@@ -59,38 +59,26 @@
     .hero { position: relative; background: var(--scope); color: #fff; overflow: hidden; padding: 150px 0 110px; }
     .scope { position: absolute; inset: 0; z-index: 0; }
     /* CSS-drawn "nephrocytes": magenta slit-diaphragm rings, green cytoplasm, cyan nuclei */
-    .scope .cells {
-      position: absolute; inset: -10%;
-      background:
-        radial-gradient(circle at 62% 30%, rgba(63,224,245,.95) 0 9px, transparent 16px),
-        radial-gradient(circle at 62% 30%, transparent 58px, rgba(255,95,176,.85) 62px, rgba(255,95,176,.35) 66px, transparent 72px),
-        radial-gradient(circle at 62% 30%, rgba(74,222,128,.35) 0 50px, transparent 64px),
-
-        radial-gradient(circle at 80% 58%, rgba(63,224,245,.9) 0 8px, transparent 15px),
-        radial-gradient(circle at 80% 58%, transparent 70px, rgba(255,95,176,.8) 74px, rgba(255,95,176,.3) 79px, transparent 86px),
-        radial-gradient(circle at 80% 58%, rgba(74,222,128,.3) 0 62px, transparent 78px),
-
-        radial-gradient(circle at 70% 85%, rgba(63,224,245,.85) 0 7px, transparent 13px),
-        radial-gradient(circle at 70% 85%, transparent 46px, rgba(255,95,176,.75) 50px, rgba(255,95,176,.3) 54px, transparent 60px),
-        radial-gradient(circle at 70% 85%, rgba(74,222,128,.3) 0 40px, transparent 54px),
-
-        radial-gradient(circle at 92% 22%, rgba(63,224,245,.8) 0 6px, transparent 12px),
-        radial-gradient(circle at 92% 22%, transparent 40px, rgba(255,95,176,.7) 44px, transparent 52px),
-        radial-gradient(circle at 92% 22%, rgba(74,222,128,.28) 0 36px, transparent 48px),
-
-        radial-gradient(circle at 48% 72%, transparent 34px, rgba(255,95,176,.45) 37px, transparent 44px),
-        radial-gradient(circle at 48% 72%, rgba(74,222,128,.18) 0 30px, transparent 42px),
-
-        radial-gradient(ellipse at 75% 50%, rgba(34,197,94,.12), transparent 60%),
-        radial-gradient(ellipse at 90% 90%, rgba(232,54,143,.12), transparent 55%);
-      filter: blur(1.2px) saturate(1.2);
-      animation: drift 40s ease-in-out infinite alternate;
-    }
+    .scope .glow { position: absolute; inset: 0; background: radial-gradient(ellipse at 75% 45%, rgba(34,197,94,.13), transparent 60%), radial-gradient(ellipse at 90% 90%, rgba(232,54,143,.12), transparent 55%); }
+    .cell { position: absolute; width: var(--s); height: var(--s); border-radius: 50%; filter: blur(.9px) saturate(1.2);
+      background: radial-gradient(circle, rgba(63,224,245,.95) 0 9%, transparent 16%), radial-gradient(circle, rgba(74,222,128,.34) 0 60%, transparent 70%);
+      animation: var(--f) var(--d) ease-in-out infinite alternate; }
+    .cell::before { content: ""; position: absolute; inset: 0; border-radius: 50%;
+      background: radial-gradient(circle, transparent 63%, rgba(255,95,176,.9) 67%, rgba(255,95,176,.35) 71%, transparent 77%);
+      animation: breathe 4s ease-in-out infinite; animation-delay: inherit; }
+    .cell.faint { opacity: .45; }
+    @keyframes breathe { 0%, 100% { transform: scale(1); opacity: .85; } 50% { transform: scale(1.06); opacity: 1; } }
+    @keyframes f1 { 0% { transform: translate(0,0) rotate(0); } 50% { transform: translate(-40px, 30px) rotate(8deg); } 100% { transform: translate(30px, 55px) rotate(-6deg); } }
+    @keyframes f2 { 0% { transform: translate(0,0); } 50% { transform: translate(45px, -35px); } 100% { transform: translate(-25px, -60px); } }
+    @keyframes f3 { 0% { transform: translate(0,0) scale(1); } 50% { transform: translate(-55px, -20px) scale(1.05); } 100% { transform: translate(-20px, 40px) scale(.96); } }
+    @keyframes f4 { 0% { transform: translate(0,0); } 100% { transform: translate(60px, 35px); } }
+    .particle { position: absolute; width: 4px; height: 4px; border-radius: 50%; background: #3fe0f5; box-shadow: 0 0 6px #3fe0f5; opacity: 0; animation: flow var(--d) linear infinite; animation-delay: var(--delay); }
+    .particle.m { background: #ff5fb0; box-shadow: 0 0 6px #ff5fb0; }
+    @keyframes flow { 0% { transform: translate(0,0); opacity: 0; } 10% { opacity: .9; } 90% { opacity: .9; } 100% { transform: translate(-420px, 60px); opacity: 0; } }
     .scope .noise { position: absolute; inset: 0; opacity: .18; background-image: radial-gradient(rgba(255,255,255,.5) .6px, transparent .8px); background-size: 5px 5px; mix-blend-mode: overlay; }
     /* your own confocal image goes on top of the CSS cells if confocal.jpg exists */
     .scope img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
     .scope::after { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, rgba(5,7,10,.96) 0%, rgba(5,7,10,.85) 38%, rgba(5,7,10,.2) 70%, rgba(5,7,10,.1) 100%); }
-    @keyframes drift { from { transform: translate(0,0) scale(1); } to { transform: translate(-2%, 2%) scale(1.04); } }
 
     .hero .wrap { position: relative; z-index: 1; }
     .hero-inner { max-width: 600px; }
@@ -243,7 +231,7 @@
     .reveal.in { opacity: 1; transform: none; }
     @media (prefers-reduced-motion: reduce) {
       .reveal { opacity: 1; transform: none; transition: none; }
-      .scope .cells { animation: none; }
+      .cell, .cell::before, .particle { animation: none !important; } .particle { opacity: 0 !important; }
       html { scroll-behavior: auto; }
     }
 
@@ -289,7 +277,18 @@
     <!-- ================= HERO ================= -->
     <div class="hero">
       <div class="scope" aria-hidden="true">
-        <div class="cells"></div>
+        <div class="glow"></div>
+        <div class="cell" style="--s:140px; left:56%; top:12%; --f:f1; --d:22s"></div>
+        <div class="cell" style="--s:170px; left:72%; top:44%; --f:f2; --d:28s; animation-delay:-6s"></div>
+        <div class="cell" style="--s:110px; left:64%; top:72%; --f:f3; --d:20s; animation-delay:-3s"></div>
+        <div class="cell" style="--s:96px; left:88%; top:10%; --f:f4; --d:24s; animation-delay:-9s"></div>
+        <div class="cell faint" style="--s:80px; left:46%; top:58%; --f:f2; --d:30s; animation-delay:-12s"></div>
+        <div class="cell faint" style="--s:120px; left:92%; top:70%; --f:f1; --d:26s; animation-delay:-4s"></div>
+        <span class="particle" style="left:98%; top:30%; --d:14s; --delay:0s"></span>
+        <span class="particle m" style="left:100%; top:55%; --d:18s; --delay:-5s"></span>
+        <span class="particle" style="left:96%; top:80%; --d:16s; --delay:-9s"></span>
+        <span class="particle" style="left:100%; top:18%; --d:20s; --delay:-13s"></span>
+        <span class="particle m" style="left:98%; top:40%; --d:22s; --delay:-2s"></span>
         <!-- To use your own confocal image: save it as confocal.jpg next to this file. Delete this line to keep the drawn cells. -->
         <img src="confocal.jpg" alt="" onerror="this.remove()">
         <div class="noise"></div>
