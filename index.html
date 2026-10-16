@@ -145,6 +145,40 @@
     .theme.current { grid-column: span 2; background: linear-gradient(135deg, #fff 60%, #fdf2f8); }
     .t-mag { --c: var(--mag); } .t-gfp { --c: var(--gfp); } .t-cy { --c: var(--cy); } .t-violet { --c: #8b5cf6; }
 
+    /* ---------- Animated research cartoons ---------- */
+    .viz { display: block; width: 100%; height: 130px; margin: 4px 0 18px; background: var(--scope); border-radius: 8px; }
+    .viz text { font-family: var(--mono); font-size: 8px; fill: #8b95a1; letter-spacing: .04em; }
+    .viz .anim { transform-box: fill-box; transform-origin: center; }
+    /* slit diaphragm */
+    .mol { animation: pass 3.2s linear infinite; }
+    @keyframes pass { 0% { transform: translateY(0); opacity: 0; } 10% { opacity: 1; } 85% { opacity: 1; } 100% { transform: translateY(112px); opacity: 0; } }
+    .big { animation: bounce 3.2s ease-in-out infinite; }
+    @keyframes bounce { 0%, 100% { transform: translateY(0); } 45% { transform: translateY(24px); } 52% { transform: translateY(21px); } 58% { transform: translateY(24px); } }
+    .sd { animation: glow 2s ease-in-out infinite alternate; }
+    @keyframes glow { from { opacity: .6; } to { opacity: 1; } }
+    /* mitochondrion */
+    .bolt { animation: flash 2.6s infinite; }
+    @keyframes flash { 0%, 55%, 100% { opacity: .12; } 8%, 30% { opacity: 1; } }
+    .hplus { animation: pump 2.6s infinite; }
+    @keyframes pump { 0%, 15% { transform: translateY(0); opacity: 0; } 25% { opacity: 1; } 60% { transform: translateY(-36px); opacity: 1; } 75%, 100% { transform: translateY(-44px); opacity: 0; } }
+    .atp { animation: atp 2.6s infinite; }
+    @keyframes atp { 0%, 50% { opacity: 0; transform: translate(0, 0); } 65% { opacity: 1; } 100% { opacity: 0; transform: translate(16px, -8px); } }
+    /* fly */
+    .flybody { animation: bob 2.2s ease-in-out infinite; }
+    @keyframes bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-3px); } }
+    .wing { transform-box: fill-box; transform-origin: 50% 0%; animation: flap .09s ease-in-out infinite alternate; }
+    @keyframes flap { from { transform: scaleY(1); } to { transform: scaleY(.55); } }
+    .curve { stroke-dasharray: 220; stroke-dashoffset: 220; animation: draw 5s ease-out infinite; }
+    .curve.late { animation-delay: .4s; }
+    @keyframes draw { 0% { stroke-dashoffset: 220; } 55%, 90% { stroke-dashoffset: 0; opacity: 1; } 100% { stroke-dashoffset: 0; opacity: 0; } }
+    /* epigenetic memory */
+    .mark { animation: mark 3s ease-in-out infinite; }
+    .mark.d1 { animation-delay: 1s; } .mark.d2 { animation-delay: 2s; }
+    @keyframes mark { 0% { opacity: .15; transform: scale(.6); } 12%, 30% { opacity: 1; transform: scale(1.15); } 45%, 100% { opacity: .15; transform: scale(.6); } }
+    .travel { animation: travel 3s linear infinite; }
+    @keyframes travel { 0% { transform: translateX(0); opacity: 0; } 10% { opacity: 1; } 90% { opacity: 1; } 100% { transform: translateX(180px); opacity: 0; } }
+    @media (prefers-reduced-motion: reduce) { .viz * { animation: none !important; } .curve { stroke-dashoffset: 0; } }
+
     /* Publications */
     .pubs { list-style: none; }
     .pub { display: grid; grid-template-columns: 64px 1fr; gap: 20px; padding: 24px 0; border-bottom: 1px solid var(--line); }
@@ -277,7 +311,7 @@
             <a href="#publications" class="btn btn-outline">Publications</a>
           </div>
           <div class="socials">
-            <a href="mailto:vaibhavtiwary1397@gmail.com" aria-label="Email"><i class="fas fa-envelope"></i></a>
+            <a href="mailto:v.tiwary@uke.de" aria-label="Email"><i class="fas fa-envelope"></i></a>
             <a href="https://www.linkedin.com/in/vaibhavtiwary1397/" target="_blank" rel="noopener" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
             <a href="https://orcid.org/0000-0002-5337-5565" target="_blank" rel="noopener" aria-label="ORCID"><i class="fab fa-orcid"></i></a>
             <a href="https://scholar.google.co.in/citations?hl=en&user=CvgO29AAAAAJ" target="_blank" rel="noopener" aria-label="Google Scholar"><i class="fas fa-graduation-cap"></i></a>
@@ -320,21 +354,105 @@
           <div class="themes">
             <article class="theme current t-mag reveal">
               <p class="num">CH1 · POSTDOC · CURRENT</p>
+              <svg class="viz" viewBox="0 0 260 130" role="img" aria-label="Cartoon of the slit diaphragm letting small molecules through and blocking a large protein">
+                <defs><filter id="glowM"><feGaussianBlur stdDeviation="1.5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>
+                <!-- foot processes -->
+                <path d="M14 58 Q14 48 26 48 H116 Q123 48 123 58 V96 Q123 104 115 104 H26 Q14 104 14 94Z" fill="rgba(74,222,128,.22)" stroke="#4ade80" stroke-width="1.2"/>
+                <path d="M137 58 Q137 48 144 48 H234 Q246 48 246 58 V94 Q246 104 234 104 H145 Q137 104 137 96Z" fill="rgba(74,222,128,.22)" stroke="#4ade80" stroke-width="1.2"/>
+                <!-- slit diaphragm zipper -->
+                <g class="sd" filter="url(#glowM)">
+                  <path d="M123 96 H137" stroke="#ff5fb0" stroke-width="2" stroke-dasharray="2 1.5"/>
+                  <path d="M123 100 H137" stroke="#ff5fb0" stroke-width="2" stroke-dasharray="2 1.5"/>
+                  <path d="M126 96 V100 M130 96 V100 M134 96 V100" stroke="#ff5fb0" stroke-width="1"/>
+                </g>
+                <!-- small molecules pass -->
+                <circle class="anim mol" cx="130" cy="8" r="2.6" fill="#3fe0f5"/>
+                <circle class="anim mol" cx="128" cy="8" r="2.2" fill="#3fe0f5" style="animation-delay:-1.1s"/>
+                <circle class="anim mol" cx="132" cy="8" r="2.4" fill="#3fe0f5" style="animation-delay:-2.2s"/>
+                <!-- large protein bounces off -->
+                <circle class="anim big" cx="130" cy="14" r="9" fill="#e8368f" opacity=".9"/>
+                <text x="16" y="120">foot process</text>
+                <text x="104" y="120" style="fill:#ff5fb0">slit diaphragm</text>
+                <text x="188" y="120">foot process</text>
+                <text x="190" y="22" style="fill:#3fe0f5">small: through</text>
+                <text x="16" y="22" style="fill:#ff5fb0">big: blocked</text>
+              </svg>
               <h3>Nephrocytes and the slit diaphragm</h3>
               <p>Using fly nephrocytes to understand how the kidney's filtration barrier is built and maintained, and what happens to it in disease and aging.</p>
             </article>
             <article class="theme t-gfp reveal">
               <p class="num">CH2 · PHD</p>
+              <svg class="viz" viewBox="0 0 260 130" role="img" aria-label="Cartoon of light activating a proton pump in a mitochondrion to make ATP">
+                <!-- light bolt -->
+                <polygon class="bolt" points="134,2 124,18 131,18 126,30 140,12 132,12 138,2" fill="#facc15"/>
+                <!-- outer membrane -->
+                <rect x="32" y="34" width="196" height="76" rx="38" fill="rgba(74,222,128,.14)" stroke="#4ade80" stroke-width="1.5"/>
+                <!-- cristae -->
+                <path d="M50 72 q10 -26 20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0" fill="none" stroke="#22c55e" stroke-width="1.4" opacity=".8"/>
+                <path d="M50 76 q10 22 20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0" fill="none" stroke="#22c55e" stroke-width="1" opacity=".45"/>
+                <!-- proton pump in membrane -->
+                <rect x="123" y="29" width="14" height="11" rx="2" fill="#e8368f"/>
+                <!-- H+ moving out -->
+                <text class="anim hplus" x="124" y="66" style="fill:#3fe0f5;font-size:10px;font-weight:500">H⁺</text>
+                <text class="anim hplus" x="110" y="70" style="fill:#3fe0f5;font-size:9px;animation-delay:-1.3s">H⁺</text>
+                <!-- ATP produced -->
+                <text class="anim atp" x="176" y="92" style="fill:#facc15;font-size:10px;font-weight:500">ATP</text>
+                <text class="anim atp" x="70" y="96" style="fill:#facc15;font-size:9px;animation-delay:-1.3s">ATP</text>
+                <text x="144" y="12" style="fill:#facc15">light</text>
+                <text x="144" y="27" style="fill:#ff5fb0">proton pump</text>
+                <text x="8" y="124">mitochondrion</text>
+              </svg>
               <h3>Optogenetic reprogramming of mitochondria</h3>
               <p>Light-activated proton pumps that partially take over ATP production, bypassing the electron transport chain to test how mitochondrial energetics drive aging.</p>
             </article>
             <article class="theme t-cy reveal">
               <p class="num">CH3 · PHD</p>
+              <svg class="viz" viewBox="0 0 260 130" role="img" aria-label="Cartoon fruit fly next to survival curves showing longer lifespan">
+                <!-- fly -->
+                <g class="anim flybody">
+                  <g transform="translate(14 0)">
+                    <path d="M42 62 l-14 -8 M42 70 l-16 2 M42 78 l-14 10 M66 62 l14 -8 M66 70 l16 2 M66 78 l14 10" stroke="#a8a29e" stroke-width="1.2" fill="none"/>
+                    <g transform="rotate(-28 44 58)"><ellipse class="wing" cx="36" cy="80" rx="9" ry="22" fill="rgba(186,230,253,.35)" stroke="rgba(186,230,253,.8)" stroke-width=".8"/></g>
+                    <g transform="rotate(28 64 58)"><ellipse class="wing" cx="72" cy="80" rx="9" ry="22" fill="rgba(186,230,253,.35)" stroke="rgba(186,230,253,.8)" stroke-width=".8"/></g>
+                    <ellipse cx="54" cy="66" rx="12" ry="13" fill="#a16207"/>
+                    <ellipse cx="54" cy="91" rx="10" ry="15" fill="#ca8a04"/>
+                    <path d="M45 86 H63 M45 92 H63 M47 98 H61" stroke="#422006" stroke-width="2.4"/>
+                    <circle cx="54" cy="47" r="9" fill="#a16207"/>
+                    <circle cx="47" cy="45" r="5" fill="#dc2626"/>
+                    <circle cx="61" cy="45" r="5" fill="#dc2626"/>
+                  </g>
+                </g>
+                <!-- survival plot -->
+                <path d="M118 20 V108 H250" stroke="#4b525c" stroke-width="1" fill="none"/>
+                <path class="curve" d="M118 24 H150 C170 24 178 40 186 70 S196 104 204 106" stroke="#8b95a1" stroke-width="2" fill="none"/>
+                <path class="curve late" d="M118 24 H168 C192 24 202 40 212 70 S226 104 240 106" stroke="#3fe0f5" stroke-width="2" fill="none"/>
+                <text x="122" y="16">survival</text>
+                <text x="222" y="124">age</text>
+                <text x="146" y="98" style="fill:#8b95a1">control</text>
+                <text x="206" y="40" style="fill:#3fe0f5">reserpine</text>
+              </svg>
               <h3>Pharmacology of aging</h3>
               <p>Reserpine-induced monoamine depletion extends lifespan in <em>Drosophila</em>, but at a cost to heat-stress resilience.</p>
             </article>
             <article class="theme current t-violet reveal" style="background:linear-gradient(135deg,#fff 60%,#f5f3ff)">
               <p class="num">CH4 · MASTER'S THESIS</p>
+              <svg class="viz" viewBox="0 0 260 130" role="img" aria-label="Cartoon of DNA with epigenetic marks passed from generation F0 to F1 to F2">
+                <!-- DNA strands -->
+                <path d="M10 62 C30 32 50 32 70 62 S110 92 130 62 S170 32 190 62 S230 92 250 62" fill="none" stroke="#8b5cf6" stroke-width="2"/>
+                <path d="M10 62 C30 92 50 92 70 62 S110 32 130 62 S170 92 190 62 S230 32 250 62" fill="none" stroke="#3fe0f5" stroke-width="2" opacity=".75"/>
+                <path d="M26 44 V80 M42 40 V84 M98 40 V84 M114 44 V80 M146 44 V80 M162 40 V84 M218 40 V84 M234 44 V80" stroke="#4b525c" stroke-width="1.2"/>
+                <!-- epigenetic marks -->
+                <g class="anim mark"><path d="M40 40 V28" stroke="#ff5fb0" stroke-width="1.5"/><circle cx="40" cy="25" r="4.5" fill="#ff5fb0"/></g>
+                <g class="anim mark d1"><path d="M130 62 V28" stroke="#ff5fb0" stroke-width="1.5"/><circle cx="130" cy="25" r="4.5" fill="#ff5fb0"/></g>
+                <g class="anim mark d2"><path d="M220 40 V28" stroke="#ff5fb0" stroke-width="1.5"/><circle cx="220" cy="25" r="4.5" fill="#ff5fb0"/></g>
+                <!-- memory travelling down generations -->
+                <circle class="anim travel" cx="40" cy="108" r="3" fill="#ff5fb0"/>
+                <path d="M40 108 H220" stroke="#4b525c" stroke-width="1" stroke-dasharray="2 3"/>
+                <text x="34" y="124">F0</text>
+                <text x="124" y="124">F1</text>
+                <text x="214" y="124">F2</text>
+                <text x="150" y="18" style="fill:#ff5fb0">heat-stress memory</text>
+              </svg>
               <h3>Transgenerational epigenetic inheritance</h3>
               <p>How heat-stress memory is transmitted through the male germline, with a focus on Polycomb/Trithorax group proteins.</p>
             </article>
@@ -521,7 +639,7 @@
         <div>
           <h2>Let's talk science</h2>
           <p class="prose">I'm always happy to hear from colleagues interested in aging biology, mitochondrial metabolism, kidney biology or epigenetics, whether for collaborations, questions about my work, or a conversation at the next conference.</p>
-          <a href="mailto:vaibhavtiwary1397@gmail.com" class="btn btn-glow"><i class="fas fa-envelope"></i> vaibhavtiwary1397@gmail.com</a>
+          <a href="mailto:v.tiwary@uke.de" class="btn btn-glow"><i class="fas fa-envelope"></i> v.tiwary@uke.de</a>
           <div class="socials">
             <a href="https://www.linkedin.com/in/vaibhavtiwary1397/" target="_blank" rel="noopener" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
             <a href="https://orcid.org/0000-0002-5337-5565" target="_blank" rel="noopener" aria-label="ORCID"><i class="fab fa-orcid"></i></a>
