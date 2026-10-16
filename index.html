@@ -209,11 +209,41 @@
     .signature span:nth-child(5) { color: #f59e0b; }
     .signature span { font-weight: 500; }
     .offclock { font-family: var(--mono); font-size: .75rem; font-weight: 500; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); margin: 40px 0 16px; }
-    .interests { list-style: none; display: grid; gap: 20px; max-width: 40em; }
-    .interests li { display: grid; grid-template-columns: 36px 1fr; gap: 12px; align-items: start; }
-    .interests i { width: 36px; height: 36px; display: grid; place-items: center; border-radius: 50%; font-size: .9rem; color: #fff; }
-    .interests h4 { font-family: var(--serif); font-size: 1.05rem; font-weight: 600; margin-bottom: 2px; }
-    .interests p { color: var(--ink-soft); font-size: .95rem; }
+    .interests { list-style: none; display: grid; grid-template-columns: repeat(2, 1fr); gap: 18px; }
+    .interests li { background: #fff; border: 1px solid var(--line); border-radius: 10px; padding: 12px 12px 18px; transition: transform .25s, box-shadow .25s; }
+    .interests li:hover { transform: translateY(-3px); box-shadow: 0 12px 28px -14px rgba(17,20,24,.35); }
+    .interests li.wide { grid-column: span 2; }
+    .interests h4 { font-family: var(--serif); font-size: 1.05rem; font-weight: 600; margin: 0 6px 4px; }
+    .interests p { color: var(--ink-soft); font-size: .93rem; margin: 0 6px; }
+    /* hobby cartoons */
+    .ivz { display: block; width: 100%; height: 112px; background: var(--scope); border-radius: 7px; margin-bottom: 14px; }
+    .ivz .a { transform-box: fill-box; transform-origin: center; }
+    .spin { animation: spin 4s linear infinite; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .flick { animation: flick 2.2s ease-in-out infinite; }
+    @keyframes flick { 0%, 100% { opacity: .25; } 40% { opacity: .55; } 50% { opacity: .35; } 60% { opacity: .6; } }
+    .blink { animation: blinkb 1.6s infinite; }
+    @keyframes blinkb { 0%, 100% { opacity: .35; } 20% { opacity: 1; } 40% { opacity: .35; } }
+    .steam { animation: steam 2.4s ease-in infinite; }
+    @keyframes steam { 0% { transform: translateY(0); opacity: 0; } 30% { opacity: .8; } 100% { transform: translateY(-26px); opacity: 0; } }
+    .hop { animation: hop 1.2s ease-in-out infinite; }
+    @keyframes hop { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-9px) rotate(20deg); } }
+    .wave { animation: wave 3s linear infinite; }
+    .wave.slow { animation-duration: 5s; }
+    @keyframes wave { to { transform: translateX(-40px); } }
+    .bobh { animation: bobh 1.6s ease-in-out infinite; }
+    @keyframes bobh { 50% { transform: translateY(3px); } }
+    .arm { transform-box: view-box; transform-origin: 100px 54px; animation: spin 1.6s linear infinite; }
+    .note { animation: note 3s ease-out infinite; }
+    @keyframes note { 0% { transform: translate(0,0); opacity: 0; } 20% { opacity: 1; } 100% { transform: translate(16px,-42px); opacity: 0; } }
+    .flash { animation: flash2 3.2s infinite; }
+    @keyframes flash2 { 0%, 86%, 100% { opacity: 0; } 89% { opacity: .9; } }
+    .ap { animation: ap 3.2s ease-in-out infinite; }
+    @keyframes ap { 0%, 100% { transform: scale(1); } 80% { transform: scale(.55); } 88% { transform: scale(1); } }
+    .plane { offset-path: path('M30 72 Q200 -6 370 72'); offset-rotate: auto; animation: fly 6s ease-in-out infinite; }
+    @keyframes fly { 0% { offset-distance: 0%; opacity: 0; } 8% { opacity: 1; } 92% { opacity: 1; } 100% { offset-distance: 100%; opacity: 0; } }
+    @media (max-width: 760px) { .interests { grid-template-columns: 1fr; } .interests li.wide { grid-column: auto; } }
+    @media (prefers-reduced-motion: reduce) { .ivz * { animation: none !important; } .plane { offset-distance: 50%; } }
 
     /* Contact */
     .contact { background: var(--scope); color: #e8ece9; border-top: 0; position: relative; overflow: hidden; }
@@ -610,39 +640,87 @@
           <h3 class="offclock">Off the clock</h3>
           <ul class="interests">
             <li>
-              <i class="fas fa-film" style="background:var(--mag)"></i>
-              <div>
-                <h4>Stories that mess with your head</h4>
-                <p>Dark, psychological and slightly unsettling: <em>Severance</em>, <em>Silo</em>, <em>Mindhunter</em>, <em>Shutter Island</em>, <em>Interstellar</em>. Complexity is welcome as long as it means something. And a huge fan of the <em>Dune</em> films.</p>
-              </div>
+              <svg class="ivz" viewBox="0 0 200 90" aria-hidden="true">
+                <path class="flick" d="M150 30 L200 10 L200 80 L150 60Z" fill="#facc15"/>
+                <path d="M60 67 H140" stroke="#4b525c" stroke-width="5"/>
+                <path d="M60 67 H140" stroke="#05070a" stroke-width="2" stroke-dasharray="3 3"/>
+                <g class="a spin"><circle cx="60" cy="42" r="22" fill="none" stroke="#ff5fb0" stroke-width="2.5"/><circle cx="60" cy="42" r="4" fill="#ff5fb0"/><circle cx="60" cy="29" r="5" fill="#ff5fb0" opacity=".5"/><circle cx="71" cy="49" r="5" fill="#ff5fb0" opacity=".5"/><circle cx="49" cy="49" r="5" fill="#ff5fb0" opacity=".5"/></g>
+                <g class="a spin" style="animation-duration:3s"><circle cx="140" cy="45" r="17" fill="none" stroke="#ff5fb0" stroke-width="2.5"/><circle cx="140" cy="45" r="3.5" fill="#ff5fb0"/><circle cx="140" cy="35" r="4" fill="#ff5fb0" opacity=".5"/><circle cx="148" cy="50" r="4" fill="#ff5fb0" opacity=".5"/><circle cx="132" cy="50" r="4" fill="#ff5fb0" opacity=".5"/></g>
+              </svg>
+              <h4>Dystopias and stories that mess with your head</h4>
+              <p>Sci-fi dystopias and dark, psychological stories: <em>Blade Runner 2049</em>, <em>Severance</em>, <em>Silo</em>, <em>Interstellar</em>, <em>Mindhunter</em>, <em>Shutter Island</em>. Complexity is welcome as long as it means something. And a huge fan of the <em>Dune</em> films.</p>
             </li>
             <li>
-              <i class="fas fa-gamepad" style="background:var(--cy)"></i>
-              <div>
-                <h4>Games that play like films</h4>
-                <p>A newer hobby. I like story-driven worlds like <em>Red Dead Redemption 2</em>, <em>The Last of Us</em>, <em>Ghost of Tsushima</em> and <em>Alan Wake</em>, and I don't like games that need a manual for their controls.</p>
-              </div>
+              <svg class="ivz" viewBox="0 0 200 90" aria-hidden="true">
+                <path d="M62 30 H138 C160 30 168 50 166 64 C164 76 150 78 142 68 L132 58 H68 L58 68 C50 78 36 76 34 64 C32 50 40 30 62 30Z" fill="#1f2937" stroke="#3fe0f5" stroke-width="1.5"/>
+                <path d="M66 38 V54 M58 46 H74" stroke="#3fe0f5" stroke-width="5" stroke-linecap="round"/>
+                <circle class="blink" cx="134" cy="40" r="4.5" fill="#4ade80"/>
+                <circle class="blink" cx="144" cy="48" r="4.5" fill="#ff5fb0" style="animation-delay:.4s"/>
+                <circle class="blink" cx="124" cy="48" r="4.5" fill="#3fe0f5" style="animation-delay:.8s"/>
+                <circle class="blink" cx="134" cy="56" r="4.5" fill="#facc15" style="animation-delay:1.2s"/>
+                <circle cx="88" cy="56" r="5" fill="#374151"/><circle cx="112" cy="56" r="5" fill="#374151"/>
+              </svg>
+              <h4>Games that play like films</h4>
+              <p>A newer hobby. I like story-driven worlds like <em>Red Dead Redemption 2</em>, <em>The Last of Us</em> and <em>Ghost of Tsushima</em>, and I don't like games that need a manual for their controls.</p>
             </li>
             <li>
-              <i class="fas fa-pepper-hot" style="background:var(--gfp)"></i>
-              <div>
-                <h4>Vegetarian cooking</h4>
-                <p>Mostly Indian-style, with paneer, tofu, vegetables and atta, made in a pan or air fryer. Good food shouldn't need an elaborate protocol.</p>
-              </div>
+              <svg class="ivz" viewBox="0 0 200 90" aria-hidden="true">
+                <path class="a steam" d="M84 40 q-6 -8 0 -16 t0 -16" fill="none" stroke="#e5e7eb" stroke-width="2" stroke-linecap="round"/>
+                <path class="a steam" d="M100 40 q-6 -8 0 -16 t0 -16" fill="none" stroke="#e5e7eb" stroke-width="2" stroke-linecap="round" style="animation-delay:.8s"/>
+                <path class="a steam" d="M116 40 q-6 -8 0 -16 t0 -16" fill="none" stroke="#e5e7eb" stroke-width="2" stroke-linecap="round" style="animation-delay:1.6s"/>
+                <rect class="a hop" x="86" y="52" width="9" height="9" rx="1.5" fill="#fef3c7"/>
+                <rect class="a hop" x="104" y="54" width="9" height="9" rx="1.5" fill="#fef3c7" style="animation-delay:.4s"/>
+                <circle class="a hop" cx="122" cy="58" r="4" fill="#4ade80" style="animation-delay:.8s"/>
+                <circle class="a hop" cx="78" cy="59" r="3.5" fill="#ef4444" style="animation-delay:.2s"/>
+                <path d="M62 62 H138 Q136 78 120 78 H80 Q64 78 62 62Z" fill="#4b525c"/>
+                <path d="M138 66 H178" stroke="#78716c" stroke-width="5" stroke-linecap="round"/>
+              </svg>
+              <h4>Vegetarian cooking</h4>
+              <p>Mostly Indian-style, with paneer, tofu, vegetables and atta, made in a pan or air fryer. Good food shouldn't need an elaborate protocol.</p>
             </li>
             <li>
-              <i class="fas fa-person-swimming" style="background:#3b82f6"></i>
-              <div>
-                <h4>Swimming, learned as an adult</h4>
-                <p>I only learned to swim during my PhD. It turned out to be a good lesson in being a beginner again, and now it's one of my favourite ways to switch off.</p>
-              </div>
+              <svg class="ivz" viewBox="0 0 200 90" aria-hidden="true">
+                <g class="bobh"><circle cx="100" cy="52" r="7" fill="#fbbf24"/><path d="M93 49 H107" stroke="#3b82f6" stroke-width="3"/></g>
+                <path class="arm" d="M100 54 L100 30" stroke="#fbbf24" stroke-width="3.5" stroke-linecap="round"/>
+                <g class="wave"><path d="M0 60 q10 -6 20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 V90 H0Z" fill="#1d4ed8" opacity=".85"/></g>
+                <g class="wave slow"><path d="M0 68 q10 -5 20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 V90 H0Z" fill="#3fe0f5" opacity=".55"/></g>
+              </svg>
+              <h4>Swimming, learned as an adult</h4>
+              <p>I only learned to swim during my PhD. It turned out to be a good lesson in being a beginner again, and now it's one of my favourite ways to switch off.</p>
             </li>
             <li>
-              <i class="fas fa-microphone" style="background:#8b5cf6"></i>
-              <div>
-                <h4>Karaoke</h4>
-                <p>Always up for a karaoke night. Enthusiasm counts more than pitch.</p>
-              </div>
+              <svg class="ivz" viewBox="0 0 200 90" aria-hidden="true">
+                <rect x="88" y="16" width="24" height="30" rx="12" fill="#9ca3af"/>
+                <path d="M88 30 H112 M88 24 H112 M88 36 H112" stroke="#6b7280" stroke-width="1"/>
+                <path d="M100 46 V80 M90 80 H110" stroke="#d1d5db" stroke-width="3" stroke-linecap="round"/>
+                <text class="a note" x="120" y="44" style="fill:#c084fc;font-size:16px">♪</text>
+                <text class="a note" x="70" y="50" style="fill:#ff5fb0;font-size:14px;animation-delay:1s">♫</text>
+                <text class="a note" x="128" y="58" style="fill:#3fe0f5;font-size:13px;animation-delay:2s">♪</text>
+              </svg>
+              <h4>Karaoke</h4>
+              <p>Always up for a karaoke night. Enthusiasm counts more than pitch.</p>
+            </li>
+            <li>
+              <svg class="ivz" viewBox="0 0 200 90" aria-hidden="true">
+                <rect x="58" y="28" width="84" height="50" rx="7" fill="#374151"/>
+                <rect x="70" y="20" width="24" height="10" rx="3" fill="#374151"/>
+                <rect x="124" y="34" width="10" height="6" rx="1.5" fill="#facc15"/>
+                <circle cx="100" cy="53" r="19" fill="#111827" stroke="#9ca3af" stroke-width="3"/>
+                <circle class="a ap" cx="100" cy="53" r="11" fill="#1e3a8a"/>
+                <circle cx="95" cy="48" r="3" fill="#bfdbfe" opacity=".8"/>
+                <rect class="flash" x="0" y="0" width="200" height="90" fill="#fff"/>
+              </svg>
+              <h4>Photography</h4>
+              <p>I enjoy capturing places and moments, especially while travelling.</p>
+            </li>
+            <li class="wide">
+              <svg class="ivz" viewBox="0 0 400 90" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
+                <path d="M30 72 Q200 -6 370 72" fill="none" stroke="#4b525c" stroke-width="1.5" stroke-dasharray="3 5"/>
+                <circle cx="30" cy="72" r="5" fill="#4ade80"/><circle cx="370" cy="72" r="5" fill="#ff5fb0"/>
+                <path class="plane" d="M10 0 L-6 -7 L-3 0 L-6 7Z M-1 -1 L-4 -12 L0 -12 L5 -1Z M-1 1 L-4 12 L0 12 L5 1Z" fill="#e5e7eb"/>
+              </svg>
+              <h4>Travelling</h4>
+              <p>New places, new food and, of course, new photos.</p>
             </li>
           </ul>
         </div>
