@@ -321,6 +321,18 @@
     @keyframes say { 0% { opacity: 0; } 5%, 28% { opacity: 1; } 33%, 100% { opacity: 0; } }
     .wobble { transform-box: fill-box; transform-origin: center bottom; animation: wobble 2s ease-in-out infinite; }
     @keyframes wobble { 0%, 100% { transform: rotate(-3deg); } 50% { transform: rotate(3deg); } }
+    .sunpulse { animation: sunpulse 5s ease-in-out infinite; }
+    @keyframes sunpulse { 50% { transform: scale(1.12); opacity: .8; } }
+    .traveller { animation: trudge .9s ease-in-out infinite; }
+    @keyframes trudge { 0%, 100% { transform: translate(70px, 0); } 50% { transform: translate(70px, -.8px); } }
+    .leg { transform-box: view-box; transform-origin: 0 64px; }
+    .leg.l1 { animation: legA .9s ease-in-out infinite; }
+    .leg.l2 { animation: legA .9s ease-in-out infinite reverse; }
+    @keyframes legA { 0%, 100% { transform: rotate(22deg); } 50% { transform: rotate(-22deg); } }
+    .lantern { transform-box: view-box; transform-origin: 1px 58px; animation: swing .9s ease-in-out infinite; }
+    @keyframes swing { 0%, 100% { transform: rotate(-8deg); } 50% { transform: rotate(8deg); } }
+    .bird { animation: bird 12s linear infinite; }
+    @keyframes bird { from { transform: translate(330px, var(--y)); } to { transform: translate(-140px, calc(var(--y) - 10px)); } }
     @media (max-width: 760px) { .interests { grid-template-columns: 1fr; } .interests li.wide { grid-column: auto; } }
     @media (prefers-reduced-motion: reduce) { .ivz * { animation: none !important; } .plane { offset-distance: 50%; } }
 
@@ -759,13 +771,48 @@
             </li>
             <li>
               <svg class="ivz" viewBox="0 0 200 90" aria-hidden="true">
-                <path d="M62 30 H138 C160 30 168 50 166 64 C164 76 150 78 142 68 L132 58 H68 L58 68 C50 78 36 76 34 64 C32 50 40 30 62 30Z" fill="#1f2937" stroke="#3fe0f5" stroke-width="1.5"/>
-                <path d="M66 38 V54 M58 46 H74" stroke="#3fe0f5" stroke-width="5" stroke-linecap="round"/>
-                <circle class="blink" cx="134" cy="40" r="4.5" fill="#4ade80"/>
-                <circle class="blink" cx="144" cy="48" r="4.5" fill="#ff5fb0" style="animation-delay:.4s"/>
-                <circle class="blink" cx="124" cy="48" r="4.5" fill="#3fe0f5" style="animation-delay:.8s"/>
-                <circle class="blink" cx="134" cy="56" r="4.5" fill="#facc15" style="animation-delay:1.2s"/>
-                <circle cx="88" cy="56" r="5" fill="#374151"/><circle cx="112" cy="56" r="5" fill="#374151"/>
+                <defs>
+                  <linearGradient id="dusk" gradientUnits="userSpaceOnUse" x1="0" y1="12" x2="0" y2="78"><stop offset="0" stop-color="#1b1033"/><stop offset=".55" stop-color="#7a2e5c"/><stop offset=".85" stop-color="#f08a4b"/></linearGradient>
+                  <radialGradient id="sunGlow"><stop offset="0" stop-color="#ffd27a" stop-opacity=".9"/><stop offset="1" stop-color="#ff8a4b" stop-opacity="0"/></radialGradient>
+                  <clipPath id="scene"><rect x="-200" y="12" width="600" height="66"/></clipPath>
+                </defs>
+                <g clip-path="url(#scene)">
+                  <rect x="-200" y="12" width="600" height="66" fill="url(#dusk)"/>
+                  <circle class="a sunpulse" cx="138" cy="56" r="20" fill="url(#sunGlow)"/>
+                  <circle cx="138" cy="56" r="8" fill="#ffd27a"/>
+                  <g class="wave slow" style="animation-duration:14s"><path d="M-200 90 L-200 62 L-180.0 50 L-160 62 L-140.0 50 L-120 62 L-100.0 50 L-80 62 L-60.0 50 L-40 62 L-20.0 50 L0 62 L20.0 50 L40 62 L60.0 50 L80 62 L100.0 50 L120 62 L140.0 50 L160 62 L180.0 50 L200 62 L220.0 50 L240 62 L260.0 50 L280 62 L300.0 50 L320 62 L340.0 50 L360 62 L380.0 50 L400 62 L420.0 50 L440 62 L460 90Z" fill="#3a1d45"/></g>
+                  <g class="wave" style="animation-duration:7s"><path d="M-200 90 L-200 70 L-190.0 64 L-180 70 L-170.0 64 L-160 70 L-150.0 64 L-140 70 L-130.0 64 L-120 70 L-110.0 64 L-100 70 L-90.0 64 L-80 70 L-70.0 64 L-60 70 L-50.0 64 L-40 70 L-30.0 64 L-20 70 L-10.0 64 L0 70 L10.0 64 L20 70 L30.0 64 L40 70 L50.0 64 L60 70 L70.0 64 L80 70 L90.0 64 L100 70 L110.0 64 L120 70 L130.0 64 L140 70 L150.0 64 L160 70 L170.0 64 L180 70 L190.0 64 L200 70 L210.0 64 L220 70 L230.0 64 L240 70 L250.0 64 L260 70 L270.0 64 L280 70 L290.0 64 L300 70 L310.0 64 L320 70 L330.0 64 L340 70 L350.0 64 L360 70 L370.0 64 L380 70 L390.0 64 L400 70 L410.0 64 L420 70 L440 90Z" fill="#1a0f22"/></g>
+                  <rect x="-200" y="72" width="600" height="6" fill="#120a18"/>
+                  <!-- birds -->
+                  <path class="bird" d="M0 0 q3 -3 6 0 q3 -3 6 0" fill="none" stroke="#1a0f22" stroke-width="1.2" style="--y:28px"/>
+                  <path class="bird" d="M0 0 q2.5 -2.5 5 0 q2.5 -2.5 5 0" fill="none" stroke="#1a0f22" stroke-width="1" style="--y:34px;animation-delay:-4s"/>
+                  <!-- lone traveller -->
+                  <g class="traveller" transform="translate(70 0)">
+                    <circle cx="0" cy="53" r="3" fill="#0b0610"/>
+                    <path d="M-3.4 51.5 H3.4 L2 49.5 H-2Z" fill="#0b0610"/>
+                    <path d="M0 56 L0 65" stroke="#0b0610" stroke-width="3" stroke-linecap="round"/>
+                    <path d="M-1 58 L-4 63" stroke="#0b0610" stroke-width="1.6" stroke-linecap="round"/>
+                    <g class="lantern"><path d="M1 58 L4 62" stroke="#0b0610" stroke-width="1.6" stroke-linecap="round"/><circle cx="4.5" cy="63.5" r="1.8" fill="#ffd27a"/><circle cx="4.5" cy="63.5" r="4" fill="#ffd27a" opacity=".25"/></g>
+                    <path class="leg l1" d="M0 64 L0 72" stroke="#0b0610" stroke-width="2" stroke-linecap="round"/>
+                    <path class="leg l2" d="M0 64 L0 72" stroke="#0b0610" stroke-width="2" stroke-linecap="round"/>
+                  </g>
+                </g>
+                <!-- letterbox bars + subtitles -->
+                <rect x="-200" y="0" width="600" height="12" fill="#05070a"/>
+                <rect x="-200" y="78" width="600" height="12" fill="#05070a"/>
+                <text class="say" x="108" y="86.5" text-anchor="middle" style="fill:#e5e7eb;font-size:6.5px;font-family:var(--serif);font-style:italic">“The road ahead is long…”</text>
+                <text class="say s2" x="108" y="86.5" text-anchor="middle" style="fill:#e5e7eb;font-size:6.5px;font-family:var(--serif);font-style:italic">“…but every story is worth the walk.”</text>
+                <text class="say s3" x="108" y="86.5" text-anchor="middle" style="fill:#9ca3af;font-size:6px;font-family:var(--mono);letter-spacing:.06em">CHAPTER II</text>
+                <!-- the original controller, small, in the corner -->
+                <text x="34" y="7.6" style="fill:#9ca3af;font-size:4.6px;font-family:var(--mono);letter-spacing:.12em">NOW PLAYING</text>
+                <g transform="translate(12 1.6) scale(.11)" opacity=".9">
+                  <path d="M62 30 H138 C160 30 168 50 166 64 C164 76 150 78 142 68 L132 58 H68 L58 68 C50 78 36 76 34 64 C32 50 40 30 62 30Z" fill="#1f2937" stroke="#3fe0f5" stroke-width="4"/>
+                  <path d="M66 38 V54 M58 46 H74" stroke="#3fe0f5" stroke-width="7" stroke-linecap="round"/>
+                  <circle class="blink" cx="134" cy="40" r="6" fill="#4ade80"/>
+                  <circle class="blink" cx="144" cy="48" r="6" fill="#ff5fb0" style="animation-delay:.4s"/>
+                  <circle class="blink" cx="124" cy="48" r="6" fill="#3fe0f5" style="animation-delay:.8s"/>
+                  <circle class="blink" cx="134" cy="56" r="6" fill="#facc15" style="animation-delay:1.2s"/>
+                </g>
               </svg>
               <h4>Games that play like films</h4>
               <p>A newer hobby. I like story-driven worlds like <em>Red Dead Redemption 2</em>, <em>The Last of Us</em> and <em>Ghost of Tsushima</em>, and I don't like games that need a manual for their controls.</p>
