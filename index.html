@@ -312,6 +312,24 @@
     .tags { display: flex; flex-wrap: wrap; gap: 8px; }
     .tags span { font-size: .85rem; padding: 5px 12px; background: var(--wash); border: 1px solid var(--line); border-radius: 999px; color: var(--ink-soft); }
 
+    /* Software */
+    .soft { display: grid; grid-template-columns: 1fr 1.15fr; gap: 0; background: #fff; border: 1px solid var(--line); border-radius: 12px; overflow: hidden; }
+    .soft-body { padding: 28px 30px; }
+    .soft-top { display: flex; align-items: center; gap: 14px; margin-bottom: 12px; }
+    .soft-top img { width: 52px; height: 52px; }
+    .soft-top h3 { font-family: var(--serif); font-size: 1.5rem; line-height: 1.1; }
+    .soft-top small { font-family: var(--mono); font-size: .72rem; letter-spacing: .06em; color: var(--muted); text-transform: uppercase; }
+    .soft-body p { color: var(--ink-soft); font-size: .98rem; }
+    .soft-tags { display: flex; flex-wrap: wrap; gap: 6px; margin: 14px 0 20px; }
+    .soft-tags span { font-size: .8rem; padding: 4px 10px; background: var(--wash); border: 1px solid var(--line); border-radius: 999px; color: var(--ink-soft); }
+    .soft-actions { display: flex; flex-wrap: wrap; gap: 10px; }
+    .soft-actions a { display: inline-flex; align-items: center; gap: 8px; padding: 9px 15px; border-radius: 7px; font-size: .9rem; font-weight: 500; border: 1px solid var(--line); transition: all .2s; }
+    .soft-actions a.main { background: var(--ink); color: #fff; border-color: var(--ink); }
+    .soft-actions a.main:hover { background: var(--mag); border-color: var(--mag); }
+    .soft-actions a:not(.main):hover { border-color: var(--mag); color: var(--mag); }
+    .soft-shot { background: var(--scope); display: flex; align-items: center; padding: 18px; }
+    .soft-shot img { border-radius: 8px; box-shadow: 0 0 40px rgba(63,224,245,.18); }
+    @media (max-width: 900px) { .soft { grid-template-columns: 1fr; } }
     /* Beyond the lab */
     #beyond { background: var(--wash); }
     .quirks { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; margin: 28px 0; }
@@ -429,6 +447,7 @@
         <a href="#research">Research</a>
         <a href="#publications">Publications</a>
         <a href="#experience">Experience</a>
+        <a href="#software">Software</a>
         <a href="#beyond">Beyond the lab</a>
         <a href="#contact">Contact</a>
       </nav>
@@ -781,6 +800,29 @@
               <h3><i class="fas fa-code" style="color:#8b5cf6"></i> Bioinformatics</h3>
               <div class="tags"><span>RNA-seq analysis</span><span>GO / KEGG enrichment</span><span>R</span><span>GraphPad Prism</span></div>
             </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= SOFTWARE ================= -->
+    <section id="software">
+      <div class="wrap section-head reveal">
+        <p class="label"><i class="c-cy"></i>Software</p>
+        <div>
+          <h2>Pipette: free statistics &amp; graphs for lab data</h2>
+          <div class="soft">
+            <div class="soft-body">
+              <div class="soft-top"><img src="pipette/img/icon.png" alt="Pipette icon"><div><h3>Pipette</h3><small>v1.1 · Published by VITIRAN</small></div></div>
+              <p>A lightweight app I built for everyday analysis of fly-lab data: paste numbers from Excel, run the right test, and export a publication-ready graph. Runs offline on Mac, Windows or in the browser.</p>
+              <div class="soft-tags"><span>t tests</span><span>ANOVA + Tukey / Dunnett</span><span>Non-parametric</span><span>Two-way ANOVA</span><span>Kaplan–Meier &amp; log-rank</span><span>PDF / TIFF export</span></div>
+              <div class="soft-actions">
+                <a class="main" href="pipette/"><i class="fas fa-arrow-right"></i> Learn more &amp; download</a>
+                <a href="pipette/Pipette.dmg" download><i class="fab fa-apple"></i> Mac</a>
+                <a href="pipette/Pipette.exe" download><i class="fab fa-windows"></i> Windows</a>
+              </div>
+            </div>
+            <a class="soft-shot" href="pipette/"><img src="pipette/img/ui-survival.jpg" alt="Pipette showing Kaplan–Meier survival curves" loading="lazy"></a>
           </div>
         </div>
       </div>
