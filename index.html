@@ -214,7 +214,7 @@
     @keyframes mark { 0% { opacity: .15; transform: scale(.6); } 12%, 30% { opacity: 1; transform: scale(1.15); } 45%, 100% { opacity: .15; transform: scale(.6); } }
     .travel { animation: travel 3s linear infinite; }
     @keyframes travel { 0% { transform: translateX(0); opacity: 0; } 10% { opacity: 1; } 90% { opacity: 1; } 100% { transform: translateX(180px); opacity: 0; } }
-    @media (prefers-reduced-motion: reduce) { .viz * { animation: none !important; } .hcycle, .atp2 { opacity: 1; } .st-bad, .sdfrag rect { opacity: 0 !important; } .curve { stroke-dashoffset: 0; } }
+    @media (prefers-reduced-motion: reduce) { .viz * { animation: none !important; } .hcycle, .atp2 { opacity: 1; } .st-bad, .sdfrag rect, .bigp2, .molx { opacity: 0 !important; } .curve { stroke-dashoffset: 0; } }
 
     /* ---------- Big research cards ---------- */
     .themes { grid-template-columns: 1fr !important; gap: 28px !important; margin-top: 16px; }
@@ -258,23 +258,27 @@
     /* slit diaphragm: healthy -> injury cycle (8s) */
     .fpL, .fpR { transform-box: view-box; animation: efface 8s ease-in-out infinite; }
     .fpL { transform-origin: 14px 104px; } .fpR { transform-origin: 246px 104px; }
-    @keyframes efface { 0%, 46% { transform: scale(1, 1); } 60%, 88% { transform: scale(1.05, .55); } 98%, 100% { transform: scale(1, 1); } }
+    @keyframes efface { 0%, 46% { transform: scale(1, 1); } 58%, 88% { transform: scale(.84, .6); } 98%, 100% { transform: scale(1, 1); } }
     .sdz { animation: sdz 8s ease-in-out infinite; }
     @keyframes sdz { 0%, 44% { opacity: 1; } 47% { opacity: .2; } 49% { opacity: .9; } 54%, 92% { opacity: 0; } 100% { opacity: 1; } }
     .sdfrag rect { opacity: 0; animation: frag 8s ease-out infinite; }
     .sdfrag rect:nth-child(1) { --dx: -10px; --dy: 8px; } .sdfrag rect:nth-child(2) { --dx: 0px; --dy: 12px; } .sdfrag rect:nth-child(3) { --dx: 10px; --dy: 8px; }
     @keyframes frag { 0%, 47% { opacity: 0; transform: translate(0, 0); } 50% { opacity: 1; } 62%, 100% { opacity: 0; transform: translate(var(--dx), var(--dy)); } }
-    .bigp { transform-box: fill-box; transform-origin: center; animation: bigp 8s ease-in-out infinite; }
+    .bigp, .bigp2 { transform-box: fill-box; transform-origin: center; }
+    .bigp { animation: bigp 8s ease-in-out infinite; }
     @keyframes bigp {
       0%, 4% { transform: translateY(0); opacity: .9; } 11% { transform: translateY(24px); } 14% { transform: translateY(21px); } 17% { transform: translateY(24px); } 26% { transform: translateY(0); }
       32% { transform: translateY(24px); } 35% { transform: translateY(21px); } 38% { transform: translateY(24px); } 46% { transform: translateY(0); }
-      58% { transform: translateY(0) scale(1, 1); opacity: .9; }
-      66% { transform: translateY(30px) scale(1, 1); opacity: .9; }
-      70% { transform: translateY(42px) scale(.35, 1.4); opacity: .9; }
-      78% { transform: translateY(76px) scale(.35, 1.4); opacity: .9; }
-      82% { transform: translateY(90px) scale(1, 1); opacity: .9; }
-      87% { transform: translateY(96px) scale(1, 1); opacity: 0; }
+      58% { transform: translateY(0); opacity: .9; }
+      80% { transform: translateY(90px); opacity: .9; }
+      86% { transform: translateY(98px); opacity: 0; }
       92% { transform: translateY(0); opacity: 0; } 100% { transform: translateY(0); opacity: .9; } }
+    .bigp2 { opacity: 0; animation: bigp2 8s ease-in infinite; }
+    @keyframes bigp2 {
+      0%, 60% { transform: translateY(0); opacity: 0; } 63% { opacity: .85; }
+      84% { transform: translateY(96px); opacity: .85; } 88%, 100% { transform: translateY(102px); opacity: 0; } }
+    .molx { opacity: 0; animation: molx 8s linear infinite; }
+    @keyframes molx { 0%, 56% { transform: translateY(0); opacity: 0; } 59% { opacity: 1; } 84% { transform: translateY(104px); opacity: 1; } 87%, 100% { transform: translateY(108px); opacity: 0; } }
     .st-ok { animation: stok 8s infinite; } .st-bad { opacity: 0; animation: stbad 8s infinite; }
     @keyframes stok { 0%, 47% { opacity: 1; } 50%, 94% { opacity: 0; } 97%, 100% { opacity: 1; } }
     @keyframes stbad { 0%, 47% { opacity: 0; } 50%, 94% { opacity: 1; } 97%, 100% { opacity: 0; } }
@@ -504,7 +508,7 @@
         </div>
         <div class="themes">
             <article class="theme t-mag reveal">
-              <div class="tvis"><svg class="viz" viewBox="0 0 260 130" role="img" aria-label="Cartoon of a healthy slit diaphragm letting small molecules through and blocking a large protein, then injury: the slit diaphragm is lost, foot processes efface and the large protein leaks through">
+              <div class="tvis"><svg class="viz" viewBox="0 0 260 130" role="img" aria-label="Cartoon of a healthy slit diaphragm letting small molecules through and blocking a large protein, then injury: the slit diaphragm is lost, foot processes flatten and spread apart, and large proteins leak through the widened gap">
                 <defs><filter id="glowM"><feGaussianBlur stdDeviation="1.5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>
                 <!-- foot processes (efface during injury) -->
                 <path class="fpL" d="M14 58 Q14 48 26 48 H116 Q123 48 123 58 V96 Q123 104 115 104 H26 Q14 104 14 94Z" fill="rgba(74,222,128,.22)" stroke="#4ade80" stroke-width="1.2"/>
@@ -522,6 +526,11 @@
                 <circle class="anim mol" cx="132" cy="8" r="2.4" fill="#3fe0f5" style="animation-delay:-2.2s"/>
                 <!-- large protein: blocked when healthy, leaks when injured -->
                 <circle class="bigp" cx="130" cy="14" r="9" fill="#e8368f" opacity=".9"/>
+                <circle class="bigp2" cx="119" cy="8" r="7" fill="#e8368f"/>
+                <circle class="bigp2" cx="143" cy="6" r="6" fill="#e8368f" style="animation-delay:.5s"/>
+                <circle class="molx" cx="114" cy="10" r="2.4" fill="#3fe0f5"/>
+                <circle class="molx" cx="147" cy="14" r="2.2" fill="#3fe0f5" style="animation-delay:.3s"/>
+                <circle class="molx" cx="137" cy="4" r="2.4" fill="#3fe0f5" style="animation-delay:.7s"/>
                 <!-- state + labels -->
                 <g class="st-ok"><circle cx="13" cy="10" r="2.6" fill="#4ade80"/><text x="19" y="12.6" style="fill:#4ade80">healthy</text></g>
                 <g class="st-bad"><circle cx="13" cy="10" r="2.6" fill="#ff5fb0"/><text x="19" y="12.6" style="fill:#ff5fb0">injured</text></g>
