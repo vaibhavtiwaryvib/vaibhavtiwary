@@ -214,7 +214,7 @@
     @keyframes mark { 0% { opacity: .15; transform: scale(.6); } 12%, 30% { opacity: 1; transform: scale(1.15); } 45%, 100% { opacity: .15; transform: scale(.6); } }
     .travel { animation: travel 3s linear infinite; }
     @keyframes travel { 0% { transform: translateX(0); opacity: 0; } 10% { opacity: 1; } 90% { opacity: 1; } 100% { transform: translateX(180px); opacity: 0; } }
-    @media (prefers-reduced-motion: reduce) { .viz * { animation: none !important; } .curve { stroke-dashoffset: 0; } }
+    @media (prefers-reduced-motion: reduce) { .viz * { animation: none !important; } .hcycle, .atp2 { opacity: 1; } .curve { stroke-dashoffset: 0; } }
 
     /* ---------- Big research cards ---------- */
     .themes { grid-template-columns: 1fr !important; gap: 28px !important; margin-top: 16px; }
@@ -241,6 +241,20 @@
     }
     /* ---------- Alignment ---------- */
     @media (min-width: 901px) { .themes { margin-left: calc(220px + 48px); } .theme .viz { height: 200px; } }
+    /* mitochondrion: pump out, back in through ATP synthase */
+    .bolt2 { animation: bolt2 4s infinite; }
+    @keyframes bolt2 { 0%, 100% { opacity: .15; } 5%, 22% { opacity: 1; } 35% { opacity: .15; } 50% { opacity: .15; } 55%, 72% { opacity: 1; } 85% { opacity: .15; } }
+    .hcycle { animation: hcycle 4s ease-in-out infinite; }
+    @keyframes hcycle {
+      0% { transform: translate(0, 0); opacity: 0; }
+      8% { opacity: 1; }
+      30% { transform: translate(0, -46px); opacity: 1; }
+      50% { transform: translate(-37px, -46px); opacity: 1; }
+      74% { transform: translate(-37px, -6px); opacity: 1; }
+      82%, 100% { transform: translate(-37px, -2px); opacity: 0; } }
+    .atp2 { animation: atp2 4s ease-out infinite; }
+    @keyframes atp2 { 0%, 70% { opacity: 0; transform: translate(0, 0); } 80% { opacity: 1; } 100% { opacity: 0; transform: translate(10px, 12px); } }
+    .rotor { transform-box: fill-box; transform-origin: center; animation: spin 1.4s linear infinite; }
     /* Publications */
     .pubs { list-style: none; }
     .pub { display: grid; grid-template-columns: 64px 1fr; gap: 20px; padding: 24px 0; border-bottom: 1px solid var(--line); }
@@ -504,24 +518,30 @@
               </div>
             </article>
             <article class="theme t-gfp flip reveal">
-              <div class="tvis"><svg class="viz" viewBox="0 0 260 130" role="img" aria-label="Cartoon of light activating a proton pump in a mitochondrion to make ATP">
+              <div class="tvis"><svg class="viz" viewBox="0 0 260 130" role="img" aria-label="Cartoon of light driving a proton pump: protons are pumped out of the mitochondrial matrix, flow back in through ATP synthase, and ATP is made">
                 <!-- light bolt -->
-                <polygon class="bolt" points="134,2 124,18 131,18 126,30 140,12 132,12 138,2" fill="#facc15"/>
-                <!-- outer membrane -->
+                <polygon class="bolt2" points="134,2 124,18 131,18 126,30 140,12 132,12 138,2" fill="#facc15"/>
+                <!-- membrane -->
                 <rect x="32" y="34" width="196" height="76" rx="38" fill="rgba(74,222,128,.14)" stroke="#4ade80" stroke-width="1.5"/>
                 <!-- cristae -->
-                <path d="M50 72 q10 -26 20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0" fill="none" stroke="#22c55e" stroke-width="1.4" opacity=".8"/>
-                <path d="M50 76 q10 22 20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0" fill="none" stroke="#22c55e" stroke-width="1" opacity=".45"/>
+                <path d="M58 90 q10 -16 20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0" fill="none" stroke="#22c55e" stroke-width="1.4" opacity=".6"/>
+                <path d="M58 93 q10 12 20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0" fill="none" stroke="#22c55e" stroke-width="1" opacity=".35"/>
                 <!-- proton pump in membrane -->
                 <rect x="123" y="29" width="14" height="11" rx="2" fill="#e8368f"/>
-                <!-- H+ moving out -->
-                <text class="anim hplus" x="124" y="66" style="fill:#3fe0f5;font-size:10px;font-weight:500">H⁺</text>
-                <text class="anim hplus" x="110" y="70" style="fill:#3fe0f5;font-size:9px;animation-delay:-1.3s">H⁺</text>
-                <!-- ATP produced -->
-                <text class="anim atp" x="176" y="92" style="fill:#facc15;font-size:10px;font-weight:500">ATP</text>
-                <text class="anim atp" x="70" y="96" style="fill:#facc15;font-size:9px;animation-delay:-1.3s">ATP</text>
+                <!-- ATP synthase: Fo in membrane, stalk, F1 head in matrix -->
+                <rect x="86" y="29" width="14" height="10" rx="2" fill="#a78bfa"/>
+                <path d="M93 39 V44" stroke="#a78bfa" stroke-width="2.4"/>
+                <circle cx="93" cy="51" r="7.5" fill="#7c3aed" stroke="#a78bfa" stroke-width="1"/>
+                <g class="rotor"><path d="M93 45.5 V56.5 M87.5 51 H98.5" stroke="#ddd6fe" stroke-width="1" opacity=".8"/></g>
+                <!-- protons: out through the pump, back in through ATP synthase -->
+                <text class="hcycle" x="125" y="62" style="fill:#3fe0f5;font-size:9.5px;font-weight:500">H⁺</text>
+                <text class="hcycle" x="125" y="62" style="fill:#3fe0f5;font-size:9.5px;font-weight:500;animation-delay:-2s">H⁺</text>
+                <!-- ATP made at the synthase -->
+                <text class="atp2" x="96" y="70" style="fill:#facc15;font-size:9.5px;font-weight:500">ATP</text>
+                <text class="atp2" x="96" y="70" style="fill:#facc15;font-size:9.5px;font-weight:500;animation-delay:-2s">ATP</text>
                 <text x="144" y="12" style="fill:#facc15">light</text>
                 <text x="144" y="27" style="fill:#ff5fb0">proton pump</text>
+                <text x="82" y="27" text-anchor="end" style="fill:#c4b5fd">ATP synthase</text>
                 <text x="8" y="124">mitochondrion</text>
               </svg></div>
               <div class="tbody">
