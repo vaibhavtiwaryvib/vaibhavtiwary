@@ -112,6 +112,19 @@
     .fact b { display: block; font-family: var(--serif); font-size: 1.1rem; margin-bottom: 4px; }
     .fact p { color: var(--ink-soft); font-size: .95rem; }
 
+    .cite-card { background: #fff; border: 1px solid var(--line); border-radius: 10px; padding: 22px 24px; margin-top: 26px; max-width: 760px; }
+    .cite-tabs { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 12px; }
+    .cite-tabs button { font: inherit; font-size: .85rem; border: 1px solid var(--line); background: var(--paper); color: var(--ink-soft); border-radius: 6px; padding: 4px 12px; cursor: pointer; }
+    .cite-tabs button.on { border-color: var(--mag); color: var(--mag); background: #fff; }
+    .cite-out { font-family: var(--serif); font-size: 1rem; line-height: 1.6; color: var(--ink); background: var(--wash); border-radius: 8px; padding: 14px 16px; overflow-wrap: anywhere; }
+    .cite-out.mono { font-family: var(--mono); font-size: .8rem; white-space: pre-wrap; color: var(--ink-soft); }
+    .cite-row { display: flex; flex-wrap: wrap; align-items: center; gap: 14px; margin-top: 14px; }
+    .cite-copy { font: inherit; font-size: .9rem; font-weight: 500; border: 0; background: var(--ink); color: #fff; border-radius: 7px; padding: 8px 16px; cursor: pointer; }
+    .cite-copy:hover { background: var(--mag); }
+    .cite-hint { font-size: .85rem; color: var(--muted); }
+    .cite-hello { margin-top: 18px; color: var(--ink-soft); font-size: .98rem; }
+    .cite-hello a { color: var(--mag); text-decoration: underline; text-underline-offset: 3px; }
+
     .cta { background: var(--scope); color: #fff; border-top: 0; text-align: center; }
     .cta h2 { color: #fff; }
     .cta .actions { justify-content: center; margin-top: 26px; }
@@ -135,7 +148,7 @@
   <header class="nav">
     <div class="wrap">
       <a class="home" href="../"><i class="fas fa-arrow-left"></i> Vaibhav Tiwary</a>
-      <nav class="nav-links"><a href="#features">Features</a><a href="#screens">Screenshots</a><a href="#install">Install</a><a href="#download">Download</a></nav>
+      <nav class="nav-links"><a href="#features">Features</a><a href="#screens">Screenshots</a><a href="#install">Install</a><a href="#cite">Cite</a><a href="#download">Download</a></nav>
     </div>
   </header>
 
@@ -231,6 +244,24 @@
     </div>
   </section>
 
+  <section id="cite">
+    <div class="wrap">
+      <p class="label"><i class="c-mag"></i>Citing Pipette</p>
+      <h2>Used it in your work?</h2>
+      <p class="prose">Pipette is free, and it always will be. If it helped with something you publish, a citation is a lovely way to say thanks — never required.</p>
+      <div class="cite-card">
+        <div class="cite-tabs" role="tablist">
+          <button class="on" data-f="text" role="tab">Reference</button>
+          <button data-f="bibtex" role="tab">BibTeX</button>
+          <button data-f="methods" role="tab">Methods sentence</button>
+        </div>
+        <div class="cite-out" id="cite-out"></div>
+        <div class="cite-row"><button class="cite-copy" id="cite-copy"><i class="far fa-copy"></i> Copy</button><span class="cite-hint" id="cite-hint">On GitHub, the repository’s <a href="https://github.com/vaibhavtiwaryvib/vaibhavtiwary" style="text-decoration:underline">“Cite this repository”</a> button gives the same reference.</span></div>
+      </div>
+      <p class="cite-hello">Used Pipette in a paper, thesis or poster? I’d genuinely love to hear about it — <a href="mailto:v.tiwary@uke.de?subject=Pipette%20was%20used%20in%20a%20publication">send me a quick note</a>. 🙂</p>
+    </div>
+  </section>
+
   <section class="cta">
     <div class="wrap">
       <h2>Give it a try</h2>
@@ -243,7 +274,7 @@
     </div>
   </section>
   <footer>
-    <div class="wrap"><span>© 2026 VITIRAN · Pipette 1.1</span><span>Made by <a href="../">Vaibhav Tiwary</a> · <a href="mailto:v.tiwary@uke.de">v.tiwary@uke.de</a></span></div>
+    <div class="wrap"><span>© 2026 VITIRAN · Pipette 1.1 · <a href="#cite">Cite</a></span><span>Made by <a href="../">Vaibhav Tiwary</a> · <a href="mailto:v.tiwary@uke.de">v.tiwary@uke.de</a></span></div>
   </footer>
   <div class="lightbox" id="lb"><img alt=""></div>
   <script>
@@ -251,6 +282,27 @@
     document.querySelectorAll('.gallery img, .shot-hero').forEach(im => im.addEventListener('click', () => { li.src = im.src; li.alt = im.alt; lb.classList.add('open'); }));
     lb.addEventListener('click', () => lb.classList.remove('open'));
     document.addEventListener('keydown', e => { if (e.key === 'Escape') lb.classList.remove('open'); });
+
+    const CITE = {
+      text: 'Tiwary, V. (2026). Pipette: a free statistics and graphing app for lab data (Version 1.1) [Computer software]. VITIRAN. https://vaibhavtiwaryvib.github.io/vaibhavtiwary/pipette/',
+      bibtex: '@software{tiwary_pipette_2026,\n  author    = {Tiwary, Vaibhav},\n  title     = {Pipette: a free statistics and graphing app for lab data},\n  version   = {1.1},\n  year      = {2026},\n  publisher = {VITIRAN},\n  url       = {https://vaibhavtiwaryvib.github.io/vaibhavtiwary/pipette/}\n}',
+      methods: 'Statistical analyses were performed and graphs were prepared with Pipette (version 1.1; Tiwary, 2026).'
+    };
+    let citeFmt = 'text';
+    const co = document.getElementById('cite-out'), cc = document.getElementById('cite-copy');
+    const showCite = () => {
+      co.textContent = CITE[citeFmt]; co.classList.toggle('mono', citeFmt === 'bibtex');
+      document.querySelectorAll('.cite-tabs button').forEach(b => { b.classList.toggle('on', b.dataset.f === citeFmt); b.setAttribute('aria-selected', b.dataset.f === citeFmt); });
+    };
+    document.querySelectorAll('.cite-tabs button').forEach(b => b.addEventListener('click', () => { citeFmt = b.dataset.f; showCite(); }));
+    cc.addEventListener('click', async () => {
+      const txt = CITE[citeFmt];
+      try { await navigator.clipboard.writeText(txt); }
+      catch (e) { const ta = document.createElement('textarea'); ta.value = txt; ta.style.cssText = 'position:fixed;left:-9999px'; document.body.appendChild(ta); ta.select(); try { document.execCommand('copy'); } finally { ta.remove(); } }
+      cc.innerHTML = '<i class="fas fa-check"></i> Copied — thank you!';
+      setTimeout(() => { cc.innerHTML = '<i class="far fa-copy"></i> Copy'; }, 2200);
+    });
+    showCite();
   </script>
 </body>
 </html>
