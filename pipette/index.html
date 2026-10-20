@@ -26,6 +26,7 @@
     "publisher": { "@type": "Organization", "name": "VITIRAN" },
     "author": { "@type": "Person", "name": "Vaibhav Tiwary", "url": "https://vaibhavtiwaryvib.github.io/vaibhavtiwary/" },
     "url": "https://vaibhavtiwaryvib.github.io/vaibhavtiwary/pipette/",
+    "codeRepository": "https://github.com/vaibhavtiwaryvib/vaibhavtiwary",
     "image": "https://vaibhavtiwaryvib.github.io/vaibhavtiwary/pipette/img/ui-graph.jpg",
     "description": "Free statistics and graphing app for lab data: t-tests, one-way and two-way ANOVA with multiple comparisons, non-parametric tests, Kaplan–Meier survival analysis and publication-ready graph export."
   }
@@ -111,6 +112,19 @@
     .fact { border-left: 3px solid var(--c); padding: 4px 0 4px 16px; }
     .fact b { display: block; font-family: var(--serif); font-size: 1.1rem; margin-bottom: 4px; }
     .fact p { color: var(--ink-soft); font-size: .95rem; }
+
+    .source-card { display: flex; gap: 28px; align-items: center; justify-content: space-between; margin-top: 34px; background: #fff; border: 1px solid var(--line); border-radius: 10px; padding: 22px 26px; }
+    .source-text b { font-family: var(--serif); font-size: 1.15rem; display: flex; align-items: center; gap: 10px; margin-bottom: 6px; }
+    .source-text b i { color: var(--blue); font-size: .95rem; }
+    .source-text p { color: var(--ink-soft); font-size: .95rem; max-width: 46em; }
+    .source-text .source-sub { margin-top: 8px; font-size: .9rem; color: var(--muted); }
+    .source-text a { color: var(--mag); text-decoration: underline; text-underline-offset: 3px; }
+    .source-actions { display: flex; flex-direction: column; align-items: center; gap: 8px; flex-shrink: 0; }
+    .src-btn { display: inline-flex; align-items: center; gap: 8px; background: var(--ink); color: #fff; border-radius: 8px; padding: 10px 18px; font-weight: 500; font-size: .92rem; white-space: nowrap; transition: background .2s; }
+    .src-btn:hover { background: var(--blue); }
+    .src-link { font-size: .85rem; color: var(--muted); text-decoration: underline; text-underline-offset: 3px; }
+    .src-link:hover { color: var(--ink); }
+    @media (max-width: 800px) { .source-card { flex-direction: column; align-items: flex-start; } .source-actions { align-items: flex-start; } }
 
     .cite-card { background: #fff; border: 1px solid var(--line); border-radius: 10px; padding: 22px 24px; margin-top: 26px; max-width: 760px; }
     .cite-tabs { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 12px; }
@@ -240,6 +254,17 @@
         <div class="fact" style="--c:var(--gfp)"><b>Your data stays with you</b><p>Everything runs on your own computer. Nothing is uploaded. Save projects as <code>.pipette</code> files and reopen them on Mac or Windows.</p></div>
         <div class="fact" style="--c:var(--mag)"><b>Statistics are verified</b><p>Every test was checked against established statistics packages (scipy, statsmodels, pingouin) on many random datasets, matching to many decimal places.</p></div>
         <div class="fact" style="--c:var(--cy)"><b>Free to use</b><p>Pipette is free for academic and personal use. Feedback and suggestions are welcome by email.</p></div>
+      </div>
+      <div class="source-card">
+        <div class="source-text">
+          <b><i class="fas fa-code"></i> See exactly how it works</b>
+          <p>Pipette’s full source code is public, so you don’t have to take the statistics on trust. The whole app is one readable file: the statistical tests, the graphs and the export are all in plain JavaScript. The Mac and Windows downloads run this same code.</p>
+          <p class="source-sub">Spotted something that looks wrong, or a result that differs from your usual software? Please <a href="mailto:v.tiwary@uke.de?subject=Pipette%3A%20possible%20issue">tell me</a> and I’ll check it.</p>
+        </div>
+        <div class="source-actions">
+          <a class="src-btn" href="https://github.com/vaibhavtiwaryvib/vaibhavtiwary/blob/main/pipette/app/index.html" target="_blank" rel="noopener"><i class="fab fa-github"></i> View the source</a>
+          <a class="src-link" href="https://github.com/vaibhavtiwaryvib/vaibhavtiwary/commits/main/pipette" target="_blank" rel="noopener">Change history</a>
+        </div>
       </div>
     </div>
   </section>
