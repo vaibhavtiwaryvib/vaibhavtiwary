@@ -75,6 +75,11 @@ table.grid thead tr.letters th { height: 22px; font-weight: 500; color: var(--mu
 table.grid thead tr.letters th .del { position: absolute; right: 4px; top: 2px; border: 0; background: none; color: var(--muted); cursor: pointer; display: none; font-size: 13px; }
 table.grid thead tr.letters th:hover .del { display: block; }
 table.grid thead tr.letters th .del:hover { color: var(--danger); }
+table.grid td.rn { cursor: pointer; user-select: none; }
+table.grid td.rn:hover { color: var(--ink); background: var(--head-2); }
+table.grid tr.rsel td { background: var(--sel); }
+table.grid tr.rsel td.rn { background: var(--accent); color: #fff; }
+table.grid thead tr.letters th[data-colhead] { cursor: context-menu; }
 table.grid .rn { background: var(--head); color: var(--muted); font-size: 11px; text-align: right; padding: 0 8px; min-width: 40px; font-variant-numeric: tabular-nums; }
 table.grid input { width: 100%; height: 26px; border: 0; padding: 0 8px; background: transparent; outline: none; font-variant-numeric: tabular-nums; text-align: right; }
 table.grid thead input { text-align: center; font-weight: 600; color: var(--ink); background: #fbfbfd; }
@@ -99,6 +104,18 @@ select:focus, .field input:focus { outline: 2px solid var(--accent-soft); border
 .rtable tr.sec td { background: #f7f8fa; font-weight: 600; color: var(--ink); }
 .rtable .stars { font-weight: 700; }
 .sig { color: var(--ok); font-weight: 600; }
+.mc-box { border: 1px solid var(--line); background: #fbfcfd; border-radius: 8px; padding: 12px 14px 4px; margin-bottom: 16px; }
+.mc-title { font-weight: 600; margin-bottom: 10px; }
+.mc-box .res-opts { margin-bottom: 10px; }
+.mc-box .res-opts > label:first-child { min-width: 112px; }
+.pairs-box { border-top: 1px dashed var(--line); padding: 10px 0 8px; }
+.pairs-head { display: flex; align-items: center; gap: 6px; color: var(--ink-2); font-size: 12px; margin-bottom: 8px; }
+.pairs-head .grow { flex: 1; }
+.btn.sm { height: 24px; padding: 0 9px; font-size: 12px; }
+.pairs-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 4px 10px; max-height: 260px; overflow-y: auto; }
+.pair { display: flex; align-items: center; gap: 7px; padding: 4px 8px; border-radius: 6px; cursor: pointer; color: var(--ink-2); }
+.pair:hover { background: #eef1f6; }
+.pair.on { color: var(--ink); background: var(--accent-soft); }
 .notice { background: #fff8e6; border: 1px solid #f2dfab; color: #7a5b00; padding: 10px 12px; border-radius: 6px; margin-bottom: 14px; }
 
 /* graph */
@@ -152,7 +169,7 @@ select:focus, .field input:focus { outline: 2px solid var(--accent-soft); border
 <body>
 <div class="app">
   <header class="toolbar">
-    <div class="brand" title="Pipette 1.1 · published by VITIRAN"><img src="data:image/png;base64,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" alt=""><span>Pipette<small>by VITIRAN</small></span></div>
+    <div class="brand" title="Pipette 1.2 · published by VITIRAN"><img src="data:image/png;base64,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" alt=""><span>Pipette<small>by VITIRAN</small></span></div>
     <button class="tb-btn primary" id="tb-new" title="New data table"><svg viewBox="0 0 16 16"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>New Table</button>
     <span class="tb-sep"></span>
     <button class="tb-btn" id="tb-newproj" title="New empty project"><svg viewBox="0 0 16 16"><path d="M4 1.5h5.5L13 5v9.5H4z" fill="none" stroke="currentColor"/><path d="M9.5 1.5V5H13" fill="none" stroke="currentColor"/></svg>New Project</button>
@@ -912,9 +929,11 @@ function(t){t.__bidiEngine__=t.prototype.__bidiEngine__=function(t){var n,r,i,a,
   function postHoc(groups, mse, df, method, mode, control = 0, opts = {}) {
     const k = groups.length, ns = groups.map(g => g.n != null ? g.n : g.values.length), ms = groups.map(g => g.mean != null ? g.mean : mean(g.values));
     let pairs = [];
-    if (mode === 'control' || method === 'dunnett') { for (let j = 0; j < k; j++) if (j !== control) pairs.push([control, j]); }
+    if (mode === 'pairs' && method !== 'tukey' && method !== 'dunnett') pairs = (opts.pairs || []).filter(([i, j]) => i !== j && i < k && j < k);
+    else if (mode === 'control' || method === 'dunnett') { for (let j = 0; j < k; j++) if (j !== control) pairs.push([control, j]); }
     else for (let i = 0; i < k; i++) for (let j = i + 1; j < k; j++) pairs.push([i, j]);
     const m = pairs.length;
+    if (!m) return [];
     const se2 = (i, j) => mse * (1 / ns[i] + 1 / ns[j]);
     let out = pairs.map(([i, j]) => {
       const diff = ms[i] - ms[j], se = Math.sqrt(se2(i, j)), t = diff / se;
@@ -956,6 +975,22 @@ function(t){t.__bidiEngine__=t.prototype.__bidiEngine__=function(t){var n,r,i,a,
       comparisons.push({ i, j, a: names ? names[i] : i, b: names ? names[j] : j, diff, se, df, q, p, ciLow: diff - h, ciHigh: diff + h });
     }
     return { F, df1, df2, p: pF(F, df1, df2), comparisons };
+  }
+  // Welch t tests (no equal-SD assumption) for a chosen set of pairs, then corrected for multiplicity.
+  // method: sidak | holm-sidak | bonferroni | fisher (= uncorrected)
+  function welchPairs(groups, names, pairs, method) {
+    const n = groups.map(g => g.length), m = groups.map(mean), v = groups.map(variance), M = pairs.length;
+    if (!M) return [];
+    const out = pairs.map(([i, j]) => {
+      const a = v[i] / n[i], b = v[j] / n[j], se = Math.sqrt(a + b), diff = m[i] - m[j];
+      const df = (a + b) ** 2 / (a * a / (n[i] - 1) + b * b / (n[j] - 1)), t = diff / se;
+      return { i, j, a: names ? names[i] : i, b: names ? names[j] : j, diff, se, df, t, pRaw: pt2(t, df) };
+    });
+    const adj = method === 'sidak' ? out.map(o => sidakP(o.pRaw, M)) : method === 'bonferroni' ? out.map(o => bonfP(o.pRaw, M))
+      : method === 'holm-sidak' ? holmSidak(out.map(o => o.pRaw)) : out.map(o => o.pRaw);
+    const alpha = method === 'sidak' ? 1 - Math.pow(0.95, 1 / M) : method === 'bonferroni' ? 0.05 / M : 0.05;
+    out.forEach((o, x) => { o.p = adj[x]; if (method !== 'holm-sidak') { const tc = qt(1 - alpha / 2, o.df); o.ciLow = o.diff - tc * o.se; o.ciHigh = o.diff + tc * o.se; } });
+    return out;
   }
 
   // ---------- ranks ----------
@@ -1027,9 +1062,11 @@ function(t){t.__bidiEngine__=t.prototype.__bidiEngine__=function(t){var n,r,i,a,
   }
 
   // ---------- Kruskal–Wallis + Dunn ----------
-  function dunnPairs(meanRanks, sdFn, names, mode, control) {
-    const k = meanRanks.length, pairs = [];
-    if (mode === 'control') { for (let j = 0; j < k; j++) if (j !== control) pairs.push([control, j]); }
+  function dunnPairs(meanRanks, sdFn, names, mode, control, chosen) {
+    const k = meanRanks.length;
+    let pairs = [];
+    if (mode === 'pairs') pairs = (chosen || []).filter(([i, j]) => i !== j && i < k && j < k);
+    else if (mode === 'control') { for (let j = 0; j < k; j++) if (j !== control) pairs.push([control, j]); }
     else for (let i = 0; i < k; i++) for (let j = i + 1; j < k; j++) pairs.push([i, j]);
     const m = pairs.length;
     return pairs.map(([i, j]) => {
@@ -1037,23 +1074,23 @@ function(t){t.__bidiEngine__=t.prototype.__bidiEngine__=function(t){var n,r,i,a,
       return { i, j, a: names ? names[i] : i, b: names ? names[j] : j, diff, z, pRaw, p: Math.min(1, pRaw * m) };
     });
   }
-  function kruskal(groups, names, mode = 'all', control = 0) {
+  function kruskal(groups, names, mode = 'all', control = 0, chosen) {
     const k = groups.length, n = groups.map(g => g.length), N = sum(n);
     const all = [].concat(...groups), { r, T } = rankAll(all);
     let off = 0; const R = n.map(ni => { const s = sum(r.slice(off, off + ni)); off += ni; return s; });
     const Hraw = 12 / (N * (N + 1)) * sum(R.map((Ri, i) => Ri * Ri / n[i])) - 3 * (N + 1);
     const C = 1 - T / (N * N * N - N), H = Hraw / C, df = k - 1;
     const mr = R.map((Ri, i) => Ri / n[i]);
-    const comparisons = dunnPairs(mr, (i, j) => Math.sqrt((N * (N + 1) / 12 - T / (12 * (N - 1))) * (1 / n[i] + 1 / n[j])), names, mode, control);
+    const comparisons = dunnPairs(mr, (i, j) => Math.sqrt((N * (N + 1) / 12 - T / (12 * (N - 1))) * (1 / n[i] + 1 / n[j])), names, mode, control, chosen);
     return { H, df, p: pchisq(H, df), meanRanks: mr, comparisons };
   }
 
   // ---------- Friedman + Dunn (matched rows) ----------
-  function friedman(rows, names, mode = 'all', control = 0) {
+  function friedman(rows, names, mode = 'all', control = 0, chosen) {
     const n = rows.length, k = rows[0].length, Rs = Array(k).fill(0); let T = 0;
     rows.forEach(row => { const { r, T: t } = rankAll(row); r.forEach((x, j) => Rs[j] += x); T += t; });
     const Q = (12 / (n * k * (k + 1)) * sum(Rs.map(R => R * R)) - 3 * n * (k + 1)) / (1 - T / (n * (k * k * k - k)));
-    const comparisons = dunnPairs(Rs.map(R => R / n), () => Math.sqrt(k * (k + 1) / (6 * n)), names, mode, control);
+    const comparisons = dunnPairs(Rs.map(R => R / n), () => Math.sqrt(k * (k + 1) / (6 * n)), names, mode, control, chosen);
     return { Q, df: k - 1, p: pchisq(Q, k - 1), rankSums: Rs, n, comparisons };
   }
 
@@ -1150,7 +1187,7 @@ function(t){t.__bidiEngine__=t.prototype.__bidiEngine__=function(t){var n,r,i,a,
 
   const api = { lgamma, ibeta, gammaP, gammaQ, pnorm, pt2, qt, pF, pchisq, ptukey, qtukey, cnd, qnorm,
     describe, tTest, anova, kaplanMeier, logRank, logRankWeighted, pSummary, fmtP, mean, variance, median,
-    sidakP, bonfP, holmSidak, holmBonf, dunnettCdf, dunnettCrit, postHoc, welchAnova, mannWhitney, wilcoxonSigned,
+    sidakP, bonfP, holmSidak, holmBonf, dunnettCdf, dunnettCrit, postHoc, welchAnova, welchPairs, mannWhitney, wilcoxonSigned,
     kruskal, friedman, rmAnova, shapiroWilk, twoWayAnova, rankAll };
   if (typeof module !== 'undefined' && module.exports) module.exports = api; else root.Stats = api;
 })(typeof window !== 'undefined' ? window : globalThis);
@@ -1634,7 +1671,7 @@ function(t){t.__bidiEngine__=t.prototype.__bidiEngine__=function(t){var n,r,i,a,
   const toBlob = (canvas, type, q) => new Promise(r => canvas.toBlob(r, type, q));
 
   // Quiet credit stored only in file metadata — never drawn on the figure.
-  const MADE_WITH = 'Pipette 1.1 (VITIRAN) - https://vaibhavtiwaryvib.github.io/vaibhavtiwary/pipette/';
+  const MADE_WITH = 'Pipette 1.2 (VITIRAN) - https://vaibhavtiwaryvib.github.io/vaibhavtiwary/pipette/';
   function pngText(key, text) {
     const data = new TextEncoder().encode(key + '\0' + text);
     const chunk = new Uint8Array(12 + data.length), dv = new DataView(chunk.buffer);
@@ -1734,9 +1771,9 @@ function(t){t.__bidiEngine__=t.prototype.__bidiEngine__=function(t){var n,r,i,a,
     return { ...GRAPH_BASE, kind: 'scatter', error: 'sd', points: true, barFill: 'light', whiskers: 'minmax', yTitle: '', xTitle: '', yMin: '', yMax: '', stats: 'sig', statsLabel: 'stars', pointSize: 3.6 };
   }
   function defaultAnalysis(type) {
-    if (type === 'survival') return { test: 'logrank', pairwise: 'bonferroni' };
-    if (type === 'twoway') return { posthoc: 'sidak', within: 'cols' };
-    return { test: 'auto', posthoc: 'tukey', compare: 'all', control: 0, a: 0, b: 1 };
+    if (type === 'survival') return { test: 'logrank', pairwise: 'bonferroni', compare: 'all', pairs: [] };
+    if (type === 'twoway') return { posthoc: 'sidak', within: 'cols', cellPairs: [] };
+    return { test: 'auto', posthoc: 'tukey', compare: 'all', control: 0, a: 0, b: 1, pairs: [] };
   }
   function makeTable(type, sample) {
     const t = { id: uid(), type, name: '', cols: [], rows: [], analysis: defaultAnalysis(type), graph: defaultGraph(type) };
@@ -1838,10 +1875,31 @@ function(t){t.__bidiEngine__=t.prototype.__bidiEngine__=function(t){var n,r,i,a,
   const POSTHOC_NAMES = { tukey: 'Tukey’s multiple comparisons test', dunnett: 'Dunnett’s multiple comparisons test', sidak: 'Šídák’s multiple comparisons test',
     'holm-sidak': 'Holm–Šídák’s multiple comparisons test', bonferroni: 'Bonferroni’s multiple comparisons test', fisher: 'Uncorrected Fisher’s LSD',
     'games-howell': 'Games–Howell’s multiple comparisons test', dunn: 'Dunn’s multiple comparisons test' };
-  function posthocOptions(test) {
-    if (test === 'welchAnova') return ['games-howell', 'none'];
+  // Which multiple-comparison tests make sense depends on the test and on WHAT is being compared (as in Prism):
+  // every pair -> Tukey; each vs a control -> Dunnett; a hand-picked set of pairs -> Šídák. First option = recommended.
+  function posthocOptions(test, mode) {
     if (test === 'kw' || test === 'friedman') return ['dunn', 'none'];
-    return ['tukey', 'dunnett', 'sidak', 'holm-sidak', 'bonferroni', 'fisher', 'none'];
+    if (test === 'welchAnova') return mode === 'all' ? ['games-howell', 'none'] : ['sidak', 'holm-sidak', 'bonferroni', 'fisher', 'none'];
+    if (mode === 'control') return ['dunnett', 'sidak', 'holm-sidak', 'bonferroni', 'fisher', 'none'];
+    if (mode === 'pairs') return ['sidak', 'holm-sidak', 'bonferroni', 'fisher', 'none'];
+    return ['tukey', 'bonferroni', 'sidak', 'holm-sidak', 'fisher', 'none'];
+  }
+  function posthocLabel(p, test) {
+    if (p === 'none') return 'None';
+    if (test === 'welchAnova' && p !== 'games-howell') return { sidak: 'Šídák (Welch t tests)', 'holm-sidak': 'Holm–Šídák (Welch t tests)', bonferroni: 'Bonferroni (Welch t tests)', fisher: 'No correction (Welch t tests)' }[p];
+    if (p === 'fisher') return 'No correction (Fisher’s LSD)';
+    return POSTHOC_NAMES[p].replace(' multiple comparisons test', '');
+  }
+  const COMPARE_LABEL = { all: 'Compare every group with every other group', control: 'Compare each group with a control', pairs: 'Compare selected pairs of groups only' };
+  const pairKey = (i, j) => i < j ? i + '-' + j : j + '-' + i;
+  // map stored column-index pairs onto the indices of the groups that actually have data
+  function chosenPairs(list, gs) {
+    const seen = new Set(), out = [];
+    (list || []).forEach(([a, b]) => {
+      const i = gs.findIndex(g => g.index === +a), j = gs.findIndex(g => g.index === +b);
+      if (i < 0 || j < 0 || i === j) return; const k = pairKey(i, j); if (seen.has(k)) return; seen.add(k); out.push([Math.min(i, j), Math.max(i, j)]);
+    });
+    return out;
   }
   function matchedRows(groups) { // rows where every group has a value
     const n = Math.max(...groups.map(g => g.raw.length)), rows = [];
@@ -1879,28 +1937,31 @@ function(t){t.__bidiEngine__=t.prototype.__bidiEngine__=function(t){var n,r,i,a,
       const dropped = Math.max(...gs.map(g => g.values.length)) - rows.length;
       if (dropped > 0) notes.push(`Rows with a missing value were left out; ${rows.length} complete rows (subjects) were analyzed.`);
     }
-    const opts = posthocOptions(test);
-    let post = opts.includes(an.posthoc) ? an.posthoc : opts[0];
-    let mode = an.compare === 'control' ? 'control' : 'all';
-    if (post === 'dunnett') mode = 'control';
-    if (post === 'tukey' || post === 'games-howell') mode = 'all';
+    const mode = ['all', 'control', 'pairs'].includes(an.compare) ? an.compare : 'all';
+    const opts = posthocOptions(test, mode);
+    const post = opts.includes(an.posthoc) ? an.posthoc : opts[0];
     let ctrl = gs.findIndex(g => g.index === +an.control); if (ctrl < 0) ctrl = 0;
     const names = gs.map(g => g.name);
-    const res = { desc, test, valid: gs, notes, post, mode, control: gs[ctrl], rows };
+    const chosen = mode === 'pairs' ? chosenPairs(an.pairs, gs) : null;
+    const res = { desc, test, valid: gs, notes, post, mode, control: gs[ctrl], rows, chosen };
+    if (mode === 'pairs' && post !== 'none' && !chosen.length) notes.push('Tick the pairs of groups you want to compare (below the test choice).');
     if (test === 'anova') {
       res.main = S.anova(gs.map(g => g.values), names);
-      if (post !== 'none') res.comps = S.postHoc(gs.map(g => ({ name: g.name, values: g.values })), res.main.msw, res.main.dfw, post, mode, ctrl);
+      if (post !== 'none') res.comps = S.postHoc(gs.map(g => ({ name: g.name, values: g.values })), res.main.msw, res.main.dfw, post, mode, ctrl, { pairs: chosen });
     } else if (test === 'rm') {
       res.main = S.rmAnova(rows);
-      if (post !== 'none') res.comps = S.postHoc(gs.map((g, i) => ({ name: g.name, n: rows.length, mean: res.main.colMeans[i] })), res.main.msE, res.main.dfE, post, mode, ctrl);
+      if (post !== 'none') res.comps = S.postHoc(gs.map((g, i) => ({ name: g.name, n: rows.length, mean: res.main.colMeans[i] })), res.main.msE, res.main.dfE, post, mode, ctrl, { pairs: chosen });
     } else if (test === 'welchAnova') {
       res.main = S.welchAnova(gs.map(g => g.values), names);
-      if (post !== 'none') res.comps = res.main.comparisons;
+      if (post !== 'none') {
+        if (mode === 'all') res.comps = res.main.comparisons;
+        else res.comps = S.welchPairs(gs.map(g => g.values), names, mode === 'pairs' ? chosen : gs.map((g, j) => [ctrl, j]).filter(([a, b]) => a !== b), post);
+      }
     } else if (test === 'kw') {
-      res.main = S.kruskal(gs.map(g => g.values), names, mode, ctrl);
+      res.main = S.kruskal(gs.map(g => g.values), names, mode, ctrl, chosen);
       if (post !== 'none') res.comps = res.main.comparisons;
     } else if (test === 'friedman') {
-      res.main = S.friedman(rows, names, mode, ctrl);
+      res.main = S.friedman(rows, names, mode, ctrl, chosen);
       if (post !== 'none') res.comps = res.main.comparisons;
     }
     res.pairs = (res.comps || []).map(c => ({ gi: gs[c.i].index, gj: gs[c.j].index, p: c.p }));
@@ -1916,12 +1977,18 @@ function(t){t.__bidiEngine__=t.prototype.__bidiEngine__=function(t){var n,r,i,a,
     if (valid.length >= 2) {
       res.logrank = gb ? { ...S.logRank(valid.map(g => g.subjects)), ...S.logRankWeighted(valid.map(g => g.subjects), 'gb') } : S.logRank(valid.map(g => g.subjects));
       if (valid.length > 2) {
-        const pw = [];
-        for (let i = 0; i < valid.length; i++) for (let j = i + 1; j < valid.length; j++) {
+        const pw = [], vg = valid.map((g, i) => ({ ...g, index: g.index }));
+        res.compare = an.compare === 'pairs' ? 'pairs' : an.compare === 'control' ? 'control' : 'all';
+        let ctrl = vg.findIndex(g => g.index === +an.control); if (ctrl < 0) ctrl = 0; res.control = vg[ctrl];
+        let list = [];
+        if (res.compare === 'pairs') list = chosenPairs(an.pairs, vg);
+        else if (res.compare === 'control') list = vg.map((g, j) => [ctrl, j]).filter(([a, b]) => a !== b);
+        else for (let i = 0; i < valid.length; i++) for (let j = i + 1; j < valid.length; j++) list.push([i, j]);
+        list.forEach(([i, j]) => {
           const lr = S.logRankWeighted([valid[i].subjects, valid[j].subjects], gb ? 'gb' : 'logrank');
           pw.push({ a: valid[i].name, b: valid[j].name, chi2: lr.chi2, p: lr.p });
-        }
-        const adj = an.pairwise === 'holm' ? S.holmBonf(pw.map(x => x.p)) : pw.map(x => S.bonfP(x.p, pw.length));
+        });
+        const adj = an.pairwise === 'none' ? pw.map(x => x.p) : an.pairwise === 'holm' ? S.holmBonf(pw.map(x => x.p)) : pw.map(x => S.bonfP(x.p, pw.length));
         pw.forEach((x, i) => x.padj = adj[i]);
         res.pairwise = pw;
       }
@@ -1937,28 +2004,46 @@ function(t){t.__bidiEngine__=t.prototype.__bidiEngine__=function(t){var n,r,i,a,
     D.cells.forEach((r, ri) => r.forEach((vals, ci) => vals.forEach(y => obs.push({ r: ri, c: ci, y }))));
     const A = S.twoWayAnova(obs, D.rows.length, D.cols.length);
     if (A.error) return { D, notes, error: A.error };
-    const res = { D, notes, anova: A, post: an.posthoc, within: an.within, comps: [], pairs2: [] };
-    if (an.posthoc !== 'none') {
+    const within = ['cols', 'rows', 'cells', 'pairs'].includes(an.within) ? an.within : 'cols';
+    const post = within === 'pairs' && an.posthoc === 'tukey' ? 'sidak' : an.posthoc;
+    const res = { D, notes, anova: A, post, within, comps: [], pairs2: [] };
+    if (post !== 'none') {
       const mse = A.residual.ms, df = A.residual.df, list = [];
       const cell = (ri, ci) => D.cells[ri][ci];
-      if (an.within === 'rows') {
+      const cellName = (ri, ci) => `${D.rows[ri]} : ${D.cols[ci].name}`;
+      if (within === 'rows') {
         D.cols.forEach((c, ci) => { for (let a = 0; a < D.rows.length; a++) for (let b = a + 1; b < D.rows.length; b++) if (cell(a, ci).length && cell(b, ci).length) list.push({ fam: c.name, ra: a, ca: ci, rb: b, cb: ci, la: D.rows[a], lb: D.rows[b] }); });
+      } else if (within === 'cells' || within === 'pairs') {
+        const cells = []; D.rows.forEach((rn, ri) => D.cols.forEach((c, ci) => { if (cell(ri, ci).length) cells.push([ri, ci]); }));
+        if (within === 'cells') { for (let a = 0; a < cells.length; a++) for (let b = a + 1; b < cells.length; b++) list.push({ fam: 'All cells', ra: cells[a][0], ca: cells[a][1], rb: cells[b][0], cb: cells[b][1] }); }
+        else {
+          const seen = new Set();
+          (an.cellPairs || []).forEach(([l1, c1, l2, c2]) => {
+            const ra = D.rows.indexOf(l1), ca = D.cols.findIndex(c => c.c === +c1), rb = D.rows.indexOf(l2), cb = D.cols.findIndex(c => c.c === +c2);
+            if (ra < 0 || ca < 0 || rb < 0 || cb < 0 || (ra === rb && ca === cb) || !cell(ra, ca).length || !cell(rb, cb).length) return;
+            const k = [ra, ca, rb, cb].join(); if (seen.has(k)) return; seen.add(k);
+            list.push({ fam: 'Selected', ra, ca, rb, cb });
+          });
+          if (!list.length) notes.push('Tick the pairs of cells you want to compare (below the test choice).');
+        }
+        list.forEach(o => { o.la = cellName(o.ra, o.ca); o.lb = cellName(o.rb, o.cb); });
       } else {
         D.rows.forEach((rn, ri) => { for (let a = 0; a < D.cols.length; a++) for (let b = a + 1; b < D.cols.length; b++) if (cell(ri, a).length && cell(ri, b).length) list.push({ fam: rn, ra: ri, ca: a, rb: ri, cb: b, la: D.cols[a].name, lb: D.cols[b].name }); });
       }
-      const m = list.length, kT = an.within === 'rows' ? D.rows.length : D.cols.length;
+      const nCells = D.cells.reduce((s, r) => s + r.filter(v => v.length).length, 0);
+      const m = list.length, kT = within === 'rows' ? D.rows.length : within === 'cells' ? nCells : D.cols.length;
       list.forEach(o => {
         const x = cell(o.ra, o.ca), y = cell(o.rb, o.cb);
         o.diff = S.mean(x) - S.mean(y); o.se = Math.sqrt(mse * (1 / x.length + 1 / y.length)); o.t = o.diff / o.se; o.pRaw = S.pt2(o.t, df);
       });
-      if (an.posthoc === 'tukey') {
+      if (post === 'tukey' && m) {
         const qc = S.qtukey(0.95, kT, df);
         list.forEach(o => { o.p = Math.max(0, 1 - S.ptukey(Math.abs(o.t) * Math.SQRT2, kT, df)); const h = qc / Math.SQRT2 * o.se; o.ciLow = o.diff - h; o.ciHigh = o.diff + h; });
-      } else {
-        const adj = an.posthoc === 'sidak' ? list.map(o => S.sidakP(o.pRaw, m)) : an.posthoc === 'bonferroni' ? list.map(o => S.bonfP(o.pRaw, m))
-          : an.posthoc === 'holm-sidak' ? S.holmSidak(list.map(o => o.pRaw)) : list.map(o => o.pRaw);
-        const alpha = an.posthoc === 'sidak' ? 1 - Math.pow(0.95, 1 / m) : an.posthoc === 'bonferroni' ? 0.05 / m : 0.05, tc = S.qt(1 - alpha / 2, df);
-        list.forEach((o, i) => { o.p = adj[i]; if (an.posthoc !== 'holm-sidak') { o.ciLow = o.diff - tc * o.se; o.ciHigh = o.diff + tc * o.se; } });
+      } else if (m) {
+        const adj = post === 'sidak' ? list.map(o => S.sidakP(o.pRaw, m)) : post === 'bonferroni' ? list.map(o => S.bonfP(o.pRaw, m))
+          : post === 'holm-sidak' ? S.holmSidak(list.map(o => o.pRaw)) : list.map(o => o.pRaw);
+        const alpha = post === 'sidak' ? 1 - Math.pow(0.95, 1 / m) : post === 'bonferroni' ? 0.05 / m : 0.05, tc = S.qt(1 - alpha / 2, df);
+        list.forEach((o, i) => { o.p = adj[i]; if (post !== 'holm-sidak') { o.ciLow = o.diff - tc * o.se; o.ciHigh = o.diff + tc * o.se; } });
       }
       res.comps = list;
       res.pairs2 = list.map(o => ({ ra: o.ra, ca: o.ca, rb: o.rb, cb: o.cb, p: o.p }));
@@ -1974,11 +2059,27 @@ function(t){t.__bidiEngine__=t.prototype.__bidiEngine__=function(t){var n,r,i,a,
   function redo() { if (!redoStack.length) return toast('Nothing to redo'); undoStack.push(snap()); restore(redoStack.pop()); }
   function scheduleSave() {
     clearTimeout(saveTimer);
-    saveTimer = setTimeout(() => { try { localStorage.setItem(STORE, JSON.stringify(P)); setStatus('Autosaved'); } catch (e) { setStatus('Not autosaved — use Save'); } }, 350);
+    saveTimer = setTimeout(() => { saveTimer = null; persist(); setStatus('Autosaved'); }, 350);
+  }
+  function persist() {
+    const json = JSON.stringify(P);
+    if (NATIVE) nativeCall({ cmd: 'autosave', data: json });
+    try { localStorage.setItem(STORE, json); } catch (e) { if (!NATIVE) setStatus('Not autosaved — use Save'); }
   }
   function setStatus(s) { const el = $('#status'); if (el) el.textContent = s; }
 
+  // ---------- Mac app bridge (only present inside Pipette.app; the browser version ignores it) ----------
+  const NATIVE = window.webkit && window.webkit.messageHandlers && window.webkit.messageHandlers.pipette ? window.webkit.messageHandlers.pipette : null;
+  const blobToB64 = blob => new Promise((res, rej) => { const r = new FileReader(); r.onload = () => res(String(r.result).split(',')[1] || ''); r.onerror = rej; r.readAsDataURL(blob); });
+  async function nativeCall(msg) { try { return await NATIVE.postMessage(msg); } catch (e) { console.error(e); return null; } }
+
   async function saveBlob(name, blob, types) {
+    if (NATIVE) {
+      const ext = (name.match(/\.([a-z0-9]+)$/i) || [])[1] || '';
+      const r = await nativeCall({ cmd: 'save', name, ext, data: await blobToB64(blob) });
+      if (r === 'error') { alert('The file could not be saved.'); return false; }
+      return r === 'ok';
+    }
     if (window.showSaveFilePicker) {
       try {
         const h = await window.showSaveFilePicker({ suggestedName: name, types });
@@ -2001,7 +2102,7 @@ function(t){t.__bidiEngine__=t.prototype.__bidiEngine__=function(t){var n,r,i,a,
       try {
         const o = JSON.parse(rd.result);
         if (!o || !Array.isArray(o.tables)) throw new Error();
-        pushUndo(); P = o; P.name = file.name.replace(/\.(pipette|json)$/i, '');
+        pushUndo(); P = o; P.tables.forEach(upgrade); P.name = file.name.replace(/\.(pipette|json)$/i, '');
         if (!P.sel || !cur()) P.sel = P.tables[0] ? { id: P.tables[0].id, view: 'data' } : null;
         render(); scheduleSave(); toast(`Opened ${file.name}`);
       } catch (e) { alert('This file could not be opened as a Pipette project.'); }
@@ -2009,6 +2110,7 @@ function(t){t.__bidiEngine__=t.prototype.__bidiEngine__=function(t){var n,r,i,a,
     rd.readAsText(file);
   }
   function openDialog() {
+    if (NATIVE) return nativeCall({ cmd: 'open' });
     const inp = document.createElement('input'); inp.type = 'file'; inp.accept = '.pipette,.json,application/json';
     inp.onchange = () => inp.files[0] && openProjectFile(inp.files[0]); inp.click();
   }
@@ -2021,12 +2123,16 @@ function(t){t.__bidiEngine__=t.prototype.__bidiEngine__=function(t){var n,r,i,a,
     const m = document.createElement('div'); m.id = 'ctxmenu';
     m.style.cssText = `position:fixed;left:${x}px;top:${y}px;background:#fff;border:1px solid #d6d9e0;border-radius:8px;box-shadow:0 8px 28px rgba(0,0,0,.16);padding:4px;z-index:70;min-width:150px`;
     items.forEach(it => {
+      if (it === '-') { const hr = document.createElement('div'); hr.style.cssText = 'height:1px;background:#e3e6ec;margin:4px 6px'; m.appendChild(hr); return; }
       const b = document.createElement('button'); b.textContent = it.label;
       b.style.cssText = `display:block;width:100%;text-align:left;border:0;background:none;padding:6px 10px;border-radius:5px;cursor:pointer;${it.danger ? 'color:#c93a32' : ''}`;
       b.onmouseenter = () => b.style.background = '#eef2fb'; b.onmouseleave = () => b.style.background = 'none';
       b.onclick = () => { closeMenu(); it.run(); }; m.appendChild(b);
     });
     document.body.appendChild(m);
+    const r = m.getBoundingClientRect();
+    if (r.bottom > innerHeight - 6) m.style.top = Math.max(6, y - r.height) + 'px';
+    if (r.right > innerWidth - 6) m.style.left = Math.max(6, innerWidth - r.width - 6) + 'px';
     setTimeout(() => document.addEventListener('mousedown', closeMenuOutside), 0);
   }
   function closeMenuOutside(e) { if (!e.target.closest('#ctxmenu')) closeMenu(); }
@@ -2093,9 +2199,9 @@ function(t){t.__bidiEngine__=t.prototype.__bidiEngine__=function(t){var n,r,i,a,
   // ---------- citation ----------
   const CITE = {
     url: 'https://vaibhavtiwaryvib.github.io/vaibhavtiwary/pipette/',
-    text: 'Tiwary, V. (2026). Pipette: a free statistics and graphing app for lab data (Version 1.1) [Computer software]. VITIRAN. https://vaibhavtiwaryvib.github.io/vaibhavtiwary/pipette/',
-    methods: 'Statistical analyses were performed and graphs were prepared with Pipette (version 1.1; Tiwary, 2026).',
-    bibtex: '@software{tiwary_pipette_2026,\n  author    = {Tiwary, Vaibhav},\n  title     = {Pipette: a free statistics and graphing app for lab data},\n  version   = {1.1},\n  year      = {2026},\n  publisher = {VITIRAN},\n  url       = {https://vaibhavtiwaryvib.github.io/vaibhavtiwary/pipette/}\n}',
+    text: 'Tiwary, V. (2026). Pipette: a free statistics and graphing app for lab data (Version 1.2) [Computer software]. VITIRAN. https://vaibhavtiwaryvib.github.io/vaibhavtiwary/pipette/',
+    methods: 'Statistical analyses were performed and graphs were prepared with Pipette (version 1.2; Tiwary, 2026).',
+    bibtex: '@software{tiwary_pipette_2026,\n  author    = {Tiwary, Vaibhav},\n  title     = {Pipette: a free statistics and graphing app for lab data},\n  version   = {1.2},\n  year      = {2026},\n  publisher = {VITIRAN},\n  url       = {https://vaibhavtiwaryvib.github.io/vaibhavtiwary/pipette/}\n}',
     mail: 'mailto:v.tiwary@uke.de?subject=' + encodeURIComponent('Pipette was used in a publication') + '&body=' + encodeURIComponent('Hi Vaibhav,\n\nPipette was used in this work:\n\nTitle / DOI / link: \n\n')
   };
   function citeDialog() {
@@ -2151,11 +2257,16 @@ function(t){t.__bidiEngine__=t.prototype.__bidiEngine__=function(t){var n,r,i,a,
     });
   }
   function tableMenu(t, x, y) {
-    menu(x, y, [{ label: 'Rename…', run: () => renameTable(t) }, { label: 'Duplicate', run: () => duplicateTable(t) }, { label: 'Delete', danger: true, run: () => deleteTable(t) }]);
+    menu(x, y, [{ label: 'Rename…', run: () => renameTable(t) }, { label: 'Duplicate', run: () => duplicateTable(t) }, { label: 'Delete table…', danger: true, run: () => deleteTable(t) }]);
   }
 
   // ---------- main ----------
-  function render() { closeMenu(); renderNav(); renderMain(); }
+  let lastTitle = null;
+  function render() {
+    closeMenu(); renderNav(); renderMain();
+    const title = P && P.name && P.name !== 'Untitled' ? P.name : '';
+    if (NATIVE && title !== lastTitle) { lastTitle = title; nativeCall({ cmd: 'title', data: title }); }
+  }
   function renderMain() {
     const main = $('#main'), t = cur();
     if (!t) {
@@ -2164,11 +2275,12 @@ function(t){t.__bidiEngine__=t.prototype.__bidiEngine__=function(t){var n,r,i,a,
     }
     upgrade(t);
     const v = P.sel.view;
-    main.innerHTML = `<div class="sheet-head"><h2 id="sh-name" title="Double-click to rename">${esc(t.name)}</h2><span class="kind">${KIND_LABEL[t.type]}</span>
+    main.innerHTML = `<div class="sheet-head"><h2 id="sh-name" title="Double-click to rename">${esc(t.name)}</h2><span class="kind">${KIND_LABEL[t.type]}</span><button class="btn sm" id="sh-menu" title="Rename, duplicate or delete this table">•••</button>
       <div class="tabs">${['data', 'results', 'graph'].map(k => `<button data-v="${k}" class="${v === k ? 'on' : ''}">${k === 'data' ? 'Data' : k === 'results' ? 'Results' : 'Graph'}</button>`).join('')}</div>
       <span class="grow"></span><span id="head-actions"></span></div><div class="body" id="body"></div>`;
     main.querySelectorAll('.tabs button').forEach(b => b.onclick = () => { P.sel.view = b.dataset.v; render(); scheduleSave(); });
     $('#sh-name').ondblclick = () => renameTable(t);
+    $('#sh-menu').onclick = e => { const r = e.currentTarget.getBoundingClientRect(); tableMenu(t, r.left, r.bottom + 4); };
     if (v === 'data') renderData(t); else if (v === 'results') renderResults(t); else renderGraph(t);
   }
 
@@ -2184,7 +2296,8 @@ function(t){t.__bidiEngine__=t.prototype.__bidiEngine__=function(t){var n,r,i,a,
   function renderData(t) {
     const body = $('#body');
     const minCols = hasX(t) ? 2 : 1;
-    $('#head-actions').innerHTML = `<span class="hint">Paste from Excel with ⌘V · </span><button class="btn" id="add-col">+ ${t.type === 'grouped' ? 'Column' : 'Group'}</button>`;
+    const rs = rowSel(t);
+    $('#head-actions').innerHTML = `<span class="hint">Paste from Excel with ⌘V · right-click a row number or column header to insert or delete · </span><button class="btn" id="add-col">+ ${t.type === 'grouped' ? 'Column' : 'Group'}</button>`;
     $('#add-col').onclick = () => { commit(); t.cols.push({ title: '' }); ensureRows(t, t.rows.length); renderData(t); scheduleSave(); };
     const nRows = Math.max(24, lastFilledRow(t) + 12);
     ensureRows(t, nRows);
@@ -2195,13 +2308,13 @@ function(t){t.__bidiEngine__=t.prototype.__bidiEngine__=function(t){var n,r,i,a,
     h += `<table class="grid"><colgroup><col>${t.cols.map(() => '<col class="data">').join('')}</colgroup><thead><tr class="letters"><th class="rn"></th>`;
     t.cols.forEach((c, i) => {
       const lab = isX(i) ? (t.type === 'twoway' ? 'Row factor' : 'X') : `Group ${letter(hasX(t) ? i - 1 : i)}`;
-      h += `<th class="${isX(i) ? 'xcol' : ''}">${lab}${isX(i) || t.cols.length <= minCols ? '' : `<button class="del" data-delcol="${i}" title="Delete column">×</button>`}</th>`;
+      h += `<th class="${isX(i) ? 'xcol' : ''}" data-colhead="${i}">${lab}${isX(i) || t.cols.length <= minCols ? '' : `<button class="del" data-delcol="${i}" title="Delete column">×</button>`}</th>`;
     });
     h += `</tr><tr><th class="rn">Title</th>`;
     t.cols.forEach((c, i) => { h += `<th class="${isX(i) ? 'xcol' : ''}"><input data-r="-1" data-c="${i}" value="${esc(c.title)}" placeholder="${isX(i) ? (t.type === 'twoway' ? 'e.g. Genotype' : 'Days') : colName(t, i)}" spellcheck="false"></th>`; });
     h += `</tr></thead><tbody>`;
     for (let r = 0; r < nRows; r++) {
-      h += `<tr><td class="rn">${r + 1}</td>`;
+      h += `<tr class="${rs.has(r) ? 'rsel' : ''}"><td class="rn" data-rn="${r}" title="Click to select · Shift/⌘-click for more · right-click for options">${r + 1}</td>`;
       t.cols.forEach((c, i) => {
         const v = t.rows[r][i] ?? '', txt = t.type === 'twoway' && i === 0;
         h += `<td class="${isX(i) ? 'xcol' : ''}${cellBad(t, i, v) ? ' bad' : ''}"><input data-r="${r}" data-c="${i}" value="${esc(v)}" ${txt ? 'style="text-align:left"' : 'inputmode="decimal"'} spellcheck="false" autocomplete="off"></td>`;
@@ -2210,7 +2323,27 @@ function(t){t.__bidiEngine__=t.prototype.__bidiEngine__=function(t){var n,r,i,a,
     }
     body.innerHTML = h + `</tbody></table></div>`;
     const grid = $('table.grid', body);
-    grid.addEventListener('focusin', e => { if (e.target.tagName === 'INPUT') pendingSnap = snap(); });
+    grid.addEventListener('focusin', e => { if (e.target.tagName === 'INPUT') { pendingSnap = snap(); if (rs.size) { rs.clear(); paintRowSel(); } } });
+    grid.addEventListener('mousedown', e => {
+      const rn = e.target.closest('td.rn[data-rn]'); if (!rn) return;
+      e.preventDefault(); if (document.activeElement && document.activeElement.blur) document.activeElement.blur();
+      const r = +rn.dataset.rn;
+      if (e.button === 2) { if (!rs.has(r)) { rs.clear(); rs.add(r); ui.anchor = r; } }
+      else if (e.shiftKey && ui.anchor != null) { const [a, b] = [Math.min(ui.anchor, r), Math.max(ui.anchor, r)]; if (!(e.metaKey || e.ctrlKey)) rs.clear(); for (let i = a; i <= b; i++) rs.add(i); }
+      else if (e.metaKey || e.ctrlKey) { rs.has(r) ? rs.delete(r) : rs.add(r); ui.anchor = r; }
+      else { rs.clear(); rs.add(r); ui.anchor = r; }
+      paintRowSel();
+    });
+    grid.addEventListener('contextmenu', e => {
+      const head = e.target.closest('[data-colhead]');
+      if (head) { e.preventDefault(); return colMenu(t, +head.dataset.colhead, e.clientX, e.clientY); }
+      const cellEl = e.target.closest('tbody td'); if (!cellEl) return;
+      const inp = cellEl.querySelector('input'), r = inp ? +inp.dataset.r : +cellEl.dataset.rn;
+      if (inp && document.activeElement === inp && inp.selectionStart !== inp.selectionEnd) return; // let the normal text menu (copy/paste) appear
+      e.preventDefault();
+      if (!rs.has(r)) { rs.clear(); rs.add(r); ui.anchor = r; paintRowSel(); }
+      rowMenu(t, e.clientX, e.clientY, inp ? +inp.dataset.c : null);
+    });
     grid.addEventListener('input', e => {
       const el = e.target; if (el.tagName !== 'INPUT') return;
       if (pendingSnap) { pushUndo(pendingSnap); pendingSnap = null; }
@@ -2251,13 +2384,76 @@ function(t){t.__bidiEngine__=t.prototype.__bidiEngine__=function(t){var n,r,i,a,
       render(); scheduleSave();
       toast(`Pasted ${lines.length} row${lines.length > 1 ? 's' : ''} × ${width} column${width > 1 ? 's' : ''}`);
     });
-    body.querySelectorAll('[data-delcol]').forEach(b => b.onclick = () => {
-      const c = +b.dataset.delcol, has = t.rows.some(r => String(r[c] ?? '').trim()) || t.cols[c].title;
-      if (has && !confirm(`Delete column “${colName(t, c)}” and its data?`)) return;
-      commit(); t.cols.splice(c, 1); t.rows.forEach(r => r.splice(c, 1));
-      if (t.type === 'grouped') for (const k of ['a', 'b', 'control']) if (+t.analysis[k] >= c && +t.analysis[k] > 0) t.analysis[k] = +t.analysis[k] - 1;
-      t.graph.colors = {}; render(); scheduleSave();
-    });
+    body.querySelectorAll('[data-delcol]').forEach(b => b.onclick = () => deleteCol(t, +b.dataset.delcol));
+  }
+
+  // ---------- row & column editing ----------
+  function rowSel(t) { if (ui.selTable !== t.id) { ui.selTable = t.id; ui.rows = new Set(); ui.anchor = null; } return ui.rows; }
+  function paintRowSel() {
+    const rs = ui.rows || new Set();
+    document.querySelectorAll('table.grid tbody tr').forEach((tr, i) => tr.classList.toggle('rsel', rs.has(i)));
+    const n = rs.size; if (n) setStatus(`${n} row${n > 1 ? 's' : ''} selected — press Delete to remove`); else setStatus('');
+  }
+  const blankRow = t => t.cols.map(() => '');
+  const plural = (n, w) => `${n} ${w}${n === 1 ? '' : 's'}`;
+  function deleteRows(t) {
+    const rs = rowSel(t); if (!rs.size) return;
+    const list = [...rs].sort((a, b) => b - a); commit();
+    list.forEach(r => { if (r < t.rows.length) t.rows.splice(r, 1); });
+    rs.clear(); ui.anchor = null; renderData(t); scheduleSave(); setStatus('');
+    toast(`Deleted ${plural(list.length, 'row')} — ⌘Z to undo`);
+  }
+  function clearRows(t) {
+    const rs = rowSel(t); if (!rs.size) return; commit();
+    rs.forEach(r => { if (t.rows[r]) t.rows[r] = blankRow(t); }); renderData(t); scheduleSave();
+  }
+  function insertRows(t, at) {
+    const rs = rowSel(t), n = Math.max(1, rs.size); commit();
+    ensureRows(t, at); t.rows.splice(at, 0, ...Array.from({ length: n }, () => blankRow(t)));
+    rs.clear(); for (let i = 0; i < n; i++) rs.add(at + i); ui.anchor = at;
+    renderData(t); scheduleSave(); paintRowSel();
+  }
+  function rowMenu(t, x, y) {
+    const rs = rowSel(t), sorted = [...rs].sort((a, b) => a - b), n = sorted.length, first = sorted[0], last = sorted[n - 1];
+    const label = n > 1 ? plural(n, 'row') : `row ${first + 1}`;
+    menu(x, y, [
+      { label: `Insert ${n > 1 ? plural(n, 'row') : 'row'} above`, run: () => insertRows(t, first) },
+      { label: `Insert ${n > 1 ? plural(n, 'row') : 'row'} below`, run: () => insertRows(t, last + 1) }, '-',
+      { label: `Clear ${label}`, run: () => clearRows(t) },
+      { label: `Delete ${label}`, danger: true, run: () => deleteRows(t) }]);
+  }
+  // keep analysis choices, pairs and colours pointing at the same columns after columns move
+  function remapCols(t, f) {
+    const an = t.analysis, g = t.graph, off = t.type === 'grouped' ? 0 : 1;
+    const fg = gi => { const v = f(+gi + off); return v < 0 ? -1 : v - off; };
+    if (t.type === 'grouped') for (const k of ['a', 'b', 'control']) { const v = f(+an[k]); an[k] = v < 0 ? 0 : v; }
+    if (t.type === 'survival' && an.control != null) { const v = fg(an.control); an.control = v < 0 ? 0 : v; }
+    if (an.pairs) an.pairs = an.pairs.map(([a, b]) => [fg(a), fg(b)]).filter(([a, b]) => a >= 0 && b >= 0);
+    if (an.cellPairs) an.cellPairs = an.cellPairs.map(([l1, c1, l2, c2]) => [l1, f(+c1), l2, f(+c2)]).filter(x => x[1] >= 0 && x[3] >= 0);
+    if (g.colors) { const nc = {}; Object.entries(g.colors).forEach(([k, v]) => { const n = fg(k); if (n >= 0) nc[n] = v; }); g.colors = nc; }
+  }
+  function deleteCol(t, c) {
+    const minCols = hasX(t) ? 2 : 1;
+    if ((hasX(t) && c === 0) || t.cols.length <= minCols) return toast('This column can’t be deleted');
+    const has = t.rows.some(r => String(r[c] ?? '').trim()) || t.cols[c].title;
+    if (has && !confirm(`Delete column “${colName(t, c)}” and its data?`)) return;
+    commit(); t.cols.splice(c, 1); t.rows.forEach(r => r.splice(c, 1));
+    remapCols(t, x => x === c ? -1 : x > c ? x - 1 : x); render(); scheduleSave();
+  }
+  function insertCol(t, at) {
+    if (hasX(t) && at < 1) at = 1;
+    commit(); t.cols.splice(at, 0, { title: '' }); t.rows.forEach(r => r.splice(at, 0, ''));
+    remapCols(t, x => x >= at ? x + 1 : x); render(); scheduleSave();
+    setTimeout(() => focusCell(-1, at), 30);
+  }
+  function clearCol(t, c) { commit(); t.rows.forEach(r => { r[c] = ''; }); renderData(t); scheduleSave(); }
+  function colMenu(t, c, x, y) {
+    const isXc = hasX(t) && c === 0, nm = isXc ? (t.type === 'twoway' ? 'row-factor column' : 'X column') : `“${colName(t, c)}”`;
+    const items = [];
+    if (!isXc) items.push({ label: 'Insert column to the left', run: () => insertCol(t, c) });
+    items.push({ label: 'Insert column to the right', run: () => insertCol(t, c + 1) }, '-', { label: `Clear ${nm}`, run: () => clearCol(t, c) });
+    if (!isXc && t.cols.length > (hasX(t) ? 2 : 1)) items.push({ label: `Delete ${nm}`, danger: true, run: () => deleteCol(t, c) });
+    menu(x, y, items);
   }
   function focusCell(r, c, keepCaret) {
     const el = document.querySelector(`table.grid input[data-r="${r}"][data-c="${c}"]`);
@@ -2288,10 +2484,16 @@ function(t){t.__bidiEngine__=t.prototype.__bidiEngine__=function(t){var n,r,i,a,
       comps.map(c => `<tr><td>${esc(c.a)} vs. ${esc(c.b)}</td><td>${fmt(c.diff)}</td>${ci ? `<td>${c.ciLow != null ? `${fmt(c.ciLow)} to ${fmt(c.ciHigh)}` : '—'}</td>` : ''}${opts.extra ? `<td>${opts.extra[1](c)}</td>` : ''}<td>${yes(c.p)}</td><td class="stars">${S.pSummary(c.p)}</td><td>${S.fmtP(c.p)}</td></tr>`).join('') + `</tbody></table>`;
   }
 
+  function pairPicker(items) {
+    const n = items.filter(i => i.on).length;
+    return `<div class="pairs-box"><div class="pairs-head"><span>Tick the pairs to compare — the correction counts only these (${n} of ${items.length} selected)</span><span class="grow"></span>
+      <button class="btn sm" data-pairs-all>Select all</button><button class="btn sm" data-pairs-none>Clear</button></div>
+      <div class="pairs-grid">${items.map((it, i) => `<label class="pair${it.on ? ' on' : ''}"><input type="checkbox" data-pair="${i}" ${it.on ? 'checked' : ''}><span>${it.label}</span></label>`).join('')}</div></div>`;
+  }
   function renderResults(t) {
     const body = $('#body'), A = analyze(t), an = t.analysis;
     $('#head-actions').innerHTML = `<button class="btn" id="copy-res">Copy results</button>`;
-    let h = `<div class="results">`;
+    let h = `<div class="results">`, pickerItems = null;
     const opt = (cur, v, l) => `<option value="${v}" ${cur === v ? 'selected' : ''}>${l}</option>`;
     if (t.type === 'grouped') {
       const groups = groupedGroups(t).filter(g => g.values.length >= 2);
@@ -2301,12 +2503,17 @@ function(t){t.__bidiEngine__=t.prototype.__bidiEngine__=function(t){var n,r,i,a,
         <optgroup label="Compare two groups">${opt(an.test, 'unpaired', 'Unpaired t test')}${opt(an.test, 'welch', 'Unpaired t test with Welch’s correction')}${opt(an.test, 'paired', 'Paired t test')}${opt(an.test, 'mw', 'Mann–Whitney test (non-parametric)')}${opt(an.test, 'wilcoxon', 'Wilcoxon matched-pairs signed rank test (non-parametric, paired)')}</optgroup>
         <optgroup label="Compare three or more groups">${opt(an.test, 'anova', 'Ordinary one-way ANOVA')}${opt(an.test, 'welchAnova', 'Welch’s ANOVA (unequal SDs)')}${opt(an.test, 'rm', 'Repeated-measures one-way ANOVA (matched rows)')}${opt(an.test, 'kw', 'Kruskal–Wallis test (non-parametric)')}${opt(an.test, 'friedman', 'Friedman test (non-parametric, matched rows)')}</optgroup></select></div>`;
       if (A.test && TWO.includes(A.test) && groups.length > 2) h += `<div class="res-opts"><label>Compare</label>${gopt('a', A.A.index)}<label>vs</label>${gopt('b', A.B.index)}</div>`;
-      if (A.test && !TWO.includes(A.test)) {
-        const po = posthocOptions(A.test);
-        h += `<div class="res-opts"><label>Multiple comparisons</label><select data-set="posthoc">${po.map(p => opt(A.post, p, p === 'none' ? 'None' : POSTHOC_NAMES[p].replace(' multiple comparisons test', '').replace('Uncorrected ', ''))).join('')}</select>`;
-        if (A.post !== 'none' && !['tukey', 'games-howell'].includes(A.post)) {
-          if (A.post !== 'dunnett') h += `<select data-set="compare">${opt(A.mode, 'all', 'Compare every pair of groups')}${opt(A.mode, 'control', 'Compare each group with a control')}</select>`;
-          if (A.mode === 'control') h += `<label>Control</label>${gopt('control', A.control.index)}`;
+      if (A.test && !TWO.includes(A.test) && A.valid) {
+        const po = posthocOptions(A.test, A.mode);
+        h += `<div class="mc-box"><div class="mc-title">Multiple comparisons</div>
+          <div class="res-opts"><label>What to compare</label><select data-set="compare">${['all', 'control', 'pairs'].map(m => opt(A.mode, m, COMPARE_LABEL[m])).join('')}</select>
+          ${A.mode === 'control' ? `<label>Control group</label>${gopt('control', A.control.index)}` : ''}</div>
+          <div class="res-opts"><label>Test</label><select data-set="posthoc">${po.map((p, i) => opt(A.post, p, posthocLabel(p, A.test) + (i === 0 && p !== 'none' ? ' (recommended)' : ''))).join('')}</select></div>`;
+        if (A.mode === 'pairs') {
+          const vg = A.valid, items = [], sel = new Set((A.chosen || []).map(([i, j]) => pairKey(i, j)));
+          for (let i = 0; i < vg.length; i++) for (let j = i + 1; j < vg.length; j++) items.push({ label: `${esc(vg[i].name)} vs ${esc(vg[j].name)}`, on: sel.has(pairKey(i, j)), value: [vg[i].index, vg[j].index] });
+          h += pairPicker(items);
+          pickerItems = items;
         }
         h += `</div>`;
       }
@@ -2314,31 +2521,72 @@ function(t){t.__bidiEngine__=t.prototype.__bidiEngine__=function(t){var n,r,i,a,
       (A.notes || []).forEach(n => h += `<div class="notice">${esc(n)}</div>`);
       h += groupedResults(t, A);
     } else if (t.type === 'twoway') {
-      h += `<div class="res-opts"><label>Analysis</label><b style="font-weight:600">Ordinary two-way ANOVA</b>
-        <label style="margin-left:14px">Multiple comparisons</label><select data-set="posthoc">${['sidak', 'tukey', 'holm-sidak', 'bonferroni', 'fisher', 'none'].map(p => opt(an.posthoc, p, p === 'none' ? 'None' : POSTHOC_NAMES[p].replace(' multiple comparisons test', '').replace('Uncorrected ', ''))).join('')}</select>
-        <select data-set="within">${opt(an.within, 'cols', 'Compare groups (columns) within each row level')}${opt(an.within, 'rows', 'Compare row levels within each group (column)')}</select></div>`;
+      const within = A.within || an.within || 'cols';
+      const po = within === 'pairs' ? ['sidak', 'holm-sidak', 'bonferroni', 'fisher', 'none'] : ['sidak', 'tukey', 'holm-sidak', 'bonferroni', 'fisher', 'none'];
+      const rf = A.D ? esc(A.D.rowFactor) : 'row factor';
+      h += `<div class="res-opts"><label>Analysis</label><b style="font-weight:600">Ordinary two-way ANOVA</b></div>
+        <div class="mc-box"><div class="mc-title">Multiple comparisons</div>
+        <div class="res-opts"><label>What to compare</label><select data-set="within">${opt(within, 'cols', 'Within each row (' + rf + '), compare the columns')}${opt(within, 'rows', 'Within each column, compare the rows (' + rf + ')')}${opt(within, 'cells', 'Compare every cell mean with every other cell mean')}${opt(within, 'pairs', 'Compare selected pairs of cells only')}</select></div>
+        <div class="res-opts"><label>Test</label><select data-set="posthoc">${po.map((p, i) => opt(A.post || an.posthoc, p, posthocLabel(p) + (i === 0 && p !== 'none' ? ' (recommended)' : ''))).join('')}</select></div>`;
+      if (within === 'pairs' && A.D && A.anova) {
+        const D = A.D, cells = [];
+        D.rows.forEach((rn, ri) => D.cols.forEach((c, ci) => { if (D.cells[ri][ci].length) cells.push({ rn, c: c.c, name: `${rn} : ${c.name}` }); }));
+        const sel = new Set((an.cellPairs || []).map(x => JSON.stringify(x))), items = [];
+        for (let i = 0; i < cells.length; i++) for (let j = i + 1; j < cells.length; j++) {
+          const v = [cells[i].rn, cells[i].c, cells[j].rn, cells[j].c], rev = [cells[j].rn, cells[j].c, cells[i].rn, cells[i].c];
+          items.push({ label: `${esc(cells[i].name)} vs ${esc(cells[j].name)}`, on: sel.has(JSON.stringify(v)) || sel.has(JSON.stringify(rev)), value: v });
+        }
+        h += pairPicker(items); pickerItems = items;
+      }
+      h += `</div>`;
       if (A.error) h += `<div class="notice">${A.error}</div>`;
       (A.notes || []).forEach(n => h += `<div class="notice">${esc(n)}</div>`);
       h += twoWayResults(t, A);
     } else {
-      h += `<div class="res-opts"><label>Compare curves with</label><select data-set="test">${opt(an.test, 'logrank', 'Log-rank (Mantel–Cox) test')}${opt(an.test, 'gb', 'Gehan–Breslow–Wilcoxon test')}</select>`;
-      if (A.valid && A.valid.length > 2) h += `<label>Pairwise correction</label><select data-set="pairwise">${opt(an.pairwise, 'bonferroni', 'Bonferroni')}${opt(an.pairwise, 'holm', 'Holm–Bonferroni')}</select>`;
-      h += `</div>`;
+      h += `<div class="res-opts"><label>Compare curves with</label><select data-set="test">${opt(an.test, 'logrank', 'Log-rank (Mantel–Cox) test')}${opt(an.test, 'gb', 'Gehan–Breslow–Wilcoxon test')}</select></div>`;
+      if (A.valid && A.valid.length > 2) {
+        const mode = A.compare || 'all';
+        h += `<div class="mc-box"><div class="mc-title">Pairwise comparisons of curves</div>
+          <div class="res-opts"><label>What to compare</label><select data-set="compare">${['all', 'control', 'pairs'].map(m => opt(mode, m, COMPARE_LABEL[m].replace('groups', 'curves').replace('group', 'curve'))).join('')}</select>
+          ${mode === 'control' ? `<label>Control curve</label><select data-set="control">${A.valid.map(g => `<option value="${g.index}" ${A.control && A.control.index === g.index ? 'selected' : ''}>${esc(g.name)}</option>`).join('')}</select>` : ''}</div>
+          <div class="res-opts"><label>Correction</label><select data-set="pairwise">${opt(an.pairwise, 'bonferroni', 'Bonferroni')}${opt(an.pairwise, 'holm', 'Holm–Bonferroni')}${opt(an.pairwise, 'none', 'No correction')}</select></div>`;
+        if (mode === 'pairs') {
+          const vg = A.valid, items = [], sel = new Set((an.pairs || []).map(([a, b]) => pairKey(+a, +b)));
+          for (let i = 0; i < vg.length; i++) for (let j = i + 1; j < vg.length; j++) items.push({ label: `${esc(vg[i].name)} vs ${esc(vg[j].name)}`, on: sel.has(pairKey(vg[i].index, vg[j].index)), value: [vg[i].index, vg[j].index] });
+          h += pairPicker(items); pickerItems = items;
+        }
+        h += `</div>`;
+      }
       if (A.error) h += `<div class="notice">${A.error}</div>`;
       h += survivalResults(t, A);
     }
     body.innerHTML = h + `<p class="hint">P value summary: ns P ≥ 0.05 · * P < 0.05 · ** P < 0.01 · *** P < 0.001 · **** P < 0.0001. All P values are two-tailed.</p></div>`;
     body.querySelectorAll('[data-set]').forEach(s => s.onchange = () => {
-      commit(); const k = s.dataset.set; t.analysis[k] = ['a', 'b', 'control'].includes(k) ? +s.value : s.value;
-      if (k === 'test' && t.type === 'grouped' && !posthocOptions(s.value).includes(t.analysis.posthoc)) t.analysis.posthoc = posthocOptions(s.value)[0];
+      commit(); const k = s.dataset.set, an = t.analysis; an[k] = ['a', 'b', 'control'].includes(k) ? +s.value : s.value;
+      if (t.type === 'grouped' && (k === 'test' || k === 'compare')) {
+        // switching what is compared picks the matching recommended test (Tukey / Dunnett / Šídák), as Prism does
+        const po = posthocOptions(an.test === 'auto' ? 'anova' : an.test, an.compare);
+        if (k === 'compare' || !po.includes(an.posthoc)) an.posthoc = po[0];
+      }
+      if (t.type === 'twoway' && k === 'within') an.posthoc = an.within === 'pairs' && an.posthoc === 'tukey' ? 'sidak' : an.posthoc;
       renderResults(t); scheduleSave();
     });
+    const savePicks = boxes => {
+      commit(); const vals = pickerItems.filter((it, i) => boxes[i].checked).map(it => it.value);
+      if (t.type === 'twoway') t.analysis.cellPairs = vals; else t.analysis.pairs = vals;
+      renderResults(t); scheduleSave();
+    };
+    const boxes = [...body.querySelectorAll('[data-pair]')];
+    boxes.forEach(b => b.onchange = () => savePicks(boxes));
+    const pa = $('[data-pairs-all]', body), pn = $('[data-pairs-none]', body);
+    if (pa) pa.onclick = () => { boxes.forEach(b => b.checked = true); savePicks(boxes); };
+    if (pn) pn.onclick = () => { boxes.forEach(b => b.checked = false); savePicks(boxes); };
     $('#copy-res').onclick = () => {
       const txt = [...body.querySelectorAll('table[data-copy]')].map(tb => {
         const cap = tb.querySelector('caption'); const lines = cap ? [cap.textContent] : [];
         tb.querySelectorAll('tr').forEach(tr => lines.push([...tr.children].map(c => c.textContent.trim()).join('\t')));
         return lines.join('\n');
-      }).join('\n\n') + '\n\nAnalysed with Pipette 1.1 (Tiwary, 2026) — ' + CITE.url;
+      }).join('\n\n') + '\n\nAnalysed with Pipette 1.2 (Tiwary, 2026) — ' + CITE.url;
       copyText(txt).then(() => toast('Results copied — paste into Excel or Word'), () => toast('Could not copy'));
     };
   }
@@ -2405,7 +2653,8 @@ function(t){t.__bidiEngine__=t.prototype.__bidiEngine__=function(t){var n,r,i,a,
       h += `<table class="rtable" data-copy><caption>Sum of ranks</caption><tbody>${A.valid.map((g, i) => `<tr><td class="k">${esc(g.name)}</td><td>${fmt(M.rankSums[i])}</td></tr>`).join('')}</tbody></table>`;
     }
     if (A.comps && A.comps.length) {
-      const title = POSTHOC_NAMES[A.post] + (A.mode === 'control' ? ` (vs. ${esc(A.control.name)})` : '');
+      const base = T === 'welchAnova' && A.post !== 'games-howell' ? posthocLabel(A.post, T).replace(' (Welch t tests)', '') + ' multiple comparisons (Welch t tests)' : POSTHOC_NAMES[A.post];
+      const title = base + (A.mode === 'control' ? ` (vs. ${esc(A.control.name)})` : A.mode === 'pairs' ? ' — selected pairs' : '');
       h += compsTable(title, A.comps, { rank: T === 'kw' || T === 'friedman' });
       if (T === 'rm') h += `<p class="hint" style="margin-top:-10px">Multiple comparisons after repeated-measures ANOVA use the pooled residual (assumes sphericity).</p>`;
     }
@@ -2434,9 +2683,10 @@ function(t){t.__bidiEngine__=t.prototype.__bidiEngine__=function(t){var n,r,i,a,
         `<tr><td>${n}</td><td>${fmt(x.ss)}</td><td>${x.df}</td><td>${fmt(x.ms)}</td><td>F (${x.df}, ${W.residual.df}) = ${fmt(x.F)}</td><td>${peq(x.p)}</td></tr>`).join('') +
       `<tr><td>Residual</td><td>${fmt(W.residual.ss)}</td><td>${W.residual.df}</td><td>${fmt(W.residual.ms)}</td><td></td><td></td></tr></tbody></table>`;
     if (A.comps.length) {
-      const title = POSTHOC_NAMES[A.post] + (A.within === 'rows' ? ' — row levels compared within each group' : ' — groups compared within each row level');
-      h += `<table class="rtable" data-copy><caption>${title}</caption><thead><tr><th>Within</th><th>Comparison</th><th>Mean diff.</th><th>95% CI of diff.</th><th>Significant?</th><th>Summary</th><th>Adjusted P value</th></tr></thead><tbody>` +
-        A.comps.map(c => `<tr><td>${esc(c.fam)}</td><td>${esc(c.la)} vs. ${esc(c.lb)}</td><td>${fmt(c.diff)}</td><td>${c.ciLow != null ? `${fmt(c.ciLow)} to ${fmt(c.ciHigh)}` : '—'}</td><td>${yes(c.p)}</td><td class="stars">${S.pSummary(c.p)}</td><td>${S.fmtP(c.p)}</td></tr>`).join('') + `</tbody></table>`;
+      const fam = A.within === 'cols' || A.within === 'rows';
+      const title = POSTHOC_NAMES[A.post] + ({ rows: ' — rows compared within each column', cells: ' — every cell mean vs. every other', pairs: ' — selected pairs of cells' }[A.within] || ' — columns compared within each row');
+      h += `<table class="rtable" data-copy><caption>${title}</caption><thead><tr>${fam ? '<th>Within</th>' : ''}<th>Comparison</th><th>Mean diff.</th><th>95% CI of diff.</th><th>Significant?</th><th>Summary</th><th>Adjusted P value</th></tr></thead><tbody>` +
+        A.comps.map(c => `<tr>${fam ? `<td>${esc(c.fam)}</td>` : ''}<td>${esc(c.la)} vs. ${esc(c.lb)}</td><td>${fmt(c.diff)}</td><td>${c.ciLow != null ? `${fmt(c.ciLow)} to ${fmt(c.ciHigh)}` : '—'}</td><td>${yes(c.p)}</td><td class="stars">${S.pSummary(c.p)}</td><td>${S.fmtP(c.p)}</td></tr>`).join('') + `</tbody></table>`;
     }
     const line = (lab, f) => `<tr><td>${lab}</td>${D.cols.map((c, ci) => `<td>${f(ci)}</td>`).join('')}</tr>`;
     h += `<table class="rtable" data-copy><caption>Cell means (mean ± SD, n)</caption><thead><tr><th>${esc(D.rowFactor)}</th>${D.cols.map(c => `<th>${esc(c.name)}</th>`).join('')}</tr></thead><tbody>` +
@@ -2461,14 +2711,16 @@ function(t){t.__bidiEngine__=t.prototype.__bidiEngine__=function(t){var n,r,i,a,
         ...(L.hr ? [[null, 'Hazard ratio (log-rank)'], [`${esc(A.valid[0].name)} / ${esc(A.valid[1].name)}`, fmt(L.hr)], ['95% CI of ratio', `${fmt(L.hrLow)} to ${fmt(L.hrHigh)}`],
           [`${esc(A.valid[1].name)} / ${esc(A.valid[0].name)}`, fmt(1 / L.hr)], ['95% CI of ratio', `${fmt(1 / L.hrHigh)} to ${fmt(1 / L.hrLow)}`]] : [])]);
     }
-    if (A.pairwise) {
-      h += `<table class="rtable" data-copy><caption>Pairwise comparisons (${t.analysis.pairwise === 'holm' ? 'Holm–Bonferroni' : 'Bonferroni'}-adjusted)</caption><thead><tr><th>Comparison</th><th>Chi square</th><th>P value</th><th>Adjusted P value</th><th>Summary</th></tr></thead><tbody>` +
+    if (A.pairwise && A.pairwise.length) {
+      h += `<table class="rtable" data-copy><caption>Pairwise comparisons (${t.analysis.pairwise === 'none' ? 'not adjusted' : (t.analysis.pairwise === 'holm' ? 'Holm–Bonferroni' : 'Bonferroni') + '-adjusted'})</caption><thead><tr><th>Comparison</th><th>Chi square</th><th>P value</th><th>Adjusted P value</th><th>Summary</th></tr></thead><tbody>` +
         A.pairwise.map(c => `<tr><td>${esc(c.a)} vs. ${esc(c.b)}</td><td>${fmt(c.chi2)}</td><td>${S.fmtP(c.p)}</td><td>${S.fmtP(c.padj)}</td><td class="stars">${S.pSummary(c.padj)}</td></tr>`).join('') + `</tbody></table>`;
     }
     if (A.valid && A.valid.length === 1) h += `<div class="notice">Add a second group to compare survival curves.</div>`;
+    if (A.pairwise && !A.pairwise.length && A.compare === 'pairs') h += `<div class="notice">Tick the pairs of curves you want to compare (above).</div>`;
     return h;
   }
   function copyText(txt) {
+    if (NATIVE) return nativeCall({ cmd: 'copyText', data: txt }).then(r => { if (r !== 'ok') throw new Error('copy failed'); });
     if (navigator.clipboard && navigator.clipboard.writeText) return navigator.clipboard.writeText(txt).catch(() => fallbackCopy(txt));
     return fallbackCopy(txt);
   }
@@ -2582,7 +2834,11 @@ function(t){t.__bidiEngine__=t.prototype.__bidiEngine__=function(t){var n,r,i,a,
       finally { btn.disabled = false; btn.textContent = 'Export graph…'; }
     };
     $('#copy-img').onclick = async () => {
-      try { await X.copyPng(svgFor(t)); toast('Graph copied — paste it into PowerPoint, Keynote or Word'); }
+      try {
+        if (NATIVE) { const ok = await nativeCall({ cmd: 'copyImage', data: await blobToB64(await X.makeBlob(svgFor(t), 'png', 300)) }); if (ok !== 'ok') throw new Error(); }
+        else await X.copyPng(svgFor(t));
+        toast('Graph copied — paste it into PowerPoint, Keynote or Word');
+      }
       catch (e) { toast('Copy is not available here — use Export instead'); }
     };
   }
@@ -2599,6 +2855,14 @@ function(t){t.__bidiEngine__=t.prototype.__bidiEngine__=function(t){var n,r,i,a,
       pushUndo(); newProject(false); render(); scheduleSave(); newTableDialog();
     };
     document.addEventListener('keydown', e => {
+      const inField = /INPUT|TEXTAREA|SELECT/.test(document.activeElement.tagName);
+      if (!inField && P && P.sel && P.sel.view === 'data' && ui.rows && ui.rows.size && !document.querySelector('.overlay')) {
+        const t = cur();
+        if (t && ui.selTable === t.id) {
+          if (e.key === 'Delete' || e.key === 'Backspace') { e.preventDefault(); return deleteRows(t); }
+          if (e.key === 'Escape') { ui.rows.clear(); return paintRowSel(); }
+        }
+      }
       const mod = e.metaKey || e.ctrlKey; if (!mod) return;
       const k = e.key.toLowerCase(), inInput = /INPUT|TEXTAREA|SELECT/.test(document.activeElement.tagName);
       if (k === 's') { e.preventDefault(); saveProject(); }
@@ -2608,17 +2872,42 @@ function(t){t.__bidiEngine__=t.prototype.__bidiEngine__=function(t){var n,r,i,a,
     });
     document.addEventListener('dragover', e => { e.preventDefault(); });
     document.addEventListener('drop', e => { e.preventDefault(); const f = e.dataTransfer.files[0]; if (f && /\.(pipette|json)$/i.test(f.name)) openProjectFile(f); });
-    window.addEventListener('beforeunload', () => { try { localStorage.setItem(STORE, JSON.stringify(P)); } catch (e) { } });
+    window.addEventListener('beforeunload', () => persist());
   }
   function boot() {
     let saved = null;
-    try { saved = JSON.parse(localStorage.getItem(STORE) || 'null'); } catch (e) { }
+    try { saved = window.__pipetteAutosave || JSON.parse(localStorage.getItem(STORE) || 'null'); } catch (e) { }
     if (saved && Array.isArray(saved.tables)) { P = saved; P.tables.forEach(upgrade); if (!cur()) P.sel = P.tables[0] ? { id: P.tables[0].id, view: 'data' } : null; }
     else newProject(true);
     bindToolbar(); render();
     setStatus(saved ? 'Restored your last session' : 'Example data loaded');
   }
-  window.Pipette = { analyze, svgFor, get project() { return P; }, set project(v) { P = v; render(); }, render };
+  // Commands from the Mac menu bar. Returns 'native' when the text field should handle it (e.g. undo while typing).
+  function command(name) {
+    const inField = /INPUT|TEXTAREA/.test(document.activeElement && document.activeElement.tagName);
+    switch (name) {
+      case 'newTable': closeOverlays(); newTableDialog(); break;
+      case 'newProject': closeOverlays(); $('#tb-newproj').click(); break;
+      case 'open': openDialog(); break;
+      case 'save': saveProject(); break;
+      case 'undo': if (inField) return 'native'; undo(); break;
+      case 'redo': if (inField) return 'native'; redo(); break;
+      case 'cite': closeOverlays(); citeDialog(); break;
+      case 'deleteRows': { const t = cur(); if (t && P.sel.view === 'data' && ui.rows && ui.rows.size) deleteRows(t); else return 'native'; break; }
+      case 'flush': clearTimeout(saveTimer); return JSON.stringify(P);
+    }
+    return 'ok';
+  }
+  function closeOverlays() { document.querySelectorAll('.overlay').forEach(o => o.remove()); closeMenu(); }
+  function openText(name, text) {
+    try {
+      const o = JSON.parse(text); if (!o || !Array.isArray(o.tables)) throw new Error();
+      pushUndo(); P = o; P.tables.forEach(upgrade); P.name = String(name || 'Untitled').replace(/\.(pipette|json)$/i, '');
+      if (!P.sel || !cur()) P.sel = P.tables[0] ? { id: P.tables[0].id, view: 'data' } : null;
+      render(); scheduleSave(); toast(`Opened ${name}`);
+    } catch (e) { alert('This file could not be opened as a Pipette project.'); }
+  }
+  window.Pipette = { analyze, svgFor, command, openText, get project() { return P; }, set project(v) { P = v; render(); }, render };
   boot();
 })();
 </script>

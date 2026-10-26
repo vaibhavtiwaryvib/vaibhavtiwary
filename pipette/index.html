@@ -19,7 +19,7 @@
     "@context": "https://schema.org",
     "@type": "SoftwareApplication",
     "name": "Pipette",
-    "softwareVersion": "1.1",
+    "softwareVersion": "1.2",
     "applicationCategory": "ScientificApplication",
     "operatingSystem": "macOS, Windows, web browser",
     "offers": { "@type": "Offer", "price": "0", "priceCurrency": "EUR" },
@@ -175,11 +175,11 @@
       </div>
       <p class="lede">A lightweight statistics and graphing app for everyday lab data. Paste your numbers, get the right test, and export a publication-ready graph in a few clicks.</p>
       <div class="actions" id="download">
-        <a class="btn btn-glow" href="Pipette.dmg" download><i class="fab fa-apple"></i><span>Download for Mac<small>Pipette.dmg · 1.5 MB</small></span></a>
+        <a class="btn btn-glow" href="Pipette.dmg" download><i class="fab fa-apple"></i><span>Download for Mac<small>Pipette.dmg · 1.2 MB · Apple silicon &amp; Intel</small></span></a>
         <a class="btn btn-light" href="Pipette.exe" download><i class="fab fa-windows"></i><span>Download for Windows<small>Pipette.exe · 0.8 MB</small></span></a>
         <a class="btn btn-outline" href="app/" target="_blank" rel="noopener"><i class="fas fa-globe"></i><span>Open in your browser<small>no install needed</small></span></a>
       </div>
-      <p class="meta">Version <b>1.1</b> · Published by <b>VITIRAN</b> · Created by <a href="../" style="color:#fff;text-decoration:underline;text-underline-offset:3px">Vaibhav Tiwary</a></p>
+      <p class="meta">Version <b>1.2</b> · Published by <b>VITIRAN</b> · Created by <a href="../" style="color:#fff;text-decoration:underline;text-underline-offset:3px">Vaibhav Tiwary</a></p>
       <img class="shot-hero" src="img/ui-graph.jpg" alt="Pipette showing a scatter dot plot with mean and SD and significance stars">
     </div>
   </div>
@@ -194,11 +194,12 @@
           <li><b>Grouped</b>: one column per group, replicates in rows</li>
           <li><b>Two-way</b>: a row factor (e.g. genotype) × groups (e.g. treatment)</li>
           <li><b>Survival</b>: time + 1 = death / 0 = censored</li>
-          <li>Paste straight from Excel, including headers and comma decimals</li></ul></div>
+          <li>Paste straight from Excel, including headers and comma decimals</li>
+          <li>Insert, clear or delete rows and columns (right-click, or select rows and press Delete)</li></ul></div>
         <div class="feat"><h3><i class="fas fa-square-root-variable" style="background:var(--mag)"></i>Statistics</h3><ul>
           <li>Unpaired, Welch’s and paired t tests; Mann–Whitney; Wilcoxon</li>
           <li>One-way, Welch’s and repeated-measures ANOVA; Kruskal–Wallis; Friedman</li>
-          <li>Tukey, Dunnett, Šídák, Holm–Šídák, Bonferroni, Fisher’s LSD, Games–Howell, Dunn</li>
+          <li>Multiple comparisons like Prism: every pair, each vs. a control, or only the pairs you pick — Tukey, Dunnett, Šídák, Holm–Šídák, Bonferroni, Fisher’s LSD, Games–Howell, Dunn</li>
           <li>Two-way ANOVA, Shapiro–Wilk normality test, descriptive statistics</li></ul></div>
         <div class="feat"><h3><i class="fas fa-chart-column" style="background:var(--gfp)"></i>Graphs</h3><ul>
           <li>Scatter dot plots, bars, box &amp; whiskers, violin, before–after, mean ± error</li>
@@ -237,7 +238,7 @@
           <li>Open <b>Pipette.dmg</b> and drag <b>Pipette</b> into <b>Applications</b>.</li>
           <li>Double-click Pipette. macOS will say it can’t verify the developer.</li>
           <li><b>macOS 15 or newer:</b> open System Settings → Privacy &amp; Security, scroll down and click <b>Open Anyway</b>.<br><b>macOS 14 or older:</b> right-click Pipette → <b>Open</b> → <b>Open</b>.</li></ol>
-          <p class="note">Pipette opens in your web browser and works fully offline.</p></div>
+          <p class="note">A real Mac app: its own window, menus and Save/Open dialogs — no browser needed. Works fully offline, macOS 11 or newer.</p></div>
         <div class="step"><h3><i class="fab fa-windows"></i> Windows</h3><ol>
           <li>Download <b>Pipette.exe</b> and double-click it.</li>
           <li>If a blue “Windows protected your PC” screen appears, click <b>More info</b> → <b>Run anyway</b>.</li>
@@ -259,7 +260,7 @@
       <div class="source-card">
         <div class="source-text">
           <b><i class="fas fa-code"></i> See exactly how it works</b>
-          <p>Pipette’s full source code is public, so you don’t have to take the statistics on trust. The whole app is one readable file: the statistical tests, the graphs and the export are all in plain JavaScript. The Mac and Windows downloads run this same code.</p>
+          <p>Pipette’s full source code is public, so you don’t have to take the statistics on trust. The whole app is one readable file: the statistical tests, the graphs and the export are all in plain JavaScript. The Mac and Windows downloads run this same code inside a small native window (<a href="https://github.com/vaibhavtiwaryvib/vaibhavtiwary/tree/main/pipette/mac" target="_blank" rel="noopener" style="text-decoration:underline;text-underline-offset:3px">Mac source</a>, <a href="https://github.com/vaibhavtiwaryvib/vaibhavtiwary/tree/main/pipette/windows" target="_blank" rel="noopener" style="text-decoration:underline;text-underline-offset:3px">Windows source</a>).</p>
           <p class="source-sub">Spotted something that looks wrong, or a result that differs from your usual software? Please <a href="mailto:v.tiwary@uke.de?subject=Pipette%3A%20possible%20issue">tell me</a> and I’ll check it.</p>
         </div>
         <div class="source-actions">
@@ -300,7 +301,7 @@
     </div>
   </section>
   <footer>
-    <div class="wrap"><span>© 2026 VITIRAN · Pipette 1.1 · <a href="#cite">Cite</a></span><span>Made by <a href="../">Vaibhav Tiwary</a> · <a href="mailto:v.tiwary@uke.de">v.tiwary@uke.de</a></span></div>
+    <div class="wrap"><span>© 2026 VITIRAN · Pipette 1.2 · <a href="#cite">Cite</a></span><span>Made by <a href="../">Vaibhav Tiwary</a> · <a href="mailto:v.tiwary@uke.de">v.tiwary@uke.de</a></span></div>
   </footer>
   <div class="lightbox" id="lb"><img alt=""></div>
   <script>
@@ -310,9 +311,9 @@
     document.addEventListener('keydown', e => { if (e.key === 'Escape') lb.classList.remove('open'); });
 
     const CITE = {
-      text: 'Tiwary, V. (2026). Pipette: a free statistics and graphing app for lab data (Version 1.1) [Computer software]. VITIRAN. https://vaibhavtiwaryvib.github.io/vaibhavtiwary/pipette/',
-      bibtex: '@software{tiwary_pipette_2026,\n  author    = {Tiwary, Vaibhav},\n  title     = {Pipette: a free statistics and graphing app for lab data},\n  version   = {1.1},\n  year      = {2026},\n  publisher = {VITIRAN},\n  url       = {https://vaibhavtiwaryvib.github.io/vaibhavtiwary/pipette/}\n}',
-      methods: 'Statistical analyses were performed and graphs were prepared with Pipette (version 1.1; Tiwary, 2026).'
+      text: 'Tiwary, V. (2026). Pipette: a free statistics and graphing app for lab data (Version 1.2) [Computer software]. VITIRAN. https://vaibhavtiwaryvib.github.io/vaibhavtiwary/pipette/',
+      bibtex: '@software{tiwary_pipette_2026,\n  author    = {Tiwary, Vaibhav},\n  title     = {Pipette: a free statistics and graphing app for lab data},\n  version   = {1.2},\n  year      = {2026},\n  publisher = {VITIRAN},\n  url       = {https://vaibhavtiwaryvib.github.io/vaibhavtiwary/pipette/}\n}',
+      methods: 'Statistical analyses were performed and graphs were prepared with Pipette (version 1.2; Tiwary, 2026).'
     };
     let citeFmt = 'text';
     const co = document.getElementById('cite-out'), cc = document.getElementById('cite-copy');

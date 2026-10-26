@@ -1,0 +1,35 @@
+Pipette 1.2 – statistics & graphs for lab data
+Published by VITIRAN
+================================================
+
+INSTALL
+1. Drag "Pipette" onto the "Applications" folder in this window.
+2. Open your Applications folder and double-click Pipette.
+   The first time, macOS will say it can't verify the developer
+   (the app is free and isn't from the App Store). To allow it once:
+     • macOS 15 Sequoia or newer: click "Done", then open
+       System Settings → Privacy & Security, scroll down and click
+       "Open Anyway" next to Pipette, and confirm.
+     • macOS 14 or older: right-click (Control-click) Pipette →
+       Open → Open.
+   After that it opens normally with a double-click.
+
+Pipette 1.2 is a real Mac app: it opens in its own window, with its
+own menus, Dock icon and Save/Open dialogs. No browser needed, and it
+works fully offline — nothing is uploaded anywhere.
+Works on Apple silicon (M1/M2/M3/M4) and Intel Macs, macOS 11 or newer.
+
+YOUR DATA
+• Your work is autosaved continuously, but use File → Save (⌘S) to keep
+  a .pipette project file – that's your real backup. Double-click a
+  .pipette file in Finder to open it in Pipette.
+• Coming from the browser version? Save your project there (⌘S), then
+  open that .pipette file here.
+
+NEW IN 1.2
+• Delete or insert rows and columns: click a row number (Shift/⌘-click
+  for more) and press Delete, or right-click a row number, a cell or a
+  column header.
+• Multiple comparisons like Prism: compare every pair, each group vs a
+  control, or only the pairs you tick — with the matching test
+  (Tukey, Dunnett, Šídák, Holm–Šídák, Bonferroni, Fisher's LSD, Dunn).

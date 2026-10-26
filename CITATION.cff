@@ -2,8 +2,8 @@ cff-version: 1.2.0
 message: "If Pipette helped with work you publish, a citation is appreciated (never required). Thank you!"
 title: "Pipette: a free statistics and graphing app for lab data"
 type: software
-version: "1.1"
-date-released: 2026-10-17
+version: "1.2"
+date-released: 2026-10-26
 authors:
   - family-names: Tiwary
     given-names: Vaibhav
