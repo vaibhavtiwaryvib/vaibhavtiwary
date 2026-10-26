@@ -1874,26 +1874,32 @@ function(t){t.__bidiEngine__=t.prototype.__bidiEngine__=function(t){var n,r,i,a,
     if (!root.fflate) throw new Error('Zip support is missing.');
     const files = root.fflate.unzipSync(bytes), dec = new TextDecoder('utf-8'), notes = [], tables = [];
     const names = Object.keys(files);
-    const csvs = names.filter(n => /\.csv$/i.test(n) && /data|table/i.test(n)).concat(names.filter(n => /\.csv$/i.test(n) && !/data|table/i.test(n) && !/result|analys/i.test(n)));
+    // A .prism file holds data tables AND analysis results as CSV. Guess which is which from the folder names
+    // (and any JSON next to the CSV); the user confirms in a checklist before anything is imported.
+    const RESULT = /analys|result|graph|layout|info|note|fit|stat/i;
+    const csvs = names.filter(n => /\.csv$/i.test(n));
     csvs.forEach((path, idx) => {
+      const segs = path.split('/').slice(0, -1);
       const rows = parseCSV(dec.decode(files[path])).filter(r => r.some(v => v.trim() !== ''));
       if (!rows.length) return;
       const dir = path.replace(/[^/]*$/, '');
       let title = '';
+      let jsonKind = '';
       for (const j of names.filter(n => n.startsWith(dir) && /\.json$/i.test(n) && n.slice(dir.length).indexOf('/') < 0)) {
-        try { title = findTitle(JSON.parse(dec.decode(files[j]))); } catch (e) { }
-        if (title) break;
+        try { const o = JSON.parse(dec.decode(files[j])); title = title || findTitle(o); for (const k of ['type', 'kind', '$type', 'sheetType', 'class']) if (typeof o[k] === 'string') jsonKind += ' ' + o[k]; } catch (e) { }
       }
+      const isResult = segs.some(x => RESULT.test(x)) || RESULT.test(jsonKind);
       let header = null;
       while (rows.length && !rows[0].some(isNum)) header = rows.shift();
       const width = Math.max(...rows.map(r => r.length), header ? header.length : 0);
       const keep = [...Array(width).keys()].filter(c => rows.some(r => isNum(r[c] || '')));
       if (!keep.length) return;
-      tables.push({ type: 'grouped', name: title || `Prism table ${idx + 1}`, cols: keep.map(c => ({ title: header ? (header[c] || '').trim() : '' })), rows: rows.map(r => keep.map(c => (r[c] || '').trim())) });
+      tables.push({ type: 'grouped', path, guess: isResult ? 'result' : 'data', name: title || `Prism table ${idx + 1}`, cols: keep.map(c => ({ title: header ? (header[c] || '').trim() : '' })), rows: rows.map(r => keep.map(c => (r[c] || '').trim())) });
     });
-    if (tables.length) notes.push('Reading the new .prism format is still experimental: each data table was brought in as a Grouped table. Please check the numbers, and change the table kind if needed. Saving from Prism as .pzfx (File → Save As) gives the most reliable import.');
+    tables.sort((a, b) => (a.guess === 'result') - (b.guess === 'result'));
+    if (tables.length) notes.push('Reading the new .prism format is still experimental: data tables come in as Grouped tables. Please check the numbers. Saving from Prism as .pzfx (File → Save As) gives the most reliable import.');
     else notes.push('No data tables could be found in this .prism file. In Prism, use File → Save As and choose the .pzfx format, then open that file in Pipette.');
-    return { tables, notes };
+    return { tables, notes, choose: tables.length > 1 };
   }
 
   function fromBytes(name, bytes) {
@@ -2253,10 +2259,11 @@ function(t){t.__bidiEngine__=t.prototype.__bidiEngine__=function(t){var n,r,i,a,
     if (ok) toast('Project saved');
   }
   const PRISM_EXT = /\.(pzfx|prism|pzf)$/i;
-  function importPrism(name, bytes) {
-    let res;
-    try { res = window.PrismImport.fromBytes(name, bytes); }
+  function importPrism(name, bytes, given) {
+    let res = given;
+    try { if (!res) res = window.PrismImport.fromBytes(name, bytes); }
     catch (e) { alert(e.message || 'This Prism file could not be read.'); return; }
+    if (res.choose && !res.chosen) return chooseTables(name, res);
     const made = res.tables.map(x => {
       const t = { id: uid(), type: x.type, name: x.name, cols: x.cols, rows: x.rows.map(r => { const a = r.slice(0, x.cols.length); while (a.length < x.cols.length) a.push(''); return a; }), analysis: defaultAnalysis(x.type), graph: defaultGraph(x.type) };
       upgrade(t); return { t, n: t.rows.length };
@@ -2269,6 +2276,30 @@ function(t){t.__bidiEngine__=t.prototype.__bidiEngine__=function(t){var n,r,i,a,
     }
     importReport(name, made, res.notes, counts);
   }
+  // .prism files mix data tables with analysis-result tables: let the user tick which ones to bring in
+  function chooseTables(name, res) {
+    const ov = document.createElement('div'); ov.className = 'overlay';
+    const nData = res.tables.filter(t => t.guess !== 'result').length;
+    ov.innerHTML = `<div class="dialog" role="dialog" aria-label="Choose tables" style="width:min(620px,94vw)">
+      <h3>Which tables are your data?</h3>
+      <p class="sub">${esc(name)} contains ${res.tables.length} tables. Prism stores analysis results as tables too — ${nData ? 'those are unticked' : 'tick only your data tables'}. Tick the data tables to import.</p>
+      <div style="max-height:46vh;overflow:auto;border:1px solid var(--line);border-radius:8px;padding:4px">
+      ${res.tables.map((t, i) => `<label class="pair${t.guess !== 'result' ? ' on' : ''}" style="align-items:flex-start;padding:7px 9px">
+        <input type="checkbox" data-ti="${i}" ${t.guess !== 'result' ? 'checked' : ''} style="margin-top:3px">
+        <span><b>${esc(t.name)}</b> <span class="hint">${t.rows.length} rows × ${t.cols.length} columns${t.guess === 'result' ? ' · looks like analysis results' : ''}</span><br>
+        <span class="hint" style="font-size:11px">${esc(t.cols.map(c => c.title).filter(Boolean).slice(0, 6).join(', '))}${t.cols.length > 6 ? ', …' : ''} — ${esc(t.path || '')}</span></span></label>`).join('')}
+      </div>
+      <div class="row"><span class="grow"></span><button class="btn" id="ct-cancel">Cancel</button><button class="btn primary" id="ct-ok">Import</button></div></div>`;
+    document.body.appendChild(ov);
+    const boxes = [...ov.querySelectorAll('[data-ti]')];
+    boxes.forEach(b => b.onchange = () => b.closest('label').classList.toggle('on', b.checked));
+    const close = () => ov.remove();
+    $('#ct-cancel', ov).onclick = close;
+    $('#ct-ok', ov).onclick = () => { const keep = res.tables.filter((t, i) => boxes[i].checked); close(); importChosen(name, { ...res, tables: keep, chosen: true }); };
+    ov.addEventListener('keydown', e => { if (e.key === 'Escape') close(); });
+    $('#ct-ok', ov).focus();
+  }
+  function importChosen(name, res) { importPrism(name, null, res); }
   function importReport(name, made, notes, counts) {
     const ov = document.createElement('div'); ov.className = 'overlay';
     ov.innerHTML = `<div class="dialog" role="dialog" aria-label="Prism import" style="width:min(560px,94vw)">
