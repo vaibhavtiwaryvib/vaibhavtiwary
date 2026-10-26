@@ -29,6 +29,12 @@
       <key>LSItemContentTypes</key><array><string>com.vitiran.pipette.project</string></array>
       <key>CFBundleTypeExtensions</key><array><string>pipette</string></array>
     </dict>
+    <dict>
+      <key>CFBundleTypeName</key><string>GraphPad Prism File</string>
+      <key>CFBundleTypeRole</key><string>Viewer</string>
+      <key>LSHandlerRank</key><string>Alternate</string>
+      <key>CFBundleTypeExtensions</key><array><string>pzfx</string><string>prism</string></array>
+    </dict>
   </array>
   <key>UTExportedTypeDeclarations</key>
   <array>

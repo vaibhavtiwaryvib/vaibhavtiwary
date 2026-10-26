@@ -33,3 +33,6 @@ NEW IN 1.2
 • Multiple comparisons like Prism: compare every pair, each group vs a
   control, or only the pairs you tick — with the matching test
   (Tukey, Dunnett, Šídák, Holm–Šídák, Bonferroni, Fisher's LSD, Dunn).
+• Open GraphPad Prism files (.pzfx; .prism is experimental): File → Open
+  or Import Prism File (⇧⌘I). The data tables come in — column, grouped
+  and survival tables — and you re-make the analyses and graphs here.

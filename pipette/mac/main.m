@@ -126,6 +126,15 @@ static NSString *const kVersion = @"1.2";
     for (NSURL *url in urls) [self openProjectAtURL:url];
 }
 - (void)openProjectAtURL:(NSURL *)url {
+    NSString *ext = url.pathExtension.lowercaseString;
+    if ([@[@"pzfx", @"prism", @"pzf"] containsObject:ext]) {   // GraphPad Prism file: import its data tables
+        NSData *data = [NSData dataWithContentsOfURL:url];
+        if (!data) { [self alert:@"This file could not be opened." info:url.lastPathComponent]; return; }
+        [self.web callAsyncJavaScript:@"Pipette.importBytes(name, b64)"
+                            arguments:@{ @"name": url.lastPathComponent, @"b64": [data base64EncodedStringWithOptions:0] }
+                              inFrame:nil inContentWorld:[WKContentWorld pageWorld] completionHandler:nil];
+        return;
+    }
     NSString *text = [NSString stringWithContentsOfURL:url encoding:NSUTF8StringEncoding error:nil];
     if (!text) { [self alert:@"This file could not be opened." info:url.lastPathComponent]; return; }
     [self.web callAsyncJavaScript:@"Pipette.openText(name, text)"
@@ -205,7 +214,7 @@ decisionHandler:(void (^)(WKNavigationActionPolicy))decisionHandler {
         if (!self.pageReady || [u.path isEqualToString:home.path]) { decisionHandler(WKNavigationActionPolicyAllow); return; }
         // a file dropped onto the window: open projects, ignore everything else
         decisionHandler(WKNavigationActionPolicyCancel);
-        if ([u.pathExtension.lowercaseString isEqualToString:@"pipette"] || [u.pathExtension.lowercaseString isEqualToString:@"json"]) [self openProjectAtURL:u];
+        if ([@[@"pipette", @"json", @"pzfx", @"prism", @"pzf"] containsObject:u.pathExtension.lowercaseString]) [self openProjectAtURL:u];
         return;
     }
     decisionHandler(WKNavigationActionPolicyCancel);
@@ -299,10 +308,10 @@ initiatedByFrame:(WKFrameInfo *)frame completionHandler:(void (^)(NSArray<NSURL 
     if (self.window.attachedSheet) return;
     NSOpenPanel *p = [NSOpenPanel openPanel];
     p.canChooseFiles = YES; p.canChooseDirectories = NO; p.allowsMultipleSelection = NO;
-    p.message = @"Choose a Pipette project (.pipette)";
+    p.message = @"Choose a Pipette project (.pipette) or a GraphPad Prism file (.pzfx, .prism)";
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wdeprecated-declarations"
-    p.allowedFileTypes = @[@"pipette", @"json"];
+    p.allowedFileTypes = @[@"pipette", @"json", @"pzfx", @"prism", @"pzf"];
 #pragma clang diagnostic pop
     [p beginSheetModalForWindow:self.window completionHandler:^(NSModalResponse r) {
         if (r == NSModalResponseOK && p.URL) [self openProjectAtURL:p.URL];
@@ -356,6 +365,7 @@ initiatedByFrame:(WKFrameInfo *)frame completionHandler:(void (^)(NSArray<NSURL 
     [file addItem:[self item:@"New Data Table…" action:@selector(newTable:) key:@"n" mods:C target:self]];
     [file addItem:[self item:@"New Project" action:@selector(newProject:) key:@"n" mods:CS target:self]];
     [file addItem:[self item:@"Open…" action:@selector(openProject:) key:@"o" mods:C target:self]];
+    [file addItem:[self item:@"Import Prism File…" action:@selector(openProject:) key:@"i" mods:CS target:self]];
     NSMenuItem *recent = [[NSMenuItem alloc] initWithTitle:@"Open Recent" action:nil keyEquivalent:@""];
     NSMenu *recentMenu = [[NSMenu alloc] initWithTitle:@"Open Recent"];
     [recentMenu addItem:[self item:@"Clear Menu" action:@selector(clearRecentDocuments:) key:@"" mods:0 target:nil]];
