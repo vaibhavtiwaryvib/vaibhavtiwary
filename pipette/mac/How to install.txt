@@ -1,4 +1,4 @@
-Pipette 1.2 – statistics & graphs for lab data
+Pipette 1.3 – statistics & graphs for lab data
 Published by VITIRAN
 ================================================
 
@@ -14,17 +14,30 @@ INSTALL
        Open → Open.
    After that it opens normally with a double-click.
 
-Pipette 1.2 is a real Mac app: it opens in its own window, with its
+Pipette is a real Mac app: it opens in its own window, with its
 own menus, Dock icon and Save/Open dialogs. No browser needed, and it
 works fully offline — nothing is uploaded anywhere.
 Works on Apple silicon (M1/M2/M3/M4) and Intel Macs, macOS 11 or newer.
 
 YOUR DATA
-• Your work is autosaved continuously, but use File → Save (⌘S) to keep
-  a .pipette project file – that's your real backup. Double-click a
-  .pipette file in Finder to open it in Pipette.
+• Save your project with File → Save (⌘S). After the first time, ⌘S
+  saves straight back into the same .pipette file; File → Save As (⇧⌘S)
+  makes a copy. Double-click a .pipette file in Finder to open it.
+• New Project and Open start clean: if you have unsaved changes, Pipette
+  asks whether to save them first (also when you quit). If Pipette ever
+  closes unexpectedly, the welcome screen offers to restore your work.
 • Coming from the browser version? Save your project there (⌘S), then
   open that .pipette file here.
+
+NEW IN 1.3
+• Select like a spreadsheet: drag across cells, Shift-click, or click row
+  numbers / column letters (Shift or ⌘ for more). Then:
+  ⌫ clears cells or deletes whole rows/columns, ⌘C / ⌘X / ⌘V copy, cut
+  and paste blocks, ⌘A selects everything, and right-click shows
+  insert / delete / "delete cells and shift up".
+• Exclude values like Prism: select them and press ⌘E. They stay visible
+  in blue italics with a *, but are left out of analyses and graphs.
+• Welcome screen on start, and a proper "Save changes?" question.
 
 NEW IN 1.2
 • Delete or insert rows and columns: click a row number (Shift/⌘-click

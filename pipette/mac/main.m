@@ -8,7 +8,7 @@
 #import <Cocoa/Cocoa.h>
 #import <WebKit/WebKit.h>
 
-static NSString *const kVersion = @"1.2";
+static NSString *const kVersion = @"1.3";
 
 @interface PipetteApp : NSObject <NSApplicationDelegate, NSWindowDelegate, WKScriptMessageHandlerWithReply, WKUIDelegate, WKNavigationDelegate>
 @property (strong) NSWindow *window;
@@ -16,6 +16,7 @@ static NSString *const kVersion = @"1.2";
 @property (strong) NSMutableArray<NSURL *> *pendingOpen;
 @property (assign) BOOL pageReady;
 @property (assign) BOOL terminating;
+@property (strong) NSURL *projectURL;   // the .pipette file this project was opened from / last saved to
 @end
 
 @implementation PipetteApp
@@ -91,21 +92,23 @@ static NSString *const kVersion = @"1.2";
 }
 
 - (BOOL)applicationShouldTerminateAfterLastWindowClosed:(NSApplication *)app { return YES; }
+// Closing the window = quitting (one project per window), so it goes through the same "Save changes?" check.
+- (BOOL)windowShouldClose:(NSWindow *)w { [NSApp terminate:nil]; return NO; }
 - (BOOL)applicationSupportsSecureRestorableState:(NSApplication *)app { return YES; }
 
 // Make sure the very latest edits are on disk before quitting.
 - (NSApplicationTerminateReply)applicationShouldTerminate:(NSApplication *)app {
     if (!self.web || !self.pageReady || self.terminating) return NSTerminateNow;
     self.terminating = YES;
-    __block BOOL done = NO;
-    [self.web evaluateJavaScript:@"window.Pipette ? Pipette.command('flush') : ''" completionHandler:^(id result, NSError *err) {
-        if (done) return; done = YES;
-        if ([result isKindOfClass:[NSString class]]) [self writeAutosave:result];
-        [NSApp replyToApplicationShouldTerminate:YES];
+    [self.window makeKeyAndOrderFront:nil];
+    // The page asks "Save changes?" if needed and resolves to 'ok' (quit) or 'cancel' (stay).
+    [self.web callAsyncJavaScript:@"return window.Pipette ? await Pipette.quitCheck() : 'ok'"
+                        arguments:@{} inFrame:nil inContentWorld:[WKContentWorld pageWorld]
+                completionHandler:^(id result, NSError *err) {
+        BOOL quit = err != nil || ![result isEqual:@"cancel"];
+        self.terminating = quit;
+        [NSApp replyToApplicationShouldTerminate:quit];
     }];
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        if (done) return; done = YES; [NSApp replyToApplicationShouldTerminate:YES];
-    });
     return NSTerminateLater;
 }
 
@@ -125,22 +128,30 @@ static NSString *const kVersion = @"1.2";
     [self.pendingOpen removeAllObjects];
     for (NSURL *url in urls) [self openProjectAtURL:url];
 }
-- (void)openProjectAtURL:(NSURL *)url {
+- (void)openProjectAtURL:(NSURL *)url { [self openURL:url import:NO]; }
+// import:NO  = open as the project (the page first asks to save unsaved changes)
+// import:YES = add a Prism file's data tables to the current project
+- (void)openURL:(NSURL *)url import:(BOOL)import {
     NSString *ext = url.pathExtension.lowercaseString;
-    if ([@[@"pzfx", @"prism", @"pzf"] containsObject:ext]) {   // GraphPad Prism file: import its data tables
+    if ([@[@"pzfx", @"prism", @"pzf"] containsObject:ext]) {   // GraphPad Prism file: its data tables
         NSData *data = [NSData dataWithContentsOfURL:url];
         if (!data) { [self alert:@"This file could not be opened." info:url.lastPathComponent]; return; }
-        [self.web callAsyncJavaScript:@"Pipette.importBytes(name, b64)"
-                            arguments:@{ @"name": url.lastPathComponent, @"b64": [data base64EncodedStringWithOptions:0] }
+        [self.web callAsyncJavaScript:@"Pipette.importBytes(name, b64, mode)"
+                            arguments:@{ @"name": url.lastPathComponent, @"b64": [data base64EncodedStringWithOptions:0], @"mode": import ? @"import" : @"open" }
                               inFrame:nil inContentWorld:[WKContentWorld pageWorld] completionHandler:nil];
         return;
     }
     NSString *text = [NSString stringWithContentsOfURL:url encoding:NSUTF8StringEncoding error:nil];
     if (!text) { [self alert:@"This file could not be opened." info:url.lastPathComponent]; return; }
-    [self.web callAsyncJavaScript:@"Pipette.openText(name, text)"
+    [self.web callAsyncJavaScript:@"return await Pipette.openText(name, text)"
                         arguments:@{ @"name": url.lastPathComponent ?: @"Project", @"text": text }
-                          inFrame:nil inContentWorld:[WKContentWorld pageWorld] completionHandler:nil];
-    [[NSDocumentController sharedDocumentController] noteNewRecentDocumentURL:url];
+                          inFrame:nil inContentWorld:[WKContentWorld pageWorld]
+                completionHandler:^(id result, NSError *err) {
+        if ([result isEqual:@"ok"]) {
+            self.projectURL = url;   // ⌘S now saves straight back to this file
+            [[NSDocumentController sharedDocumentController] noteNewRecentDocumentURL:url];
+        }
+    }];
 }
 
 #pragma mark - page → Mac bridge
@@ -170,8 +181,33 @@ static NSString *const kVersion = @"1.2";
             if (ok && [ext isEqualToString:@"pipette"]) [[NSDocumentController sharedDocumentController] noteNewRecentDocumentURL:panel.URL];
             reply(ok ? @"ok" : @"error", nil);
         }];
+    } else if ([cmd isEqualToString:@"saveProject"]) {
+        // Save in place when we know the file (like any Mac app); otherwise, or for Save As, show the save panel.
+        NSData *data = [d[@"data"] ?: @"" dataUsingEncoding:NSUTF8StringEncoding];
+        BOOL saveAs = [d[@"as"] boolValue];
+        void (^finish)(NSURL *) = ^(NSURL *url) {
+            BOOL ok = [data writeToURL:url atomically:YES];
+            if (ok) { self.projectURL = url; [[NSDocumentController sharedDocumentController] noteNewRecentDocumentURL:url]; }
+            reply(ok ? @{ @"status": @"ok", @"name": url.lastPathComponent } : @{ @"status": @"error" }, nil);
+        };
+        if (self.projectURL && !saveAs && [[NSFileManager defaultManager] isWritableFileAtPath:self.projectURL.path]) { finish(self.projectURL); return; }
+        NSSavePanel *panel = [NSSavePanel savePanel];
+        panel.nameFieldStringValue = self.projectURL.lastPathComponent ?: [NSString stringWithFormat:@"%@.pipette", d[@"name"] ?: @"Untitled"];
+        if (self.projectURL) panel.directoryURL = [self.projectURL URLByDeletingLastPathComponent];
+        panel.canCreateDirectories = YES;
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+        panel.allowedFileTypes = @[@"pipette"];
+#pragma clang diagnostic pop
+        [panel beginSheetModalForWindow:self.window completionHandler:^(NSModalResponse r) {
+            if (r != NSModalResponseOK) { reply(@{ @"status": @"cancel" }, nil); return; }
+            finish(panel.URL);
+        }];
+    } else if ([cmd isEqualToString:@"forgetFile"]) {
+        self.projectURL = nil;
+        reply(@"ok", nil);
     } else if ([cmd isEqualToString:@"open"]) {
-        [self showOpenPanel];
+        [self showOpenPanel:[d[@"mode"] isEqual:@"import"]];
         reply(@"ok", nil);
     } else if ([cmd isEqualToString:@"copyImage"]) {
         NSData *png = [[NSData alloc] initWithBase64EncodedString:d[@"data"] ?: @"" options:0];
@@ -183,6 +219,8 @@ static NSString *const kVersion = @"1.2";
         [pb setData:png forType:NSPasteboardTypePNG];
         [pb setData:img.TIFFRepresentation forType:NSPasteboardTypeTIFF];
         reply(@"ok", nil);
+    } else if ([cmd isEqualToString:@"readText"]) {
+        reply([[NSPasteboard generalPasteboard] stringForType:NSPasteboardTypeString] ?: @"", nil);
     } else if ([cmd isEqualToString:@"copyText"]) {
         NSPasteboard *pb = [NSPasteboard generalPasteboard];
         [pb clearContents];
@@ -190,7 +228,10 @@ static NSString *const kVersion = @"1.2";
         reply(@"ok", nil);
     } else if ([cmd isEqualToString:@"title"]) {
         NSString *t = d[@"data"];
-        self.window.title = t.length ? [NSString stringWithFormat:@"%@ — Pipette", t] : @"Pipette";
+        self.window.title = t.length ? t : @"Untitled";
+        self.window.subtitle = @"Pipette";
+        self.window.documentEdited = [d[@"edited"] boolValue];   // the dot in the red close button
+        self.window.representedURL = self.projectURL;
         reply(@"ok", nil);
     } else {
         reply(nil, @"unknown command");
@@ -214,7 +255,7 @@ decisionHandler:(void (^)(WKNavigationActionPolicy))decisionHandler {
         if (!self.pageReady || [u.path isEqualToString:home.path]) { decisionHandler(WKNavigationActionPolicyAllow); return; }
         // a file dropped onto the window: open projects, ignore everything else
         decisionHandler(WKNavigationActionPolicyCancel);
-        if ([@[@"pipette", @"json", @"pzfx", @"prism", @"pzf"] containsObject:u.pathExtension.lowercaseString]) [self openProjectAtURL:u];
+        if ([@[@"pipette", @"json", @"pzfx", @"prism", @"pzf"] containsObject:u.pathExtension.lowercaseString]) [self openURL:u import:NO];
         return;
     }
     decisionHandler(WKNavigationActionPolicyCancel);
@@ -295,29 +336,34 @@ initiatedByFrame:(WKFrameInfo *)frame completionHandler:(void (^)(NSArray<NSURL 
                         arguments:@{ @"name": name } inFrame:nil inContentWorld:[WKContentWorld pageWorld]
                 completionHandler:^(id result, NSError *err) {
         if ([result isEqual:@"native"]) {
-            // the cursor is in a text field: let the field handle it (e.g. undo typing)
-            SEL sel = [name isEqualToString:@"undo"] ? @selector(undo:) : [name isEqualToString:@"redo"] ? @selector(redo:) : NULL;
+            // the cursor is in a text field: let the field handle it (e.g. undo typing, select all text)
+            SEL sel = [name isEqualToString:@"undo"] ? @selector(undo:) : [name isEqualToString:@"redo"] ? @selector(redo:) : [name isEqualToString:@"selectAll"] ? @selector(selectAll:) : NULL;
             if (sel) [NSApp sendAction:sel to:nil from:self];
         }
     }];
 }
 - (void)newTable:(id)s { [self sendCommand:@"newTable"]; }
 - (void)newProject:(id)s { [self sendCommand:@"newProject"]; }
-- (void)openProject:(id)s { [self showOpenPanel]; }
-- (void)showOpenPanel {
+- (void)openProject:(id)s { [self showOpenPanel:NO]; }
+- (void)importPrism:(id)s { [self showOpenPanel:YES]; }
+- (void)showOpenPanel:(BOOL)import {
     if (self.window.attachedSheet) return;
     NSOpenPanel *p = [NSOpenPanel openPanel];
     p.canChooseFiles = YES; p.canChooseDirectories = NO; p.allowsMultipleSelection = NO;
-    p.message = @"Choose a Pipette project (.pipette) or a GraphPad Prism file (.pzfx, .prism)";
+    p.message = import ? @"Choose a GraphPad Prism file — its data tables are added to this project"
+                       : @"Choose a Pipette project (.pipette) or a GraphPad Prism file (.pzfx, .prism)";
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wdeprecated-declarations"
     p.allowedFileTypes = @[@"pipette", @"json", @"pzfx", @"prism", @"pzf"];
 #pragma clang diagnostic pop
     [p beginSheetModalForWindow:self.window completionHandler:^(NSModalResponse r) {
-        if (r == NSModalResponseOK && p.URL) [self openProjectAtURL:p.URL];
+        if (r == NSModalResponseOK && p.URL) [self openURL:p.URL import:import];
     }];
 }
 - (void)saveProject:(id)s { [self sendCommand:@"save"]; }
+- (void)saveProjectAs:(id)s { [self sendCommand:@"saveAs"]; }
+- (void)selectAllCmd:(id)s { [self sendCommand:@"selectAll"]; }
+- (void)excludeCmd:(id)s { [self sendCommand:@"exclude"]; }
 - (void)undoCmd:(id)s { [self sendCommand:@"undo"]; }
 - (void)redoCmd:(id)s { [self sendCommand:@"redo"]; }
 - (void)deleteRowsCmd:(id)s { [self sendCommand:@"deleteRows"]; }
@@ -365,14 +411,15 @@ initiatedByFrame:(WKFrameInfo *)frame completionHandler:(void (^)(NSArray<NSURL 
     [file addItem:[self item:@"New Data Table…" action:@selector(newTable:) key:@"n" mods:C target:self]];
     [file addItem:[self item:@"New Project" action:@selector(newProject:) key:@"n" mods:CS target:self]];
     [file addItem:[self item:@"Open…" action:@selector(openProject:) key:@"o" mods:C target:self]];
-    [file addItem:[self item:@"Import Prism File…" action:@selector(openProject:) key:@"i" mods:CS target:self]];
+    [file addItem:[self item:@"Import Prism Tables into This Project…" action:@selector(importPrism:) key:@"i" mods:CS target:self]];
     NSMenuItem *recent = [[NSMenuItem alloc] initWithTitle:@"Open Recent" action:nil keyEquivalent:@""];
     NSMenu *recentMenu = [[NSMenu alloc] initWithTitle:@"Open Recent"];
     [recentMenu addItem:[self item:@"Clear Menu" action:@selector(clearRecentDocuments:) key:@"" mods:0 target:nil]];
     recent.submenu = recentMenu;
     [file addItem:recent];
     [file addItem:[NSMenuItem separatorItem]];
-    [file addItem:[self item:@"Save…" action:@selector(saveProject:) key:@"s" mods:C target:self]];
+    [file addItem:[self item:@"Save" action:@selector(saveProject:) key:@"s" mods:C target:self]];
+    [file addItem:[self item:@"Save As…" action:@selector(saveProjectAs:) key:@"s" mods:CS target:self]];
     [file addItem:[NSMenuItem separatorItem]];
     [file addItem:[self item:@"Close Window" action:@selector(performClose:) key:@"w" mods:C target:nil]];
 
@@ -383,9 +430,10 @@ initiatedByFrame:(WKFrameInfo *)frame completionHandler:(void (^)(NSArray<NSURL 
     [edit addItem:[self item:@"Cut" action:@selector(cut:) key:@"x" mods:C target:nil]];
     [edit addItem:[self item:@"Copy" action:@selector(copy:) key:@"c" mods:C target:nil]];
     [edit addItem:[self item:@"Paste" action:@selector(paste:) key:@"v" mods:C target:nil]];
-    [edit addItem:[self item:@"Select All" action:@selector(selectAll:) key:@"a" mods:C target:nil]];
+    [edit addItem:[self item:@"Select All" action:@selector(selectAllCmd:) key:@"a" mods:C target:self]];
     [edit addItem:[NSMenuItem separatorItem]];
-    [edit addItem:[self item:@"Delete Selected Rows" action:@selector(deleteRowsCmd:) key:@"" mods:0 target:self]];
+    [edit addItem:[self item:@"Delete Selected Rows or Columns" action:@selector(deleteRowsCmd:) key:@"" mods:0 target:self]];
+    [edit addItem:[self item:@"Exclude / Include Selected Values" action:@selector(excludeCmd:) key:@"e" mods:C target:self]];
 
     NSMenu *view = [[NSMenu alloc] initWithTitle:@"View"];
     [view addItem:[self item:@"Actual Size" action:@selector(zoomReset:) key:@"0" mods:C target:self]];

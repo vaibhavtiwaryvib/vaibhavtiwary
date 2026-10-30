@@ -76,6 +76,18 @@ table.grid thead tr.letters th .del { position: absolute; right: 4px; top: 2px; 
 table.grid thead tr.letters th:hover .del { display: block; }
 table.grid thead tr.letters th .del:hover { color: var(--danger); }
 table.grid td.rn { cursor: pointer; user-select: none; }
+table.grid th.corner { cursor: pointer; }
+table.grid th.corner:hover { background: var(--head-2); }
+table.grid td.csel, table.grid td.xcol.csel { background: var(--sel); }
+table.grid td.csel input { background: transparent; }
+table.grid thead tr.letters th.chsel { background: var(--accent); color: #fff; }
+table.grid td.excl input { color: #2f62d6; font-style: italic; }
+table.grid.dragging, table.grid.dragging input { user-select: none; -webkit-user-select: none; cursor: cell; }
+.clip { position: fixed; left: -9999px; top: 0; width: 2px; height: 2px; opacity: 0; }
+.docstate { font-size: 11.5px; color: var(--muted); margin: 0 6px; white-space: nowrap; }
+.docstate.edited { color: #a8670c; }
+.restore-bar { display: flex; align-items: center; gap: 10px; background: #fff8e6; border: 1px solid #f2dfab; color: #7a5b00; padding: 8px 10px 8px 12px; border-radius: 8px; margin: 0 0 14px; }
+.restore-bar span { flex: 1; }
 table.grid td.rn:hover { color: var(--ink); background: var(--head-2); }
 table.grid tr.rsel td { background: var(--sel); }
 table.grid tr.rsel td.rn { background: var(--accent); color: #fff; }
@@ -169,17 +181,18 @@ select:focus, .field input:focus { outline: 2px solid var(--accent-soft); border
 <body>
 <div class="app">
   <header class="toolbar">
-    <div class="brand" title="Pipette 1.2 · published by VITIRAN"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAANa0lEQVR4nO2ba4xd1XXHf2vvc+6de+/M2B4b80r9CHZANsEuouBEkAltIgGFoD7GLQIlVaqqQaGq0n6gD6m2+6n90CBCKIgqrdx+iTxRKDRNQopku0TBBJdXaoti02AX8Ks2ZTxz5z7O3qsfzuOe+5wHsbFa/6Uzc+/Z++y99tpr/9dae98DF3ERF/H/GbK4x1QmdmFOHkBWbkQ3HEB/tmLNDwc3IqkMk1vxIOdaDpWJXWrPcSeLRiybLmhS5195mxp2iAfY8pWjpXD0kltU/S2qbh2qY6DBAuX9YBCJQM4I9pAY88Pm1Knn9j20arZT1jmbmU+liQm1k5Pixr+we6i5+hd+z8Dvii1cJTYEVdB59fWzhxgQQV0Tdc3DHn0iPPLiI3t33lpLZZ6zibkqTOxSO7lV3CcePPnzplD5W1sob3aNGXxU85BoWRbLJR8QmnKPGhMMGVus4OrVV3xj5ovP/+XKl1PZBzUxUPBUi1v+6PhnbDj8pJhgOKpPRSLGxOq/kKBe1fugOBqoj6Zdc/pX9v3FZc/OZQl9B7Ftm5rJSXE3Pnhik7Hlp9S74aj2vhMxAYqJTf9CujAiJohq7zv1btgElX+88cETmyYnxW3bpn3H2ccCVNiGjPNWoV6v7LdhZWNUP+vEWMuH4/EWAEG9c0FxxLrmzIFiceaGvaxpsAPt5SZ7amZ8G5Yd4uu1yv3B0NjGZm0qEhGL+jatiypW+FAv6bIEj4jYZm0qCobGNtZrlfvZIX58Gz3ddw8LiP3o+DaKs9UTr9uguMpHdUVyytKYAbxXpmcd3mt887xxYdyXMcJwyWKMxI5I2qp4ExTFRfWjpfLsNXt3rKnHBe1W0OW7JyYwk5PiZmaO3xwWyqtd46xHjBFtGb8RaDQcQ4HnNz5Z4rJlsXLP5/ABjr/neOblKrWGpRBafFIgcR3jmrPeFoZXz8xEN4MkhEgbIXYp4OSGeBwGNy4mVFW8oCbtVASiyFGQJn99/2VsWls6ZwOdD+6+aZYvPXqcKAqx1iZ8GENVvZhQDDIOPJuOLY8uDlh5MHleuVp9JCigiiaXQZmarnP79UNsWlui6RTn4yvKfR58gfPdZJovm08bzUjZ9NESt10/xNR0HUNLzlQT8Rj0aoCVG7sZvMsCJjfEldTrUvWO2ABailNVXNTksqWC19jcrFmY8asqIsLp02c4feYMAMvHxli+fCwrmy+8wuVLBRc1US1mqUDMSirqHep1KUCvpK2vf1S81Ry75j/jI5xzGImXhPeeX9t6L0//03cBcK4VGqsq3vu2K3IO7z0/ev4Fvvb1x/na1x/nR8+/0FaWv1T7uF6N+ch5Bz7qKauqosQJ3I4eTfRNYDRhdtXEfSqoSGJinnSlGSO4yPHjF19i/FM3Z4NOISJdM2pMrPe77rydu+68vWfZgpDIFA82+S6xDlBNxtIbAzI4j/rY78eNJn2lSumwpkqlTKFQyEsFCNVqlUOH30xmkrbnREymnHQALQgisULWr7uKcrmctdlDA9na1zYWJJms/slafwUoWYNZl5os+o5OgC5TjSJHEAQ8/Mhj7P3XH3Ldx68lclH3+s7cS8dtVQIb8NpP/p3xT93MHz/4h1mbvWQlnZS2wSf50oDgta8CfBzwtywgp4NeFtAJY+LY4JOfuInP33cPV155xcD6/fDOO+9y+M3/bGuzG3kLaLsNqvgBsg6wgIxAUgqIJym1jDkEN4lnSHnBOUcWogC+w9wzTsksJL535ZVXZMozfbxNPM6c68u1mN3vgwEk6DNySe2zvaP5JUXee0QEa9tnb777aln80YMctVUpR4RtbjAhwcVwANqmvZYFpEqZHzoFV41d51e/+RqvvH6M0lCAmJBqrcHm9Sv4g3s2Z3WgtxfpKW2WqOWpsjdh5zGQBDOf2narg2wWCEnW0ff3/Rf7vv3nlIsBS67/MtXZOsdPV/nKPZtZQBzUEox2DshbwKJIsC2kFHKz0uKGxUKBkXLI2KVrKRUDRpYsISw2GC6HrUp9AiCx3Yun0zVnsuZdYx/0twDvIe+bdX6kMj8IzjnKH/t1SqUhqu+8wMz0WfwVt7WqGLOw7DLvBdpkXWQc4FFMJwfkl8UHVoLioxrqhOpP/4WZqf+Gmz4TB/dGeO8H38Pvf4FiucyM80TNBoXLr2TFfb/VbQWdCVCHrH5RkWDODeaVoNmfwejaI0nMMr++RQQURq79PMFsDUxAPFuW2j8/xbe/8z1eNEUeWFFhyEXYZWOM/epW7MhItwwd5p52P9dkDQ688wlFTstzrSuIkxRjkv/J525yE9CIoHIpwchHQKNMY0OVCvvDCt/yBWZHRlkyNoaMLukjZrds83XXA0jQd4fCmU7mtoB/OzzD2brBGsG7Jk0Hq1cWWH95sUMmQX0TdRFQye5OR44Hlpf4YqnCEpRD1Qarh/tv8XflAbQsYJDbHkCCOa22dZT96ftoreH47stVTpw4gTVCZclypqtNrltTYv3lxR5PSJd5OKAosGoo5MG33+Obp97nmaXLuMpIj5QocXqdoTDJZC2GA+Jhx1YgbW4w9a992wSEUkF49m++hBHlvj97GiNKaOfP62koe9Z5tlQKSFRhiRW8ave61fa1nsoaf/UDXfYAEmwtgawTWhYwqNG41LD+hjsJw5Bmo0bU9IgMzT3yHAxCTZXPjg5xeyWkbqTnks5CXjrdYN4V9sackWCbVpP7c4XCguBcgy13PYCPavzD9jsYvXwD121/jIWGkAJUveIjT6/Fk4mbD4Vzsi46EvTEBx/00Op8k6Fa9X1EHZeuvpbS8rU58lxYrGvo5UFyaPMALVnjosWmw77VaLoeJW18HoMXBMEQBAF3/M5DVOueqDELlOd8djHoFQhpXLBIEkzD4JwXWKgFpO00atM0GwqcozOETgug3QIW5wZTYuk8c0osIK+UuRDv/X3Q0Lk/WhFfaz8gK5nDZc8RCvuumW4PNC8UJFwFHfL2HkMeA+IAWhwg2ooDMtfS/Yz3nihyyfZXdwVVJYoivEpPHonLHWJ6h9pKvNmKc9j8RkuHu8vHAXNt3w1Mh/vFAb12WUSE4eFhgsCyZMQmG5jNhAzjB4vFYrarG4YhQm7nJ7kXFuI9gWKxwDStCiqCNYbisqWpttpU07Yp2umxFrMl5lWzs3clN940EMr17318hvDMD56lWq3SjGBq5BeR4iiRd4gqQbHEG2+8waOvvYjYgGPHCjgZot6MG3IScOzYcR5/7AkaYrju0Jv8nECzUQeFgnqmz57lkb96mFUfW8fn7rwjEUbaiLltbpLJ8j2saU4FQLopqtlRQHYkkIsEvVestWzZciP7XvgxL738Kuo9a695ntLIMryLExgbBJw+9lPeOfIG1hiWXvpRLimPoT4uF2NpHj/DQ/veJMJw9bJR1pSXEyUHkNbA+w3luUcf58YbrueuX26dKGnOAvKBUCtvWYQFqMdrlmQk91LtqmIljstVIQgsf/93T9BoNIh/RaPUa1V87iBEVQnCIoXiEKrgmrV48Pn9AmOx4RCCUnOOutd8MYEIZWsJwlhs5+LZta0F3y5rqhzfXwPdCjgY9ymq/5OYkGaBEC2CeftkFSNCpJ7IKYIQhoXM+srDo13xXjohAlhb6Q4Ic9xasUEuOW5vwzlNB4axhrdPVhPSywVCaXOajCU3tjy6Eqvxk3sSzvL/AaKdmw3OeUYqRZ7cfZT9B09SCA2BNVibnOUlV6/IVciVJ3Xartzz3YVkWbO1QmANhdCw/8BJntx9lJFKEed8m6wxWYsq+np+bHl0WcDelacUwOH3iGv8Kd4bbQvE4zU/W7f85p/s4e5bruCKS8oIuvDt7EUinmjh3VNVnnruXeq+xFDJdrs8VeNdQ5y6vfmx5dFnopTVX9hTDKq8LrawSl1Dsx9GCrG/VUfUrDE1dRYXNTl/gVFq4IINQkZHRwjCIRAbi5iJoV5sQdQ1jkZlrjmy89P1XI6YoRcJ6vj4nmDvzltrayd2PxzY0ld9VHPxr0OTWEMEsNiwxIoVQ7Ty7VS4c4lcH2JwKsRbJAK+ZYWq3htbCpxrPHxk56218fHdwd69RJ2t9ZFWhW3bZfVbny6YGd1vg9JG15hx0nU825F5nG9I1wcA1HtnCxXrotkDviI3HFmzp8GO7TrvH0rGFbdzZOetNXV6r3fNqtjQqnMuv+uay0A/nCvtPy+Tc05saL1rVNU17j2y89YabKfX4AcoANghnold9q0nf+lVdTN3KzItYcmqd1H2c48L6fLeq3eRhCWryHRUr9791pO3vcrELjvo3YG5F+zELsvkVrfqzqevt8XRb5igtNlHs6hreCQJMPScL/zekCw5NWILxgQlfDT7iqtP/fbR73zupVT2wU3MB0lD6257uOjKH/+yoveLCdeJCcnO3s4XD2RRWRoYmPhcwTcPC/KYrf7k0cPf//36fAafNjc/5F5D+cjErlLgl98iXm/x3l8NLAV/nt8lMhHCe0bMIVV5LgpPP/f25NYFvzKzQKgwceG+NBXLdq5emmqDChOTZvzkJbJ35Sllw8SH4wgPTkomw+TE+Xht7iIu4iL+j+F/AZH2x394geumAAAAAElFTkSuQmCC" alt=""><span>Pipette<small>by VITIRAN</small></span></div>
-    <button class="tb-btn primary" id="tb-new" title="New data table"><svg viewBox="0 0 16 16"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>New Table</button>
+    <div class="brand" title="Pipette 1.3 · published by VITIRAN"><img src="data:image/png;base64,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" alt=""><span>Pipette<small>by VITIRAN</small></span></div>
+    <button class="tb-btn primary" id="tb-new" title="Add a new data table to this project"><svg viewBox="0 0 16 16"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>New Table</button>
     <span class="tb-sep"></span>
-    <button class="tb-btn" id="tb-newproj" title="New empty project"><svg viewBox="0 0 16 16"><path d="M4 1.5h5.5L13 5v9.5H4z" fill="none" stroke="currentColor"/><path d="M9.5 1.5V5H13" fill="none" stroke="currentColor"/></svg>New Project</button>
+    <button class="tb-btn" id="tb-newproj" title="Start a new, empty project (asks to save this one first)"><svg viewBox="0 0 16 16"><path d="M4 1.5h5.5L13 5v9.5H4z" fill="none" stroke="currentColor"/><path d="M9.5 1.5V5H13" fill="none" stroke="currentColor"/></svg>New Project</button>
     <button class="tb-btn" id="tb-open" title="Open a Pipette project or a GraphPad Prism file (.pzfx, .prism) (⌘O)"><svg viewBox="0 0 16 16"><path d="M1.5 4.5v8h11l2-6h-11l-2 6M1.5 4.5V3h4l1.5 1.5H12v2" fill="none" stroke="currentColor" stroke-linejoin="round"/></svg>Open</button>
-    <button class="tb-btn" id="tb-save" title="Save project (⌘S)"><svg viewBox="0 0 16 16"><path d="M2.5 2.5h9l2 2v9h-11z" fill="none" stroke="currentColor"/><path d="M5 2.5v3.5h5V2.5M5 13.5V9.5h6v4" fill="none" stroke="currentColor"/></svg>Save</button>
+    <button class="tb-btn" id="tb-save" title="Save (⌘S) · Save As (⇧⌘S)"><svg viewBox="0 0 16 16"><path d="M2.5 2.5h9l2 2v9h-11z" fill="none" stroke="currentColor"/><path d="M5 2.5v3.5h5V2.5M5 13.5V9.5h6v4" fill="none" stroke="currentColor"/></svg>Save</button>
     <span class="tb-sep"></span>
     <button class="tb-btn" id="tb-undo" title="Undo (⌘Z)"><svg viewBox="0 0 16 16"><path d="M5 6H11a3 3 0 010 6H8" fill="none" stroke="currentColor" stroke-width="1.4"/><path d="M7 3.5L4.5 6 7 8.5" fill="none" stroke="currentColor" stroke-width="1.4"/></svg></button>
     <button class="tb-btn" id="tb-redo" title="Redo (⇧⌘Z)"><svg viewBox="0 0 16 16"><path d="M11 6H5a3 3 0 000 6h3" fill="none" stroke="currentColor" stroke-width="1.4"/><path d="M9 3.5L11.5 6 9 8.5" fill="none" stroke="currentColor" stroke-width="1.4"/></svg></button>
     <span class="tb-spacer"></span>
     <span class="tb-status" id="status"></span>
+    <span class="docstate" id="docstate"></span>
     <button class="tb-btn" id="tb-cite" title="How to cite Pipette"><svg viewBox="0 0 16 16"><path d="M3 4.5h4v4H5c0 1.6-.6 2.6-2 3.2M9 4.5h4v4h-2c0 1.6-.6 2.6-2 3.2" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/></svg>Cite</button>
   </header>
   <nav class="nav" id="nav" aria-label="Navigator"></nav>
@@ -1671,7 +1684,7 @@ function(t){t.__bidiEngine__=t.prototype.__bidiEngine__=function(t){var n,r,i,a,
   const toBlob = (canvas, type, q) => new Promise(r => canvas.toBlob(r, type, q));
 
   // Quiet credit stored only in file metadata — never drawn on the figure.
-  const MADE_WITH = 'Pipette 1.2 (VITIRAN) - https://vaibhavtiwaryvib.github.io/vaibhavtiwary/pipette/';
+  const MADE_WITH = 'Pipette 1.3 (VITIRAN) - https://vaibhavtiwaryvib.github.io/vaibhavtiwary/pipette/';
   function pngText(key, text) {
     const data = new TextEncoder().encode(key + '\0' + text);
     const chunk = new Uint8Array(12 + data.length), dv = new DataView(chunk.buffer);
@@ -1770,7 +1783,7 @@ function(t){t.__bidiEngine__=t.prototype.__bidiEngine__=function(t){var n,r,i,a,
   function readColumn(col, stats) {
     return kids(col, 'Subcolumn').map(sc => kids(sc, 'd').map(d => {
       const v = txt(d);
-      if (v !== '' && (d.getAttribute('Excluded') === '1' || d.getAttribute('Excluded') === 'true')) { stats.excluded++; return ''; }
+      if (v !== '' && (d.getAttribute('Excluded') === '1' || d.getAttribute('Excluded') === 'true')) { stats.excluded++; return norm(v) + '*'; } // kept, marked excluded (Pipette's "12.3*")
       return norm(v);
     }));
   }
@@ -1828,7 +1841,7 @@ function(t){t.__bidiEngine__=t.prototype.__bidiEngine__=function(t){var n,r,i,a,
       const kind = { XY: 'XY', Contingency: 'contingency', PartsOfWhole: 'parts-of-whole', Nested: 'nested', MultipleVariables: 'multiple-variables' }[type] || type;
       notes.push(`“${name}”: ${kind} table — Pipette doesn’t have this table type yet, so it was skipped.`); return null;
     }
-    if (stats.excluded) notes.push(`“${name}”: ${stats.excluded} value(s) were marked as excluded in Prism and were left out.`);
+    if (stats.excluded) notes.push(`“${name}”: ${stats.excluded} value(s) were excluded in Prism — they stay excluded here (blue, with *). Select them and press ⌘E to include them again.`);
     if (!out.rows.length) { notes.push(`“${name}”: empty — skipped.`); return null; }
     return out;
   }
@@ -2221,13 +2234,33 @@ function(t){t.__bidiEngine__=t.prototype.__bidiEngine__=function(t){var n,r,i,a,
   function redo() { if (!redoStack.length) return toast('Nothing to redo'); undoStack.push(snap()); restore(redoStack.pop()); }
   function scheduleSave() {
     clearTimeout(saveTimer);
-    saveTimer = setTimeout(() => { saveTimer = null; persist(); setStatus('Autosaved'); }, 350);
+    saveTimer = setTimeout(() => { saveTimer = null; persist(); updateTitle(); }, 350);
   }
-  function persist() {
-    const json = JSON.stringify(P);
-    if (NATIVE) nativeCall({ cmd: 'autosave', data: json });
-    try { localStorage.setItem(STORE, json); } catch (e) { if (!NATIVE) setStatus('Not autosaved — use Save'); }
+  // Autosave is only a safety net (crash, closed tab). The real copy is the .pipette file you save.
+  function persist(unsaved) {
+    const json = JSON.stringify({ ...P, __unsaved: unsaved ?? isDirty() });
+    const done = NATIVE ? nativeCall({ cmd: 'autosave', data: json }) : Promise.resolve();
+    try { localStorage.setItem(STORE, json); } catch (e) { }
+    return done;
   }
+  // ---- unsaved-changes tracking (like any document app)
+  let cleanState = null;
+  // compare content only: the blank rows the sheet adds for typing don't count as a change
+  const trimRows = rows => { const out = rows.map(r => { const a = r.map(v => String(v ?? '')); while (a.length && a[a.length - 1].trim() === '') a.pop(); return a; }); while (out.length && !out[out.length - 1].length) out.pop(); return out; };
+  const tablesJSON = () => JSON.stringify(P.tables.map(t => ({ ...t, rows: trimRows(t.rows) })));
+  const tableHasData = t => t.rows.some(r => r.some(v => String(v ?? '').trim() !== '')) || t.cols.some(c => (c.title || '').trim());
+  function isDirty() { return !!P && cleanState !== null && tablesJSON() !== cleanState && P.tables.some(tableHasData); }
+  function markClean() { cleanState = tablesJSON(); updateTitle(); }
+  let lastTitleKey = null;
+  function updateTitle() {
+    if (!P) return;
+    const name = P.name || 'Untitled', ed = isDirty();
+    document.title = `${ed ? '• ' : ''}${name} — Pipette`;
+    const ds = $('#docstate'); if (ds) { ds.textContent = ed ? 'Edited — not saved' : P.tables.some(tableHasData) ? 'Saved' : ''; ds.classList.toggle('edited', ed); }
+    const key = name + '|' + ed;
+    if (NATIVE && key !== lastTitleKey) { lastTitleKey = key; nativeCall({ cmd: 'title', data: name, edited: ed }); }
+  }
+  function resetHistory() { undoStack = []; redoStack = []; pendingSnap = null; ui.S = null; }
   function setStatus(s) { const el = $('#status'); if (el) el.textContent = s; }
 
   // ---------- Mac app bridge (only present inside Pipette.app; the browser version ignores it) ----------
@@ -2252,24 +2285,81 @@ function(t){t.__bidiEngine__=t.prototype.__bidiEngine__=function(t){var n,r,i,a,
     document.body.appendChild(a); a.click(); setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 2000);
     return true;
   }
-  async function saveProject() {
-    const blob = new Blob([JSON.stringify(P, null, 1)], { type: 'application/json' });
-    const ok = await saveBlob(`${(P.name || 'Untitled').replace(/[\\/:*?"<>|]/g, '_')}.pipette`, blob,
-      [{ description: 'Pipette project', accept: { 'application/json': ['.pipette'] } }]);
-    if (ok) toast('Project saved');
+  // ⌘S saves back to the same file once it has one (Mac app; Chrome/Edge); ⇧⌘S always asks where.
+  let fileHandle = null;
+  async function saveProject(as) {
+    const { __unsaved, ...clean } = P;
+    const json = JSON.stringify(clean, null, 1), base = (P.name || 'Untitled').replace(/[\\/:*?"<>|]/g, '_');
+    let name = null;
+    if (NATIVE) {
+      const r = await nativeCall({ cmd: 'saveProject', name: base, data: json, as: !!as });
+      if (r && r.status === 'ok') name = r.name; else if (r && r.status === 'error') alert('The project could not be saved.');
+    } else if (window.showSaveFilePicker) {
+      try {
+        if (!fileHandle || as) fileHandle = await window.showSaveFilePicker({ suggestedName: `${base}.pipette`, types: [{ description: 'Pipette project', accept: { 'application/json': ['.pipette'] } }] });
+        const w = await fileHandle.createWritable(); await w.write(new Blob([json], { type: 'application/json' })); await w.close(); name = fileHandle.name;
+      } catch (e) { if (e.name !== 'AbortError') alert('The project could not be saved: ' + e.message); }
+    } else {
+      name = `${base}.pipette`;
+      const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([json], { type: 'application/json' })); a.download = name;
+      document.body.appendChild(a); a.click(); setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 2000);
+    }
+    if (!name) return false;
+    P.name = name.replace(/\.(pipette|json)$/i, ''); markClean(); persist(false); render(); toast(`Saved “${name}”`);
+    return true;
+  }
+  // "Do you want to save the changes…?" → 'save' | 'discard' | 'cancel'
+  function askSave() {
+    return new Promise(res => {
+      const ov = document.createElement('div'); ov.className = 'overlay';
+      ov.innerHTML = `<div class="dialog" role="alertdialog" aria-label="Save changes" style="width:min(460px,92vw)">
+        <h3>Do you want to save the changes you made to “${esc(P.name || 'Untitled')}”?</h3>
+        <p class="sub">Your changes will be lost if you don’t save them.</p>
+        <div class="row"><button class="btn" data-a="discard">Don’t Save</button><span class="grow"></span><button class="btn" data-a="cancel">Cancel</button><button class="btn primary" data-a="save">Save…</button></div></div>`;
+      document.body.appendChild(ov);
+      const done = a => { ov.remove(); res(a); };
+      ov.querySelectorAll('[data-a]').forEach(b => b.onclick = () => done(b.dataset.a));
+      ov.addEventListener('keydown', e => { if (e.key === 'Escape') done('cancel'); });
+      $('[data-a="save"]', ov).focus();
+    });
+  }
+  async function confirmDiscard() {
+    if (!isDirty()) return true;
+    const a = await askSave();
+    if (a === 'cancel') return false;
+    if (a === 'save') return saveProject(false);
+    return true;
+  }
+  // Replace the whole project (New, Open). Nothing from the old project is kept, and undo starts over.
+  function loadProject(o, name) {
+    P = o; P.tables = Array.isArray(P.tables) ? P.tables : []; P.tables.forEach(upgrade); delete P.__unsaved;
+    P.name = String(name || P.name || 'Untitled').replace(/\.(pipette|json|pzfx|prism|pzf)$/i, '');
+    if (!P.sel || !cur()) P.sel = P.tables[0] ? { id: P.tables[0].id, view: 'data' } : null;
+    resetHistory(); closeOverlays(); markClean(); render(); persist(false);
+  }
+  async function newProjectCmd() {
+    if (!(await confirmDiscard())) return;
+    fileHandle = null; if (NATIVE) nativeCall({ cmd: 'forgetFile' });
+    loadProject({ version: 2, tables: [], sel: null }, 'Untitled');
+    welcomeDialog();
   }
   const PRISM_EXT = /\.(pzfx|prism|pzf)$/i;
-  function importPrism(name, bytes, given) {
+  // mode 'open' = becomes the project (asks to save the old one first) · 'import' = tables are added to this project
+  async function importPrism(name, bytes, given, mode = 'open') {
     let res = given;
-    try { if (!res) res = window.PrismImport.fromBytes(name, bytes); }
+    try { if (!res) { res = window.PrismImport.fromBytes(name, bytes); res.mode = mode; } }
     catch (e) { alert(e.message || 'This Prism file could not be read.'); return; }
+    if (res.mode === 'open' && !res.confirmed) { if (!(await confirmDiscard())) return; res.confirmed = true; }
     if (res.choose && !res.chosen) return chooseTables(name, res);
     const made = res.tables.map(x => {
       const t = { id: uid(), type: x.type, name: x.name, cols: x.cols, rows: x.rows.map(r => { const a = r.slice(0, x.cols.length); while (a.length < x.cols.length) a.push(''); return a; }), analysis: defaultAnalysis(x.type), graph: defaultGraph(x.type) };
       upgrade(t); return { t, n: t.rows.length };
     });
     const counts = made.map(m => m.n); made.forEach((m, i) => made[i] = m.t);
-    if (made.length) {
+    if (made.length && res.mode === 'open') {
+      fileHandle = null; if (NATIVE) nativeCall({ cmd: 'forgetFile' });
+      loadProject({ version: 2, tables: made, sel: { id: made[0].id, view: 'data' } }, name);
+    } else if (made.length) {
       commit();
       P.tables.push(...made); P.sel = { id: made[0].id, view: 'data' };
       render(); scheduleSave();
@@ -2299,7 +2389,7 @@ function(t){t.__bidiEngine__=t.prototype.__bidiEngine__=function(t){var n,r,i,a,
     ov.addEventListener('keydown', e => { if (e.key === 'Escape') close(); });
     $('#ct-ok', ov).focus();
   }
-  function importChosen(name, res) { importPrism(name, null, res); }
+  function importChosen(name, res) { importPrism(name, null, res, res.mode); }
   function importReport(name, made, notes, counts) {
     const ov = document.createElement('div'); ov.className = 'overlay';
     ov.innerHTML = `<div class="dialog" role="dialog" aria-label="Prism import" style="width:min(560px,94vw)">
@@ -2314,24 +2404,21 @@ function(t){t.__bidiEngine__=t.prototype.__bidiEngine__=function(t){var n,r,i,a,
     ov.addEventListener('mousedown', e => { if (e.target === ov) close(); });
     $('#imp-ok', ov).focus();
   }
-  function openProjectFile(file) {
-    if (PRISM_EXT.test(file.name)) { file.arrayBuffer().then(b => importPrism(file.name, new Uint8Array(b))); return; }
-    const rd = new FileReader();
-    rd.onload = () => {
-      try {
-        const o = JSON.parse(rd.result);
-        if (!o || !Array.isArray(o.tables)) throw new Error();
-        pushUndo(); P = o; P.tables.forEach(upgrade); P.name = file.name.replace(/\.(pipette|json)$/i, '');
-        if (!P.sel || !cur()) P.sel = P.tables[0] ? { id: P.tables[0].id, view: 'data' } : null;
-        render(); scheduleSave(); toast(`Opened ${file.name}`);
-      } catch (e) { alert('This file could not be opened as a Pipette project.'); }
-    };
-    rd.readAsText(file);
+  async function openProjectFile(file, handle, mode = 'open') {
+    if (PRISM_EXT.test(file.name)) return importPrism(file.name, new Uint8Array(await file.arrayBuffer()), null, mode);
+    const r = await openText(file.name, await file.text());
+    if (r === 'ok') fileHandle = handle || null;
   }
-  function openDialog() {
-    if (NATIVE) return nativeCall({ cmd: 'open' });
+  async function openDialog(mode = 'open') {
+    if (NATIVE) return nativeCall({ cmd: 'open', mode });
+    if (window.showOpenFilePicker) { // Chrome/Edge: keep the file handle so ⌘S saves back into the same file
+      try {
+        const [h] = await window.showOpenFilePicker({ types: [{ description: 'Pipette project or Prism file', accept: { 'application/octet-stream': ['.pipette', '.json', '.pzfx', '.prism', '.pzf'] } }] });
+        return openProjectFile(await h.getFile(), /\.(pipette|json)$/i.test(h.name) ? h : null, mode);
+      } catch (e) { if (e.name === 'AbortError') return; }
+    }
     const inp = document.createElement('input'); inp.type = 'file'; inp.accept = '.pipette,.json,.pzfx,.prism,.pzf';
-    inp.onchange = () => inp.files[0] && openProjectFile(inp.files[0]); inp.click();
+    inp.onchange = () => inp.files[0] && openProjectFile(inp.files[0], null, mode); inp.click();
   }
 
   // ---------- toast / menu / dialogs ----------
@@ -2368,12 +2455,17 @@ function(t){t.__bidiEngine__=t.prototype.__bidiEngine__=function(t){var n,r,i,a,
   };
   const KIND_LABEL = { grouped: 'Grouped', twoway: 'Two-way', survival: 'Survival' };
 
-  function newTableDialog() {
+  // The welcome screen (new project / launch) is the same chooser with a few extra buttons, as in Prism.
+  function welcomeDialog(opts = {}) { newTableDialog({ ...opts, welcome: true }); }
+  function newTableDialog(opts = {}) {
+    closeOverlays();
     const ov = document.createElement('div'); ov.className = 'overlay';
     let choice = 'grouped';
+    const R0 = opts.restore, when = R0 && R0.tables ? `${plural(R0.tables.filter(tableHasData).length, 'table')}${R0.name && R0.name !== 'Untitled' ? ` from “${esc(R0.name)}”` : ''}` : '';
     const mini = cols => `<svg viewBox="0 0 220 66"><rect x="1" y="1" width="218" height="64" rx="6" fill="#f7f8fb" stroke="#dfe2e8"/>${cols}</svg>`;
     ov.innerHTML = `<div class="dialog" role="dialog" aria-label="New data table" style="width:min(820px,94vw)">
-      <h3>New data table</h3><p class="sub">Choose the kind of data you want to enter.</p>
+      ${opts.welcome ? `<h3>Welcome to Pipette</h3><p class="sub">Start a new project with a data table — or open a project or Prism file.</p>` : `<h3>New data table</h3><p class="sub">Choose the kind of data you want to enter. It is added to this project.</p>`}
+      ${R0 ? `<div class="restore-bar"><span>Last time, work wasn’t saved (${when}).</span><button class="btn" id="nt-restore">Restore it</button></div>` : ''}
       <div class="choices" style="grid-template-columns:1fr 1fr 1fr">
         <button class="choice on" data-k="grouped">${mini([0, 1, 2].map(i => `<rect x="${18 + i * 66}" y="10" width="54" height="10" rx="2" fill="#cfd8ea"/>` + [0, 1, 2].map(r => `<rect x="${18 + i * 66}" y="${26 + r * 11}" width="54" height="7" rx="2" fill="#e3e7ef"/>`).join('')).join(''))}
           <b>Grouped (one factor)</b><small>One column per group, replicates in the rows. t-tests, Mann–Whitney, one-way ANOVA, Kruskal–Wallis, repeated measures.</small></button>
@@ -2382,8 +2474,9 @@ function(t){t.__bidiEngine__=t.prototype.__bidiEngine__=function(t){var n,r,i,a,
         <button class="choice" data-k="survival">${mini(`<path d="M20 14h40v10h30v12h34v10h30v8h44" fill="none" stroke="#2F5DA8" stroke-width="2.4"/><path d="M20 14h60v18h40v8h50v12h30" fill="none" stroke="#D6453D" stroke-width="2.4"/>`)}
           <b>Survival</b><small>Time in the X column, then 1 = event (death) or 0 = censored per group. Kaplan–Meier, log-rank, Gehan–Breslow–Wilcoxon.</small></button>
       </div>
-      <div class="row"><label><input type="checkbox" id="nt-sample"> Start with example data</label><span class="grow"></span>
-        <button class="btn" id="nt-cancel">Cancel</button><button class="btn primary" id="nt-ok">Create</button></div></div>`;
+      <div class="row"><label><input type="checkbox" id="nt-sample" ${opts.examples ? 'checked' : ''}> Start with example data</label><span class="grow"></span>
+        ${opts.welcome ? `<button class="btn" id="nt-open">Open a file…</button>` : ''}
+        <button class="btn" id="nt-cancel">${opts.welcome ? 'Not now' : 'Cancel'}</button><button class="btn primary" id="nt-ok">Create</button></div></div>`;
     document.body.appendChild(ov);
     ov.querySelectorAll('.choice').forEach(b => {
       b.onclick = () => { choice = b.dataset.k; ov.querySelectorAll('.choice').forEach(x => x.classList.toggle('on', x === b)); };
@@ -2391,11 +2484,15 @@ function(t){t.__bidiEngine__=t.prototype.__bidiEngine__=function(t){var n,r,i,a,
     });
     const close = () => ov.remove();
     const create = () => {
-      commit(); const t = makeTable(choice, $('#nt-sample', ov).checked); P.tables.push(t);
+      const wasEmpty = !P.tables.some(tableHasData), sample = $('#nt-sample', ov).checked;
+      commit(); const t = makeTable(choice, sample); P.tables.push(t);
       P.sel = { id: t.id, view: 'data' }; close(); render(); scheduleSave();
+      if (wasEmpty && sample) markClean(); // untouched example data doesn't need saving
       setTimeout(() => { const f = document.querySelector('table.grid thead input'); f && f.focus(); }, 30);
     };
     $('#nt-cancel', ov).onclick = close; $('#nt-ok', ov).onclick = create;
+    if ($('#nt-open', ov)) $('#nt-open', ov).onclick = () => { close(); openDialog('open'); };
+    if ($('#nt-restore', ov)) $('#nt-restore', ov).onclick = () => { close(); loadProject(JSON.parse(JSON.stringify(R0)), R0.name); cleanState = '"restored"'; updateTitle(); persist(true); toast('Restored your unsaved work — remember to Save (⌘S)'); };
     ov.addEventListener('mousedown', e => { if (e.target === ov) close(); });
     ov.addEventListener('keydown', e => { if (e.key === 'Escape') close(); if (e.key === 'Enter') create(); });
     $('#nt-ok', ov).focus();
@@ -2418,9 +2515,9 @@ function(t){t.__bidiEngine__=t.prototype.__bidiEngine__=function(t){var n,r,i,a,
   // ---------- citation ----------
   const CITE = {
     url: 'https://vaibhavtiwaryvib.github.io/vaibhavtiwary/pipette/',
-    text: 'Tiwary, V. (2026). Pipette: a free statistics and graphing app for lab data (Version 1.2) [Computer software]. VITIRAN. https://vaibhavtiwaryvib.github.io/vaibhavtiwary/pipette/',
-    methods: 'Statistical analyses were performed and graphs were prepared with Pipette (version 1.2; Tiwary, 2026).',
-    bibtex: '@software{tiwary_pipette_2026,\n  author    = {Tiwary, Vaibhav},\n  title     = {Pipette: a free statistics and graphing app for lab data},\n  version   = {1.2},\n  year      = {2026},\n  publisher = {VITIRAN},\n  url       = {https://vaibhavtiwaryvib.github.io/vaibhavtiwary/pipette/}\n}',
+    text: 'Tiwary, V. (2026). Pipette: a free statistics and graphing app for lab data (Version 1.3) [Computer software]. VITIRAN. https://vaibhavtiwaryvib.github.io/vaibhavtiwary/pipette/',
+    methods: 'Statistical analyses were performed and graphs were prepared with Pipette (version 1.3; Tiwary, 2026).',
+    bibtex: '@software{tiwary_pipette_2026,\n  author    = {Tiwary, Vaibhav},\n  title     = {Pipette: a free statistics and graphing app for lab data},\n  version   = {1.3},\n  year      = {2026},\n  publisher = {VITIRAN},\n  url       = {https://vaibhavtiwaryvib.github.io/vaibhavtiwary/pipette/}\n}',
     mail: 'mailto:v.tiwary@uke.de?subject=' + encodeURIComponent('Pipette was used in a publication') + '&body=' + encodeURIComponent('Hi Vaibhav,\n\nPipette was used in this work:\n\nTitle / DOI / link: \n\n')
   };
   function citeDialog() {
@@ -2480,12 +2577,7 @@ function(t){t.__bidiEngine__=t.prototype.__bidiEngine__=function(t){var n,r,i,a,
   }
 
   // ---------- main ----------
-  let lastTitle = null;
-  function render() {
-    closeMenu(); renderNav(); renderMain();
-    const title = P && P.name && P.name !== 'Untitled' ? P.name : '';
-    if (NATIVE && title !== lastTitle) { lastTitle = title; nativeCall({ cmd: 'title', data: title }); }
-  }
+  function render() { closeMenu(); renderNav(); renderMain(); updateTitle(); }
   function renderMain() {
     const main = $('#main'), t = cur();
     if (!t) {
@@ -2506,17 +2598,85 @@ function(t){t.__bidiEngine__=t.prototype.__bidiEngine__=function(t){var n,r,i,a,
   // ---------- data sheet ----------
   function lastFilledRow(t) { for (let r = t.rows.length - 1; r >= 0; r--) if (t.rows[r].some(v => String(v ?? '').trim() !== '')) return r; return -1; }
   function ensureRows(t, n) { while (t.rows.length < n) t.rows.push(t.cols.map(() => '')); t.rows.forEach(r => { while (r.length < t.cols.length) r.push(''); }); }
+  // Excluded values are stored the way Prism writes them: the number followed by an asterisk ("12.3*").
+  // They stay visible (blue italics) but are not numbers, so every analysis and graph leaves them out.
+  const isExcl = v => /\*\s*$/.test(String(v ?? ''));
+  const stripExcl = v => String(v ?? '').replace(/\*\s*$/, '').trim();
+  const canExclude = (t, c) => !(t.type === 'twoway' && c === 0);
   function cellBad(t, c, v) {
-    v = String(v ?? '').trim(); if (v === '') return false;
+    v = stripExcl(v); if (v === '') return false;
     if (t.type === 'twoway' && c === 0) return false;
     if (t.type === 'survival' && c > 0) return v !== '0' && v !== '1';
     return isNaN(num(v));
   }
+  function countExcluded(t) { let n = 0; t.rows.forEach(r => r.forEach((v, c) => { if (canExclude(t, c) && isExcl(v) && stripExcl(v) !== '') n++; })); return n; }
+  const cellClass = (t, c, v) => `${hasX(t) && c === 0 ? 'xcol' : ''}${cellBad(t, c, v) ? ' bad' : ''}${canExclude(t, c) && isExcl(v) ? ' excl' : ''}`;
+
+  // ---------- selection (like a spreadsheet) ----------
+  // kind 'cell' = rectangle from a to b · 'rows' / 'cols' = whole rows / columns (sets, for ⌘-click) · null = nothing
+  let drag = null;
+  function selFor(t) { if (!ui.S || ui.S.tid !== t.id) ui.S = { tid: t.id, kind: null, a: null, b: null, rows: new Set(), cols: new Set(), anchor: null }; return ui.S; }
+  function rect(S) { return { r1: Math.min(S.a.r, S.b.r), r2: Math.max(S.a.r, S.b.r), c1: Math.min(S.a.c, S.b.c), c2: Math.max(S.a.c, S.b.c) }; }
+  const isSingle = S => S.kind === 'cell' && S.a.r === S.b.r && S.a.c === S.b.c;
+  const range = (a, b) => { const out = []; for (let i = Math.min(a, b); i <= Math.max(a, b); i++) out.push(i); return out; };
+  function selRows(t) { const S = selFor(t); if (S.kind === 'rows') return [...S.rows].sort((a, b) => a - b); if (S.kind === 'cell') { const R = rect(S); return range(R.r1, R.r2); } if (S.kind === 'cols') return range(0, Math.max(0, lastFilledRow(t))); return []; }
+  function selCols(t) { const S = selFor(t); if (S.kind === 'cols') return [...S.cols].sort((a, b) => a - b); if (S.kind === 'cell') { const R = rect(S); return range(R.c1, R.c2); } if (S.kind === 'rows') return range(0, t.cols.length - 1); return []; }
+  function selCells(t) { const out = [], rows = selRows(t), cols = selCols(t); rows.forEach(r => cols.forEach(c => { if (c < t.cols.length) out.push([r, c]); })); return out; }
+  function inSel(S, r, c) {
+    if (S.kind === 'rows') return S.rows.has(r);
+    if (S.kind === 'cols') return S.cols.has(c);
+    if (S.kind === 'cell') { const R = rect(S); return r >= R.r1 && r <= R.r2 && c >= R.c1 && c <= R.c2; }
+    return false;
+  }
+  const inputAt = (r, c) => document.querySelector(`table.grid input[data-r="${r}"][data-c="${c}"]`);
+  function selectionTSV(t) {
+    const rows = selRows(t), cols = selCols(t);
+    return rows.map(r => cols.map(c => stripExcl(t.rows[r] ? t.rows[r][c] : '')).join('\t')).join('\n');
+  }
+  function paintSel() {
+    const t = cur(), grid = $('table.grid'); if (!t || !grid) return;
+    const S = selFor(t), single = isSingle(S);
+    grid.querySelectorAll('tbody tr').forEach((tr, r) => {
+      tr.classList.toggle('rsel', S.kind === 'rows' && S.rows.has(r));
+      for (let i = 1; i < tr.children.length; i++) tr.children[i].classList.toggle('csel', !single && S.kind !== 'rows' && inSel(S, r, i - 1));
+    });
+    grid.querySelectorAll('[data-colhead]').forEach(th => th.classList.toggle('chsel', S.kind === 'cols' && S.cols.has(+th.dataset.colhead)));
+    const n = S.kind === 'rows' ? S.rows.size : S.kind === 'cols' ? S.cols.size : S.kind === 'cell' ? (rect(S).r2 - rect(S).r1 + 1) * (rect(S).c2 - rect(S).c1 + 1) : 0;
+    if (S.kind === 'rows') setStatus(`${plural(n, 'row')} selected — ⌫ deletes`);
+    else if (S.kind === 'cols') setStatus(`${plural(n, 'column')} selected — ⌫ deletes`);
+    else if (S.kind === 'cell' && n > 1) setStatus(`${plural(n, 'cell')} selected — ⌫ clears · ⌘C copies · ⌘E excludes`);
+    else setStatus('');
+  }
+  // Multi-cell / row / column selections keep keyboard focus in a hidden text box, so ⌘C, ⌘X, ⌘V and ⌫ work everywhere.
+  function focusClip() {
+    const clip = $('#clip'), t = cur(); if (!clip || !t) return;
+    clip.value = selectionTSV(t) || ' '; clip.focus({ preventScroll: true }); clip.select();
+  }
+  function afterSelect() {
+    const t = cur(), S = selFor(t); paintSel();
+    if (isSingle(S)) { const el = inputAt(S.a.r, S.a.c); if (el && document.activeElement !== el) { el.focus(); el.select(); } }
+    else if (S.kind) focusClip();
+  }
+  function setSingle(t, r, c) { const S = selFor(t); S.kind = 'cell'; S.a = { r, c }; S.b = { r, c }; S.rows.clear(); S.cols.clear(); }
+  function pickLine(S, kind, i, e) {
+    const set = kind === 'rows' ? S.rows : S.cols, other = kind === 'rows' ? S.cols : S.rows;
+    if (S.kind !== kind) { set.clear(); S.anchor = null; }
+    other.clear(); S.kind = kind;
+    if (e.shiftKey && S.anchor != null) { if (!(e.metaKey || e.ctrlKey)) set.clear(); range(S.anchor, i).forEach(x => set.add(x)); }
+    else if (e.metaKey || e.ctrlKey) { set.has(i) ? set.delete(i) : set.add(i); S.anchor = i; }
+    else { set.clear(); set.add(i); S.anchor = i; }
+    if (!set.size) S.kind = null;
+  }
+  function selectAll(t) {
+    const S = selFor(t); S.kind = 'cell'; S.a = { r: 0, c: 0 }; S.b = { r: Math.max(0, lastFilledRow(t)), c: t.cols.length - 1 };
+    S.rows.clear(); S.cols.clear(); afterSelect();
+  }
+
   function renderData(t) {
     const body = $('#body');
     const minCols = hasX(t) ? 2 : 1;
-    const rs = rowSel(t);
-    $('#head-actions').innerHTML = `<span class="hint">Paste from Excel with ⌘V · right-click a row number or column header to insert or delete · </span><button class="btn" id="add-col">+ ${t.type === 'grouped' ? 'Column' : 'Group'}</button>`;
+    selFor(t);
+    $('#head-actions').innerHTML = `<span class="hint">Drag or Shift-click to select · ⌫ clears · right-click for more · </span><button class="btn" id="add-col">+ ${t.type === 'grouped' ? 'Column' : 'Group'}</button>`;
     $('#add-col').onclick = () => { commit(); t.cols.push({ title: '' }); ensureRows(t, t.rows.length); renderData(t); scheduleSave(); };
     const nRows = Math.max(24, lastFilledRow(t) + 12);
     ensureRows(t, nRows);
@@ -2524,50 +2684,77 @@ function(t){t.__bidiEngine__=t.prototype.__bidiEngine__=function(t){var n,r,i,a,
     let h = `<div class="grid-wrap">`;
     if (t.type === 'survival') h += `<p class="hint" style="margin:0 0 10px">One row per subject (fly): its time in the <b>X</b> column and <b>1</b> (death) or <b>0</b> (censored) in its group's column. Leave the other groups blank.</p>`;
     if (t.type === 'twoway') h += `<p class="hint" style="margin:0 0 10px">First column: the row factor level (e.g. <b>WT</b>, <b>Mutant</b>) — repeat it on every replicate row. Then one column per group (e.g. <b>Vehicle</b>, <b>Drug</b>).</p>`;
-    h += `<table class="grid"><colgroup><col>${t.cols.map(() => '<col class="data">').join('')}</colgroup><thead><tr class="letters"><th class="rn"></th>`;
+    h += `<table class="grid"><colgroup><col>${t.cols.map(() => '<col class="data">').join('')}</colgroup><thead><tr class="letters"><th class="rn corner" data-corner title="Select all (⌘A)"></th>`;
     t.cols.forEach((c, i) => {
       const lab = isX(i) ? (t.type === 'twoway' ? 'Row factor' : 'X') : `Group ${letter(hasX(t) ? i - 1 : i)}`;
-      h += `<th class="${isX(i) ? 'xcol' : ''}" data-colhead="${i}">${lab}${isX(i) || t.cols.length <= minCols ? '' : `<button class="del" data-delcol="${i}" title="Delete column">×</button>`}</th>`;
+      h += `<th class="${isX(i) ? 'xcol' : ''}" data-colhead="${i}" title="Click to select the column · Shift/⌘-click for more">${lab}${isX(i) || t.cols.length <= minCols ? '' : `<button class="del" data-delcol="${i}" title="Delete column">×</button>`}</th>`;
     });
     h += `</tr><tr><th class="rn">Title</th>`;
     t.cols.forEach((c, i) => { h += `<th class="${isX(i) ? 'xcol' : ''}"><input data-r="-1" data-c="${i}" value="${esc(c.title)}" placeholder="${isX(i) ? (t.type === 'twoway' ? 'e.g. Genotype' : 'Days') : colName(t, i)}" spellcheck="false"></th>`; });
     h += `</tr></thead><tbody>`;
     for (let r = 0; r < nRows; r++) {
-      h += `<tr class="${rs.has(r) ? 'rsel' : ''}"><td class="rn" data-rn="${r}" title="Click to select · Shift/⌘-click for more · right-click for options">${r + 1}</td>`;
+      h += `<tr><td class="rn" data-rn="${r}" title="Click to select the row · Shift/⌘-click for more">${r + 1}</td>`;
       t.cols.forEach((c, i) => {
         const v = t.rows[r][i] ?? '', txt = t.type === 'twoway' && i === 0;
-        h += `<td class="${isX(i) ? 'xcol' : ''}${cellBad(t, i, v) ? ' bad' : ''}"><input data-r="${r}" data-c="${i}" value="${esc(v)}" ${txt ? 'style="text-align:left"' : 'inputmode="decimal"'} spellcheck="false" autocomplete="off"></td>`;
+        h += `<td class="${cellClass(t, i, v)}" data-r="${r}" data-c="${i}"><input data-r="${r}" data-c="${i}" value="${esc(v)}" ${txt ? 'style="text-align:left"' : 'inputmode="decimal"'} spellcheck="false" autocomplete="off"></td>`;
       });
       h += `</tr>`;
     }
-    body.innerHTML = h + `</tbody></table></div>`;
-    const grid = $('table.grid', body);
-    grid.addEventListener('focusin', e => { if (e.target.tagName === 'INPUT') { pendingSnap = snap(); if (rs.size) { rs.clear(); paintRowSel(); } } });
+    body.innerHTML = h + `</tbody></table></div><textarea id="clip" class="clip" aria-hidden="true" tabindex="-1" spellcheck="false"></textarea>`;
+    const grid = $('table.grid', body), clip = $('#clip', body);
+
+    grid.addEventListener('focusin', e => {
+      const el = e.target; if (el.tagName !== 'INPUT') return;
+      pendingSnap = snap();
+      const r = +el.dataset.r, c = +el.dataset.c, S = selFor(t);
+      if (r === -1) { S.kind = null; paintSel(); return; }
+      if (drag && drag.kind === 'cell') return;
+      if (!(S.kind === 'cell' && isSingle(S) && S.a.r === r && S.a.c === c)) { setSingle(t, r, c); paintSel(); }
+    });
     grid.addEventListener('mousedown', e => {
-      const rn = e.target.closest('td.rn[data-rn]'); if (!rn) return;
-      e.preventDefault(); if (document.activeElement && document.activeElement.blur) document.activeElement.blur();
-      const r = +rn.dataset.rn;
-      if (e.button === 2) { if (!rs.has(r)) { rs.clear(); rs.add(r); ui.anchor = r; } }
-      else if (e.shiftKey && ui.anchor != null) { const [a, b] = [Math.min(ui.anchor, r), Math.max(ui.anchor, r)]; if (!(e.metaKey || e.ctrlKey)) rs.clear(); for (let i = a; i <= b; i++) rs.add(i); }
-      else if (e.metaKey || e.ctrlKey) { rs.has(r) ? rs.delete(r) : rs.add(r); ui.anchor = r; }
-      else { rs.clear(); rs.add(r); ui.anchor = r; }
-      paintRowSel();
+      if (e.target.closest('.del')) return;
+      const S = selFor(t), right = e.button === 2;
+      if (e.target.closest('[data-corner]')) { e.preventDefault(); selectAll(t); return; }
+      const rn = e.target.closest('td.rn[data-rn]'), ch = e.target.closest('th[data-colhead]'), td = e.target.closest('tbody td[data-c]');
+      if (rn) {
+        e.preventDefault(); const r = +rn.dataset.rn;
+        if (!(right && S.kind === 'rows' && S.rows.has(r))) pickLine(S, 'rows', r, e);
+        drag = right ? null : { kind: 'rows', from: S.anchor }; afterSelect(); return;
+      }
+      if (ch) {
+        e.preventDefault(); const c = +ch.dataset.colhead;
+        if (!(right && S.kind === 'cols' && S.cols.has(c))) pickLine(S, 'cols', c, e);
+        drag = right ? null : { kind: 'cols', from: S.anchor }; afterSelect(); return;
+      }
+      if (!td) return;
+      const r = +td.dataset.r, c = +td.dataset.c;
+      if (right) { if (!inSel(S, r, c)) { setSingle(t, r, c); afterSelect(); } else e.preventDefault(); return; }
+      if (e.shiftKey && S.kind === 'cell' && S.a) { e.preventDefault(); S.b = { r, c }; afterSelect(); return; }
+      setSingle(t, r, c); paintSel();
+      drag = { kind: 'cell' };
+    });
+    grid.addEventListener('mouseover', e => {
+      if (!drag || !(e.buttons & 1)) return;
+      const S = selFor(t);
+      if (drag.kind === 'cell') {
+        const td = e.target.closest('tbody td[data-c]'); if (!td) return;
+        const r = +td.dataset.r, c = +td.dataset.c; if (r === S.b.r && c === S.b.c) return;
+        S.b = { r, c }; grid.classList.add('dragging'); afterSelect();
+      } else {
+        const el = drag.kind === 'rows' ? e.target.closest('[data-rn],tbody td[data-r]') : e.target.closest('[data-colhead],tbody td[data-c]'); if (!el) return;
+        const i = drag.kind === 'rows' ? +(el.dataset.rn ?? el.dataset.r) : +(el.dataset.colhead ?? el.dataset.c);
+        const set = drag.kind === 'rows' ? S.rows : S.cols; set.clear(); range(drag.from ?? i, i).forEach(x => set.add(x)); afterSelect();
+      }
     });
     grid.addEventListener('contextmenu', e => {
-      const head = e.target.closest('[data-colhead]');
-      if (head) { e.preventDefault(); return colMenu(t, +head.dataset.colhead, e.clientX, e.clientY); }
-      const cellEl = e.target.closest('tbody td'); if (!cellEl) return;
-      const inp = cellEl.querySelector('input'), r = inp ? +inp.dataset.r : +cellEl.dataset.rn;
-      if (inp && document.activeElement === inp && inp.selectionStart !== inp.selectionEnd) return; // let the normal text menu (copy/paste) appear
-      e.preventDefault();
-      if (!rs.has(r)) { rs.clear(); rs.add(r); ui.anchor = r; paintRowSel(); }
-      rowMenu(t, e.clientX, e.clientY, inp ? +inp.dataset.c : null);
+      if (!e.target.closest('tbody td, th[data-colhead]')) return;
+      e.preventDefault(); selMenu(t, e.clientX, e.clientY);
     });
     grid.addEventListener('input', e => {
       const el = e.target; if (el.tagName !== 'INPUT') return;
       if (pendingSnap) { pushUndo(pendingSnap); pendingSnap = null; }
       const r = +el.dataset.r, c = +el.dataset.c;
-      if (r === -1) t.cols[c].title = el.value; else { t.rows[r][c] = el.value; el.parentElement.classList.toggle('bad', cellBad(t, c, el.value)); }
+      if (r === -1) t.cols[c].title = el.value; else { t.rows[r][c] = el.value; el.parentElement.className = cellClass(t, c, el.value); }
       if (r >= nRows - 3) { renderData(t); focusCell(r, c, true); }
       scheduleSave();
     });
@@ -2575,12 +2762,18 @@ function(t){t.__bidiEngine__=t.prototype.__bidiEngine__=function(t){var n,r,i,a,
     grid.addEventListener('keydown', e => {
       const el = e.target; if (el.tagName !== 'INPUT') return;
       const r = +el.dataset.r, c = +el.dataset.c;
+      const arrow = { ArrowUp: [-1, 0], ArrowDown: [1, 0], ArrowLeft: [0, -1], ArrowRight: [0, 1] }[e.key];
+      if (arrow && e.shiftKey && r >= 0) { // extend the selection from this cell
+        e.preventDefault(); const S = selFor(t); if (!(S.kind === 'cell')) setSingle(t, r, c);
+        S.b = { r: Math.max(0, S.b.r + arrow[0]), c: Math.min(t.cols.length - 1, Math.max(0, S.b.c + arrow[1])) }; afterSelect(); return;
+      }
       const atStart = el.selectionStart === 0 && el.selectionEnd === 0, atEnd = el.selectionStart === el.value.length;
       let nr = r, nc = c;
       if (e.key === 'Enter' || e.key === 'ArrowDown') nr = e.key === 'Enter' && e.shiftKey ? r - 1 : r + 1;
       else if (e.key === 'ArrowUp') nr = r - 1;
-      else if (e.key === 'ArrowRight' && atEnd) nc = c + 1;
-      else if (e.key === 'ArrowLeft' && atStart) nc = c - 1;
+      else if (e.key === 'ArrowRight' && (atEnd || el.selectionEnd - el.selectionStart === el.value.length)) nc = c + 1;
+      else if (e.key === 'ArrowLeft' && (atStart || el.selectionEnd - el.selectionStart === el.value.length)) nc = c - 1;
+      else if (e.key === 'Tab') { nc = e.shiftKey ? c - 1 : c + 1; if (nc >= t.cols.length) { nc = 0; nr = r + 1; } }
       else return;
       if (nr < -1 || nc < 0 || nc >= t.cols.length) return;
       e.preventDefault(); focusCell(nr, nc);
@@ -2588,58 +2781,96 @@ function(t){t.__bidiEngine__=t.prototype.__bidiEngine__=function(t){var n,r,i,a,
     grid.addEventListener('paste', e => {
       const el = e.target; if (el.tagName !== 'INPUT') return;
       const text = (e.clipboardData || window.clipboardData).getData('text/plain');
-      if (!/[\t\n]/.test(text.replace(/\n$/, ''))) return;
-      e.preventDefault();
-      const lines = text.replace(/\r/g, '').replace(/\n+$/, '').split('\n').map(l => l.split('\t'));
-      const r0 = +el.dataset.r, c0 = +el.dataset.c;
-      pushUndo();
-      const width = Math.max(...lines.map(l => l.length));
-      while (t.cols.length < c0 + width) t.cols.push({ title: '' });
-      ensureRows(t, Math.max(t.rows.length, r0 + lines.length + 1));
-      lines.forEach((cells, li) => cells.forEach((v, ci) => {
-        const r = r0 + li, c = c0 + ci; v = v.trim();
-        if (r === -1) t.cols[c].title = v; else t.rows[r][c] = v;
-      }));
-      render(); scheduleSave();
-      toast(`Pasted ${lines.length} row${lines.length > 1 ? 's' : ''} × ${width} column${width > 1 ? 's' : ''}`);
+      if (!/[\t\n]/.test(text.replace(/\n$/, ''))) return; // a single value: let the cell take it normally
+      e.preventDefault(); pasteText(t, +el.dataset.r, +el.dataset.c, text);
     });
-    body.querySelectorAll('[data-delcol]').forEach(b => b.onclick = () => deleteCol(t, +b.dataset.delcol));
+
+    // keys while several cells / rows / columns are selected
+    clip.addEventListener('keydown', e => {
+      const S = selFor(t), mod = e.metaKey || e.ctrlKey;
+      if (e.key === 'Delete' || e.key === 'Backspace') { e.preventDefault(); return deleteSelection(t); }
+      if (e.key === 'Escape') { e.preventDefault(); const [r0, c0] = selCells(t)[0] || [0, 0]; setSingle(t, r0, c0); return afterSelect(); }
+      const arrow = { ArrowUp: [-1, 0], ArrowDown: [1, 0], ArrowLeft: [0, -1], ArrowRight: [0, 1] }[e.key];
+      if (arrow) {
+        e.preventDefault();
+        if (e.shiftKey && S.kind === 'cell') { S.b = { r: Math.max(0, S.b.r + arrow[0]), c: Math.min(t.cols.length - 1, Math.max(0, S.b.c + arrow[1])) }; return afterSelect(); }
+        const from = S.kind === 'cell' ? S.b : { r: selRows(t)[0] || 0, c: selCols(t)[0] || 0 };
+        setSingle(t, Math.max(0, from.r + arrow[0]), Math.min(t.cols.length - 1, Math.max(0, from.c + arrow[1]))); return afterSelect();
+      }
+      if (e.key === 'Enter' || e.key === 'F2' || (e.key.length === 1 && !mod)) { // start typing into the first selected cell
+        const [r0, c0] = selCells(t)[0] || [0, 0]; setSingle(t, r0, c0); afterSelect();
+        if (e.key.length === 1) { e.preventDefault(); const el = inputAt(r0, c0); if (el) { el.value = e.key; el.dispatchEvent(new Event('input', { bubbles: true })); const inp = inputAt(r0, c0); if (inp) { inp.focus(); inp.setSelectionRange(1, 1); } } }
+        else e.preventDefault();
+      }
+    });
+    clip.addEventListener('copy', e => { e.preventDefault(); e.clipboardData.setData('text/plain', selectionTSV(t)); toast(`Copied ${plural(selCells(t).length, 'cell')}`); });
+    clip.addEventListener('cut', e => { e.preventDefault(); e.clipboardData.setData('text/plain', selectionTSV(t)); clearCells(t, selCells(t)); });
+    clip.addEventListener('paste', e => {
+      e.preventDefault(); const [r0, c0] = selCells(t)[0] || [0, 0];
+      pasteText(t, r0, c0, (e.clipboardData || window.clipboardData).getData('text/plain'), selCells(t));
+    });
+    body.querySelectorAll('[data-delcol]').forEach(b => b.onclick = () => { const S = selFor(t); S.kind = 'cols'; S.cols = new Set([+b.dataset.delcol]); S.rows.clear(); deleteSelection(t); });
+    paintSel();
   }
 
-  // ---------- row & column editing ----------
-  function rowSel(t) { if (ui.selTable !== t.id) { ui.selTable = t.id; ui.rows = new Set(); ui.anchor = null; } return ui.rows; }
-  function paintRowSel() {
-    const rs = ui.rows || new Set();
-    document.querySelectorAll('table.grid tbody tr').forEach((tr, i) => tr.classList.toggle('rsel', rs.has(i)));
-    const n = rs.size; if (n) setStatus(`${n} row${n > 1 ? 's' : ''} selected — press Delete to remove`); else setStatus('');
-  }
+  // ---------- editing rows, columns and cells ----------
   const blankRow = t => t.cols.map(() => '');
   const plural = (n, w) => `${n} ${w}${n === 1 ? '' : 's'}`;
-  function deleteRows(t) {
-    const rs = rowSel(t); if (!rs.size) return;
-    const list = [...rs].sort((a, b) => b - a); commit();
-    list.forEach(r => { if (r < t.rows.length) t.rows.splice(r, 1); });
-    rs.clear(); ui.anchor = null; renderData(t); scheduleSave(); setStatus('');
+  function pasteText(t, r0, c0, text, target) {
+    text = String(text || '').replace(/\r/g, '').replace(/\n+$/, '');
+    if (text === '') return;
+    const lines = text.split('\n').map(l => l.split('\t'));
+    pushUndo();
+    if (lines.length === 1 && lines[0].length === 1 && target && target.length > 1) { // one value into many cells: fill them all
+      target.forEach(([r, c]) => { ensureRows(t, r + 1); t.rows[r][c] = lines[0][0].trim(); });
+      render(); scheduleSave(); return;
+    }
+    const width = Math.max(...lines.map(l => l.length));
+    while (t.cols.length < c0 + width) t.cols.push({ title: '' });
+    ensureRows(t, Math.max(t.rows.length, r0 + lines.length + 1));
+    lines.forEach((cells, li) => cells.forEach((v, ci) => {
+      const r = r0 + li, c = c0 + ci; v = v.trim();
+      if (r === -1) t.cols[c].title = v; else t.rows[r][c] = v;
+    }));
+    const S = selFor(t); S.kind = 'cell'; S.a = { r: Math.max(0, r0), c: c0 }; S.b = { r: r0 + lines.length - 1, c: c0 + width - 1 };
+    render(); scheduleSave(); afterSelect();
+    toast(`Pasted ${plural(lines.length, 'row')} × ${plural(width, 'column')}`);
+  }
+  function clearCells(t, cells) {
+    if (!cells.length) return; commit();
+    cells.forEach(([r, c]) => { if (t.rows[r]) t.rows[r][c] = ''; });
+    renderData(t); scheduleSave(); afterSelect();
+  }
+  // Prism's "Delete cells – shift up": remove the selected cells and move the values below them up
+  function deleteCellsUp(t) {
+    const S = selFor(t); if (S.kind !== 'cell') return;
+    const R = rect(S), n = R.r2 - R.r1 + 1; commit();
+    for (let c = R.c1; c <= R.c2; c++) {
+      const col = t.rows.map(row => row[c]); col.splice(R.r1, n); while (col.length < t.rows.length) col.push('');
+      t.rows.forEach((row, r) => { row[c] = col[r]; });
+    }
+    renderData(t); scheduleSave(); afterSelect();
+  }
+  function toggleExclude(t) {
+    const cells = selCells(t).filter(([r, c]) => canExclude(t, c) && t.rows[r] && stripExcl(t.rows[r][c]) !== '');
+    if (!cells.length) return toast('Select one or more values to exclude');
+    const allEx = cells.every(([r, c]) => isExcl(t.rows[r][c]));
+    commit();
+    cells.forEach(([r, c]) => { const v = stripExcl(t.rows[r][c]); t.rows[r][c] = allEx ? v : v + '*'; });
+    renderData(t); scheduleSave(); afterSelect();
+    toast(allEx ? `Included ${plural(cells.length, 'value')} again` : `Excluded ${plural(cells.length, 'value')} — shown in blue, left out of analyses and graphs`);
+  }
+  function deleteRows(t, list) {
+    list = (list || selRows(t)).slice().sort((a, b) => b - a); if (!list.length) return;
+    commit(); list.forEach(r => { if (r < t.rows.length) t.rows.splice(r, 1); });
+    const S = selFor(t); setSingle(t, Math.max(0, Math.min(...list)), 0); S.kind = null;
+    renderData(t); scheduleSave(); setStatus('');
     toast(`Deleted ${plural(list.length, 'row')} — ⌘Z to undo`);
   }
-  function clearRows(t) {
-    const rs = rowSel(t); if (!rs.size) return; commit();
-    rs.forEach(r => { if (t.rows[r]) t.rows[r] = blankRow(t); }); renderData(t); scheduleSave();
-  }
-  function insertRows(t, at) {
-    const rs = rowSel(t), n = Math.max(1, rs.size); commit();
-    ensureRows(t, at); t.rows.splice(at, 0, ...Array.from({ length: n }, () => blankRow(t)));
-    rs.clear(); for (let i = 0; i < n; i++) rs.add(at + i); ui.anchor = at;
-    renderData(t); scheduleSave(); paintRowSel();
-  }
-  function rowMenu(t, x, y) {
-    const rs = rowSel(t), sorted = [...rs].sort((a, b) => a - b), n = sorted.length, first = sorted[0], last = sorted[n - 1];
-    const label = n > 1 ? plural(n, 'row') : `row ${first + 1}`;
-    menu(x, y, [
-      { label: `Insert ${n > 1 ? plural(n, 'row') : 'row'} above`, run: () => insertRows(t, first) },
-      { label: `Insert ${n > 1 ? plural(n, 'row') : 'row'} below`, run: () => insertRows(t, last + 1) }, '-',
-      { label: `Clear ${label}`, run: () => clearRows(t) },
-      { label: `Delete ${label}`, danger: true, run: () => deleteRows(t) }]);
+  function insertRows(t, at, n) {
+    commit(); ensureRows(t, at); t.rows.splice(at, 0, ...Array.from({ length: n }, () => blankRow(t)));
+    const S = selFor(t); S.kind = 'rows'; S.cols.clear(); S.rows = new Set(range(at, at + n - 1)); S.anchor = at;
+    renderData(t); scheduleSave(); afterSelect();
   }
   // keep analysis choices, pairs and colours pointing at the same columns after columns move
   function remapCols(t, f) {
@@ -2651,31 +2882,66 @@ function(t){t.__bidiEngine__=t.prototype.__bidiEngine__=function(t){var n,r,i,a,
     if (an.cellPairs) an.cellPairs = an.cellPairs.map(([l1, c1, l2, c2]) => [l1, f(+c1), l2, f(+c2)]).filter(x => x[1] >= 0 && x[3] >= 0);
     if (g.colors) { const nc = {}; Object.entries(g.colors).forEach(([k, v]) => { const n = fg(k); if (n >= 0) nc[n] = v; }); g.colors = nc; }
   }
-  function deleteCol(t, c) {
+  function deletableCols(t, list) { return list.filter(c => !(hasX(t) && c === 0) && c < t.cols.length); }
+  function deleteCols(t, list) {
     const minCols = hasX(t) ? 2 : 1;
-    if ((hasX(t) && c === 0) || t.cols.length <= minCols) return toast('This column can’t be deleted');
-    const has = t.rows.some(r => String(r[c] ?? '').trim()) || t.cols[c].title;
-    if (has && !confirm(`Delete column “${colName(t, c)}” and its data?`)) return;
-    commit(); t.cols.splice(c, 1); t.rows.forEach(r => r.splice(c, 1));
-    remapCols(t, x => x === c ? -1 : x > c ? x - 1 : x); render(); scheduleSave();
+    list = deletableCols(t, list).sort((a, b) => b - a);
+    if (!list.length) return toast(hasX(t) ? 'The first column can’t be deleted' : 'Nothing to delete');
+    if (t.cols.length - list.length < minCols) return toast(`A ${KIND_LABEL[t.type].toLowerCase()} table needs at least ${plural(minCols, 'column')}`);
+    const withData = list.filter(c => t.rows.some(r => String(r[c] ?? '').trim()) || t.cols[c].title);
+    if (withData.length && !confirm(list.length === 1 ? `Delete column “${colName(t, list[0])}” and its data?` : `Delete ${list.length} columns and their data?`)) return;
+    commit();
+    list.forEach(c => { t.cols.splice(c, 1); t.rows.forEach(r => r.splice(c, 1)); remapCols(t, x => x === c ? -1 : x > c ? x - 1 : x); });
+    selFor(t).kind = null; render(); scheduleSave();
+    toast(`Deleted ${plural(list.length, 'column')} — ⌘Z to undo`);
   }
-  function insertCol(t, at) {
+  function insertCols(t, at, n) {
     if (hasX(t) && at < 1) at = 1;
-    commit(); t.cols.splice(at, 0, { title: '' }); t.rows.forEach(r => r.splice(at, 0, ''));
-    remapCols(t, x => x >= at ? x + 1 : x); render(); scheduleSave();
-    setTimeout(() => focusCell(-1, at), 30);
+    commit();
+    for (let k = 0; k < n; k++) { t.cols.splice(at, 0, { title: '' }); t.rows.forEach(r => r.splice(at, 0, '')); remapCols(t, x => x >= at ? x + 1 : x); }
+    render(); scheduleSave(); setTimeout(() => focusCell(-1, at), 30);
   }
-  function clearCol(t, c) { commit(); t.rows.forEach(r => { r[c] = ''; }); renderData(t); scheduleSave(); }
-  function colMenu(t, c, x, y) {
-    const isXc = hasX(t) && c === 0, nm = isXc ? (t.type === 'twoway' ? 'row-factor column' : 'X column') : `“${colName(t, c)}”`;
-    const items = [];
-    if (!isXc) items.push({ label: 'Insert column to the left', run: () => insertCol(t, c) });
-    items.push({ label: 'Insert column to the right', run: () => insertCol(t, c + 1) }, '-', { label: `Clear ${nm}`, run: () => clearCol(t, c) });
-    if (!isXc && t.cols.length > (hasX(t) ? 2 : 1)) items.push({ label: `Delete ${nm}`, danger: true, run: () => deleteCol(t, c) });
+  // ⌫ / Delete: whole rows or columns are deleted; a block of cells is cleared
+  function deleteSelection(t) {
+    const S = selFor(t);
+    if (S.kind === 'rows') return deleteRows(t);
+    if (S.kind === 'cols') return deleteCols(t, selCols(t));
+    if (S.kind === 'cell') return clearCells(t, selCells(t));
+  }
+  async function pasteFromMenu(t) {
+    const [r0, c0] = selCells(t)[0] || [0, 0];
+    try {
+      const text = NATIVE ? await nativeCall({ cmd: 'readText' }) : await navigator.clipboard.readText();
+      if (typeof text !== 'string') throw new Error();
+      pasteText(t, r0, c0, text, selCells(t));
+    } catch (e) { toast('Press ⌘V to paste'); }
+  }
+  function selMenu(t, x, y) {
+    const S = selFor(t), rows = selRows(t), cols = selCols(t), cells = selCells(t);
+    const nr = rows.length, nc = cols.length, delC = deletableCols(t, cols);
+    const rowLabel = nr === 1 ? `row ${rows[0] + 1}` : plural(nr, 'row');
+    const colLabel = nc === 1 ? `column “${colName(t, cols[0])}”` : plural(nc, 'column');
+    const anyEx = cells.some(([r, c]) => canExclude(t, c) && t.rows[r] && stripExcl(t.rows[r][c]) !== '');
+    const allEx = anyEx && cells.filter(([r, c]) => canExclude(t, c) && t.rows[r] && stripExcl(t.rows[r][c]) !== '').every(([r, c]) => isExcl(t.rows[r][c]));
+    const copy = () => copyText(selectionTSV(t)).then(() => toast(`Copied ${plural(cells.length, 'cell')}`), () => toast('Press ⌘C to copy'));
+    const items = [
+      { label: 'Cut', run: () => copyText(selectionTSV(t)).then(() => clearCells(t, cells)) },
+      { label: 'Copy', run: copy },
+      { label: 'Paste', run: () => pasteFromMenu(t) }, '-',
+      { label: cells.length > 1 ? `Clear ${plural(cells.length, 'cell')}` : 'Clear', run: () => clearCells(t, cells) }];
+    if (S.kind === 'cell' && !(nr === 1 && nc === 1 && !anyEx)) items.push({ label: 'Delete cells (shift values up)', run: () => deleteCellsUp(t) });
+    if (anyEx) items.push({ label: allEx ? 'Include values again' : 'Exclude values (keep, but leave out of analysis)', run: () => toggleExclude(t) });
+    items.push('-',
+      { label: `Insert ${nr > 1 ? plural(nr, 'row') : 'row'} above`, run: () => insertRows(t, rows[0], Math.max(1, nr)) },
+      { label: `Insert ${nr > 1 ? plural(nr, 'row') : 'row'} below`, run: () => insertRows(t, rows[nr - 1] + 1, Math.max(1, nr)) },
+      { label: `Delete ${rowLabel}`, danger: true, run: () => deleteRows(t, rows) }, '-');
+    if (!(hasX(t) && cols[0] === 0)) items.push({ label: `Insert ${nc > 1 ? plural(nc, 'column') : 'column'} to the left`, run: () => insertCols(t, cols[0], Math.max(1, nc)) });
+    items.push({ label: `Insert ${nc > 1 ? plural(nc, 'column') : 'column'} to the right`, run: () => insertCols(t, cols[nc - 1] + 1, Math.max(1, nc)) });
+    if (delC.length && t.cols.length - delC.length >= (hasX(t) ? 2 : 1)) items.push({ label: `Delete ${delC.length === nc ? colLabel : plural(delC.length, 'column')}`, danger: true, run: () => deleteCols(t, delC) });
     menu(x, y, items);
   }
   function focusCell(r, c, keepCaret) {
-    const el = document.querySelector(`table.grid input[data-r="${r}"][data-c="${c}"]`);
+    const el = inputAt(r, c);
     if (!el) { const t = cur(); ensureRows(t, r + 12); renderData(t); return focusCell(r, c); }
     el.focus(); if (!keepCaret) el.select(); else { const n = el.value.length; el.setSelectionRange(n, n); }
   }
@@ -2779,6 +3045,8 @@ function(t){t.__bidiEngine__=t.prototype.__bidiEngine__=function(t){var n,r,i,a,
       if (A.error) h += `<div class="notice">${A.error}</div>`;
       h += survivalResults(t, A);
     }
+    const nEx = countExcluded(t);
+    if (nEx) h = h.replace('<div class="results">', `<div class="results"><div class="notice" style="background:#eef3fd;border-color:#cfdcf7;color:#28488f">${plural(nEx, 'value')} ${nEx === 1 ? 'is' : 'are'} excluded (blue with * on the data sheet) and left out of this analysis.</div>`);
     body.innerHTML = h + `<p class="hint">P value summary: ns P ≥ 0.05 · * P < 0.05 · ** P < 0.01 · *** P < 0.001 · **** P < 0.0001. All P values are two-tailed.</p></div>`;
     body.querySelectorAll('[data-set]').forEach(s => s.onchange = () => {
       commit(); const k = s.dataset.set, an = t.analysis; an[k] = ['a', 'b', 'control'].includes(k) ? +s.value : s.value;
@@ -2805,7 +3073,7 @@ function(t){t.__bidiEngine__=t.prototype.__bidiEngine__=function(t){var n,r,i,a,
         const cap = tb.querySelector('caption'); const lines = cap ? [cap.textContent] : [];
         tb.querySelectorAll('tr').forEach(tr => lines.push([...tr.children].map(c => c.textContent.trim()).join('\t')));
         return lines.join('\n');
-      }).join('\n\n') + '\n\nAnalysed with Pipette 1.2 (Tiwary, 2026) — ' + CITE.url;
+      }).join('\n\n') + '\n\nAnalysed with Pipette 1.3 (Tiwary, 2026) — ' + CITE.url;
       copyText(txt).then(() => toast('Results copied — paste into Excel or Word'), () => toast('Could not copy'));
     };
   }
@@ -3062,72 +3330,84 @@ function(t){t.__bidiEngine__=t.prototype.__bidiEngine__=function(t){var n,r,i,a,
     };
   }
   // ---------- boot ----------
+  const inEditable = () => { const el = document.activeElement; return !!el && /INPUT|TEXTAREA|SELECT/.test(el.tagName) && el.id !== 'clip'; };
   function bindToolbar() {
-    $('#tb-new').onclick = newTableDialog;
-    $('#tb-open').onclick = openDialog;
-    $('#tb-save').onclick = saveProject;
+    $('#tb-new').onclick = () => newTableDialog();
+    $('#tb-open').onclick = () => openDialog('open');
+    $('#tb-save').onclick = () => saveProject(false);
     $('#tb-undo').onclick = undo;
     $('#tb-redo').onclick = redo;
     $('#tb-cite').onclick = citeDialog;
-    $('#tb-newproj').onclick = () => {
-      if (!confirm('Start a new, empty project? Save the current one first if you want to keep it.')) return;
-      pushUndo(); newProject(false); render(); scheduleSave(); newTableDialog();
-    };
+    $('#tb-newproj').onclick = newProjectCmd;
     document.addEventListener('keydown', e => {
-      const inField = /INPUT|TEXTAREA|SELECT/.test(document.activeElement.tagName);
-      if (!inField && P && P.sel && P.sel.view === 'data' && ui.rows && ui.rows.size && !document.querySelector('.overlay')) {
-        const t = cur();
-        if (t && ui.selTable === t.id) {
-          if (e.key === 'Delete' || e.key === 'Backspace') { e.preventDefault(); return deleteRows(t); }
-          if (e.key === 'Escape') { ui.rows.clear(); return paintRowSel(); }
-        }
-      }
+      if (document.querySelector('.overlay')) return;
       const mod = e.metaKey || e.ctrlKey; if (!mod) return;
-      const k = e.key.toLowerCase(), inInput = /INPUT|TEXTAREA|SELECT/.test(document.activeElement.tagName);
-      if (k === 's') { e.preventDefault(); saveProject(); }
-      else if (k === 'o') { e.preventDefault(); openDialog(); }
-      else if (k === 'z' && !inInput) { e.preventDefault(); e.shiftKey ? redo() : undo(); }
-      else if (k === 'y' && !inInput) { e.preventDefault(); redo(); }
+      const k = e.key.toLowerCase(), t = cur(), dataView = t && P.sel && P.sel.view === 'data';
+      if (k === 's') { e.preventDefault(); saveProject(e.shiftKey); }
+      else if (k === 'o') { e.preventDefault(); openDialog(e.shiftKey ? 'import' : 'open'); }
+      else if (k === 'z' && !inEditable()) { e.preventDefault(); e.shiftKey ? redo() : undo(); }
+      else if (k === 'y' && !inEditable()) { e.preventDefault(); redo(); }
+      else if (k === 'e' && dataView) { e.preventDefault(); toggleExclude(t); }
+      else if (k === 'a' && dataView) {
+        const el = document.activeElement, whole = el && el.tagName === 'INPUT' && +el.dataset.r >= 0 && (el.value === '' || (el.selectionStart === 0 && el.selectionEnd === el.value.length));
+        if (el && el.id === 'clip' || whole) { e.preventDefault(); selectAll(t); }
+      }
     });
+    document.addEventListener('mouseup', () => { drag = null; const g = $('table.grid'); if (g) g.classList.remove('dragging'); });
     document.addEventListener('dragover', e => { e.preventDefault(); });
-    document.addEventListener('drop', e => { e.preventDefault(); const f = e.dataTransfer.files[0]; if (f && /\.(pipette|json|pzfx|prism|pzf)$/i.test(f.name)) openProjectFile(f); });
-    window.addEventListener('beforeunload', () => persist());
+    document.addEventListener('drop', e => { e.preventDefault(); const f = e.dataTransfer.files[0]; if (f && /\.(pipette|json|pzfx|prism|pzf)$/i.test(f.name)) openProjectFile(f, null, 'open'); });
+    window.addEventListener('beforeunload', e => { persist(); if (isDirty()) { e.preventDefault(); e.returnValue = ''; } });
   }
   function boot() {
     let saved = null;
     try { saved = window.__pipetteAutosave || JSON.parse(localStorage.getItem(STORE) || 'null'); } catch (e) { }
-    if (saved && Array.isArray(saved.tables)) { P = saved; P.tables.forEach(upgrade); if (!cur()) P.sel = P.tables[0] ? { id: P.tables[0].id, view: 'data' } : null; }
-    else newProject(true);
-    bindToolbar(); render();
-    setStatus(saved ? 'Restored your last session' : 'Example data loaded');
+    const firstRun = !saved;
+    // Like Prism, every launch starts a fresh project. Work that was never saved can be brought back from the welcome screen.
+    const restore = saved && Array.isArray(saved.tables) && saved.__unsaved !== false && saved.tables.some(tableHasData) ? saved : null;
+    if (restore) try { localStorage.setItem(STORE + '.previous', JSON.stringify(restore)); } catch (e) { }
+    P = { version: 2, name: 'Untitled', tables: [], sel: null };
+    bindToolbar(); markClean(); render();
+    welcomeDialog({ restore, examples: firstRun });
   }
   // Commands from the Mac menu bar. Returns 'native' when the text field should handle it (e.g. undo while typing).
   function command(name) {
-    const inField = /INPUT|TEXTAREA/.test(document.activeElement && document.activeElement.tagName);
+    const t = cur(), dataView = t && P.sel && P.sel.view === 'data';
     switch (name) {
       case 'newTable': closeOverlays(); newTableDialog(); break;
-      case 'newProject': closeOverlays(); $('#tb-newproj').click(); break;
-      case 'open': openDialog(); break;
-      case 'save': saveProject(); break;
-      case 'undo': if (inField) return 'native'; undo(); break;
-      case 'redo': if (inField) return 'native'; redo(); break;
+      case 'newProject': newProjectCmd(); break;
+      case 'open': openDialog('open'); break;
+      case 'save': saveProject(false); break;
+      case 'saveAs': saveProject(true); break;
+      case 'undo': if (inEditable()) return 'native'; undo(); break;
+      case 'redo': if (inEditable()) return 'native'; redo(); break;
       case 'cite': closeOverlays(); citeDialog(); break;
-      case 'deleteRows': { const t = cur(); if (t && P.sel.view === 'data' && ui.rows && ui.rows.size) deleteRows(t); else return 'native'; break; }
-      case 'flush': clearTimeout(saveTimer); return JSON.stringify(P);
+      case 'selectAll': { const el = document.activeElement; if (dataView && (el.id === 'clip' || (el.tagName === 'INPUT' && +el.dataset.r >= 0 && el.selectionEnd - el.selectionStart === el.value.length))) selectAll(t); else return 'native'; break; }
+      case 'exclude': if (dataView) toggleExclude(t); break;
+      case 'deleteRows': { if (dataView && ui.S && ui.S.kind && !(ui.S.kind === 'cell' && isSingle(ui.S))) deleteSelection(t); else return 'native'; break; }
+      case 'flush': clearTimeout(saveTimer); return JSON.stringify({ ...P, __unsaved: isDirty() });
     }
     return 'ok';
   }
-  function closeOverlays() { document.querySelectorAll('.overlay').forEach(o => o.remove()); closeMenu(); }
-  function openText(name, text) {
-    try {
-      const o = JSON.parse(text); if (!o || !Array.isArray(o.tables)) throw new Error();
-      pushUndo(); P = o; P.tables.forEach(upgrade); P.name = String(name || 'Untitled').replace(/\.(pipette|json)$/i, '');
-      if (!P.sel || !cur()) P.sel = P.tables[0] ? { id: P.tables[0].id, view: 'data' } : null;
-      render(); scheduleSave(); toast(`Opened ${name}`);
-    } catch (e) { alert('This file could not be opened as a Pipette project.'); }
+  // Called by the Mac app before quitting or closing the window.
+  async function quitCheck() {
+    if (!isDirty()) { await persist(false); return 'ok'; }
+    const a = await askSave();
+    if (a === 'cancel') return 'cancel';
+    if (a === 'save') return (await saveProject(false)) ? 'ok' : 'cancel';
+    await persist(false); return 'ok'; // "Don't Save": nothing to restore next time
   }
-  function importBytes(name, b64) { const bin = atob(b64), u = new Uint8Array(bin.length); for (let i = 0; i < bin.length; i++) u[i] = bin.charCodeAt(i); importPrism(name, u); }
-  window.Pipette = { analyze, svgFor, command, openText, importBytes, get project() { return P; }, set project(v) { P = v; render(); }, render };
+  function closeOverlays() { document.querySelectorAll('.overlay').forEach(o => o.remove()); closeMenu(); }
+  async function openText(name, text) {
+    let o;
+    try { o = JSON.parse(text); if (!o || !Array.isArray(o.tables)) throw new Error(); }
+    catch (e) { alert('This file could not be opened as a Pipette project.'); return 'error'; }
+    if (!(await confirmDiscard())) return 'cancel';
+    fileHandle = null; loadProject(o, name); toast(`Opened ${name}`);
+    return 'ok';
+  }
+  function importBytes(name, b64, mode) { const bin = atob(b64), u = new Uint8Array(bin.length); for (let i = 0; i < bin.length; i++) u[i] = bin.charCodeAt(i); return importPrism(name, u, null, mode || 'open'); }
+  function loadExamples() { closeOverlays(); newProject(true); resetHistory(); markClean(); render(); }
+  window.Pipette = { analyze, svgFor, command, openText, importBytes, quitCheck, isDirty, loadExamples, get project() { return P; }, set project(v) { P = v; render(); }, render };
   boot();
 })();
 </script>
