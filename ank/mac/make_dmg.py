@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Make Pipette.dmg on Linux: a Rock Ridge disk image that macOS mounts by double-click.
+"""Make Ank.dmg on Linux: a Rock Ridge disk image that macOS mounts by double-click.
 Usage: make_dmg.py <folder> <out.dmg>   (needs: pip install pycdlib)
 Keeps file permissions (so the app stays executable) and adds an "Applications" shortcut."""
 import io, os, sys
@@ -7,7 +7,7 @@ import pycdlib
 
 src, out = sys.argv[1], sys.argv[2]
 iso = pycdlib.PyCdlib()
-iso.new(interchange_level=3, rock_ridge='1.09', vol_ident='Pipette')
+iso.new(interchange_level=3, rock_ridge='1.09', vol_ident='Ank')
 counter = [0]
 handles = []
 

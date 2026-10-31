@@ -1,16 +1,16 @@
 cff-version: 1.2.0
-message: "If Pipette helped with work you publish, a citation is appreciated (never required). Thank you!"
-title: "Pipette: a free statistics and graphing app for lab data"
+message: "If Ank helped with work you publish, a citation is appreciated (never required). Thank you!"
+title: "Ank: a free statistics and graphing app for lab data"
 type: software
-version: "1.3"
-date-released: 2026-10-30
+version: "1.4"
+date-released: 2026-10-31
 authors:
   - family-names: Tiwary
     given-names: Vaibhav
     email: v.tiwary@uke.de
     affiliation: "Hamburg Center for Kidney Health (HCKH), University Medical Center Hamburg-Eppendorf"
 license: MIT
-url: "https://vaibhavtiwaryvib.github.io/vaibhavtiwary/pipette/"
+url: "https://vaibhavtiwaryvib.github.io/vaibhavtiwary/ank/"
 repository-code: "https://github.com/vaibhavtiwaryvib/vaibhavtiwary"
 keywords:
   - statistics

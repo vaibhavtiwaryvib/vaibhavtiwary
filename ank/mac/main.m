@@ -1,14 +1,15 @@
-// Pipette for macOS — a small native window around the Pipette web app.
+// Ank for macOS — a small native window around the Ank web app.
+// (Internal names such as the "pipette" message handler and support folder are kept from the app's earlier name.)
 // © 2026 VITIRAN (Vaibhav Tiwary). MIT licence.
 //
-// Everything statistical lives in Pipette.html (the same file as the browser version).
+// Everything statistical lives in Ank.html (the same file as the browser version).
 // This file only gives it a real Mac window, menus, Save/Open dialogs, clipboard and autosave.
 // Build: see build.sh (compiled with clang against the macOS SDK; no Xcode project needed).
 
 #import <Cocoa/Cocoa.h>
 #import <WebKit/WebKit.h>
 
-static NSString *const kVersion = @"1.3";
+static NSString *const kVersion = @"1.4";
 
 @interface PipetteApp : NSObject <NSApplicationDelegate, NSWindowDelegate, WKScriptMessageHandlerWithReply, WKUIDelegate, WKNavigationDelegate>
 @property (strong) NSWindow *window;
@@ -16,7 +17,7 @@ static NSString *const kVersion = @"1.3";
 @property (strong) NSMutableArray<NSURL *> *pendingOpen;
 @property (assign) BOOL pageReady;
 @property (assign) BOOL terminating;
-@property (strong) NSURL *projectURL;   // the .pipette file this project was opened from / last saved to
+@property (strong) NSURL *projectURL;   // the .ank (or older .pipette) file this project was opened from / last saved to
 @end
 
 @implementation PipetteApp
@@ -69,7 +70,7 @@ static NSString *const kVersion = @"1.3";
     self.window = [[NSWindow alloc] initWithContentRect:frame
                                               styleMask:NSWindowStyleMaskTitled | NSWindowStyleMaskClosable | NSWindowStyleMaskMiniaturizable | NSWindowStyleMaskResizable
                                                 backing:NSBackingStoreBuffered defer:NO];
-    self.window.title = @"Pipette";
+    self.window.title = @"Ank";
     self.window.minSize = NSMakeSize(900, 560);
     self.window.delegate = self;
     self.window.releasedWhenClosed = NO;
@@ -84,7 +85,7 @@ static NSString *const kVersion = @"1.3";
     self.web.autoresizingMask = NSViewWidthSizable | NSViewHeightSizable;
     self.window.contentView = self.web;
 
-    NSURL *html = [[NSBundle mainBundle] URLForResource:@"Pipette" withExtension:@"html"];
+    NSURL *html = [[NSBundle mainBundle] URLForResource:@"Ank" withExtension:@"html"];
     [self.web loadFileURL:html allowingReadAccessToURL:[html URLByDeletingLastPathComponent]];
 
     [self.window makeKeyAndOrderFront:nil];
@@ -112,7 +113,7 @@ static NSString *const kVersion = @"1.3";
     return NSTerminateLater;
 }
 
-// Double-clicking a .pipette file in Finder, or dropping it on the Dock icon.
+// Double-clicking an .ank file in Finder, or dropping it on the Dock icon.
 - (void)application:(NSApplication *)app openURLs:(NSArray<NSURL *> *)urls {
     [self.pendingOpen addObjectsFromArray:urls];
     if (self.pageReady) [self flushPendingOpen];
@@ -178,7 +179,7 @@ static NSString *const kVersion = @"1.3";
         [panel beginSheetModalForWindow:self.window completionHandler:^(NSModalResponse r) {
             if (r != NSModalResponseOK) { reply(@"cancel", nil); return; }
             BOOL ok = data && [data writeToURL:panel.URL atomically:YES];
-            if (ok && [ext isEqualToString:@"pipette"]) [[NSDocumentController sharedDocumentController] noteNewRecentDocumentURL:panel.URL];
+            if (ok && [ext isEqualToString:@"ank"]) [[NSDocumentController sharedDocumentController] noteNewRecentDocumentURL:panel.URL];
             reply(ok ? @"ok" : @"error", nil);
         }];
     } else if ([cmd isEqualToString:@"saveProject"]) {
@@ -192,12 +193,12 @@ static NSString *const kVersion = @"1.3";
         };
         if (self.projectURL && !saveAs && [[NSFileManager defaultManager] isWritableFileAtPath:self.projectURL.path]) { finish(self.projectURL); return; }
         NSSavePanel *panel = [NSSavePanel savePanel];
-        panel.nameFieldStringValue = self.projectURL.lastPathComponent ?: [NSString stringWithFormat:@"%@.pipette", d[@"name"] ?: @"Untitled"];
+        panel.nameFieldStringValue = self.projectURL.lastPathComponent ?: [NSString stringWithFormat:@"%@.ank", d[@"name"] ?: @"Untitled"];
         if (self.projectURL) panel.directoryURL = [self.projectURL URLByDeletingLastPathComponent];
         panel.canCreateDirectories = YES;
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wdeprecated-declarations"
-        panel.allowedFileTypes = @[@"pipette"];
+        panel.allowedFileTypes = @[@"ank"];
 #pragma clang diagnostic pop
         [panel beginSheetModalForWindow:self.window completionHandler:^(NSModalResponse r) {
             if (r != NSModalResponseOK) { reply(@{ @"status": @"cancel" }, nil); return; }
@@ -229,7 +230,7 @@ static NSString *const kVersion = @"1.3";
     } else if ([cmd isEqualToString:@"title"]) {
         NSString *t = d[@"data"];
         self.window.title = t.length ? t : @"Untitled";
-        self.window.subtitle = @"Pipette";
+        self.window.subtitle = @"Ank";
         self.window.documentEdited = [d[@"edited"] boolValue];   // the dot in the red close button
         self.window.representedURL = self.projectURL;
         reply(@"ok", nil);
@@ -251,11 +252,11 @@ decisionHandler:(void (^)(WKNavigationActionPolicy))decisionHandler {
     NSString *s = u.scheme.lowercaseString;
     if ([s isEqualToString:@"about"] || [s isEqualToString:@"blob"] || [s isEqualToString:@"data"]) { decisionHandler(WKNavigationActionPolicyAllow); return; }
     if ([s isEqualToString:@"file"]) {
-        NSURL *home = [[NSBundle mainBundle] URLForResource:@"Pipette" withExtension:@"html"];
+        NSURL *home = [[NSBundle mainBundle] URLForResource:@"Ank" withExtension:@"html"];
         if (!self.pageReady || [u.path isEqualToString:home.path]) { decisionHandler(WKNavigationActionPolicyAllow); return; }
         // a file dropped onto the window: open projects, ignore everything else
         decisionHandler(WKNavigationActionPolicyCancel);
-        if ([@[@"pipette", @"json", @"pzfx", @"prism", @"pzf"] containsObject:u.pathExtension.lowercaseString]) [self openURL:u import:NO];
+        if ([@[@"ank", @"pipette", @"json", @"pzfx", @"prism", @"pzf"] containsObject:u.pathExtension.lowercaseString]) [self openURL:u import:NO];
         return;
     }
     decisionHandler(WKNavigationActionPolicyCancel);
@@ -351,10 +352,10 @@ initiatedByFrame:(WKFrameInfo *)frame completionHandler:(void (^)(NSArray<NSURL 
     NSOpenPanel *p = [NSOpenPanel openPanel];
     p.canChooseFiles = YES; p.canChooseDirectories = NO; p.allowsMultipleSelection = NO;
     p.message = import ? @"Choose a GraphPad Prism file — its data tables are added to this project"
-                       : @"Choose a Pipette project (.pipette) or a GraphPad Prism file (.pzfx, .prism)";
+                       : @"Choose an Ank project (.ank) or a GraphPad Prism file (.pzfx, .prism)";
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wdeprecated-declarations"
-    p.allowedFileTypes = @[@"pipette", @"json", @"pzfx", @"prism", @"pzf"];
+    p.allowedFileTypes = @[@"ank", @"pipette", @"json", @"pzfx", @"prism", @"pzf"];
 #pragma clang diagnostic pop
     [p beginSheetModalForWindow:self.window completionHandler:^(NSModalResponse r) {
         if (r == NSModalResponseOK && p.URL) [self openURL:p.URL import:import];
@@ -368,16 +369,16 @@ initiatedByFrame:(WKFrameInfo *)frame completionHandler:(void (^)(NSArray<NSURL 
 - (void)redoCmd:(id)s { [self sendCommand:@"redo"]; }
 - (void)deleteRowsCmd:(id)s { [self sendCommand:@"deleteRows"]; }
 - (void)cite:(id)s { [self sendCommand:@"cite"]; }
-- (void)website:(id)s { [[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:@"https://vaibhavtiwaryvib.github.io/vaibhavtiwary/pipette/"]]; }
+- (void)website:(id)s { [[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:@"https://vaibhavtiwaryvib.github.io/vaibhavtiwary/ank/"]]; }
 - (void)zoomIn:(id)s { self.web.pageZoom = MIN(2.0, self.web.pageZoom + 0.1); }
 - (void)zoomOut:(id)s { self.web.pageZoom = MAX(0.6, self.web.pageZoom - 0.1); }
 - (void)zoomReset:(id)s { self.web.pageZoom = 1.0; }
 - (void)about:(id)s {
     [NSApp orderFrontStandardAboutPanelWithOptions:@{
-        @"ApplicationName": @"Pipette",
+        @"ApplicationName": @"Ank",
         @"ApplicationVersion": kVersion,
         @"Version": @"",
-        @"Credits": [[NSAttributedString alloc] initWithString:@"Statistics & graphs for lab data.\nFree and open source (MIT) — published by VITIRAN."
+        @"Credits": [[NSAttributedString alloc] initWithString:@"Statistics & graphs for lab data.\nAnk (अंक) means “number”.\nFree and open source (MIT) — published by VITIRAN."
                                                     attributes:@{ NSFontAttributeName: [NSFont systemFontOfSize:11] }]
     }];
 }
@@ -395,17 +396,17 @@ initiatedByFrame:(WKFrameInfo *)frame completionHandler:(void (^)(NSArray<NSURL 
     const NSEventModifierFlags C = NSEventModifierFlagCommand, CS = NSEventModifierFlagCommand | NSEventModifierFlagShift;
     NSMenu *bar = [NSMenu new];
 
-    NSMenu *app = [[NSMenu alloc] initWithTitle:@"Pipette"];
-    [app addItem:[self item:@"About Pipette" action:@selector(about:) key:@"" mods:0 target:self]];
+    NSMenu *app = [[NSMenu alloc] initWithTitle:@"Ank"];
+    [app addItem:[self item:@"About Ank" action:@selector(about:) key:@"" mods:0 target:self]];
     [app addItem:[NSMenuItem separatorItem]];
     NSMenuItem *services = [[NSMenuItem alloc] initWithTitle:@"Services" action:nil keyEquivalent:@""];
     services.submenu = [NSMenu new]; NSApp.servicesMenu = services.submenu; [app addItem:services];
     [app addItem:[NSMenuItem separatorItem]];
-    [app addItem:[self item:@"Hide Pipette" action:@selector(hide:) key:@"h" mods:C target:nil]];
+    [app addItem:[self item:@"Hide Ank" action:@selector(hide:) key:@"h" mods:C target:nil]];
     [app addItem:[self item:@"Hide Others" action:@selector(hideOtherApplications:) key:@"h" mods:C | NSEventModifierFlagOption target:nil]];
     [app addItem:[self item:@"Show All" action:@selector(unhideAllApplications:) key:@"" mods:0 target:nil]];
     [app addItem:[NSMenuItem separatorItem]];
-    [app addItem:[self item:@"Quit Pipette" action:@selector(terminate:) key:@"q" mods:C target:nil]];
+    [app addItem:[self item:@"Quit Ank" action:@selector(terminate:) key:@"q" mods:C target:nil]];
 
     NSMenu *file = [[NSMenu alloc] initWithTitle:@"File"];
     [file addItem:[self item:@"New Data Table…" action:@selector(newTable:) key:@"n" mods:C target:self]];
@@ -448,8 +449,8 @@ initiatedByFrame:(WKFrameInfo *)frame completionHandler:(void (^)(NSArray<NSURL 
     NSApp.windowsMenu = win;
 
     NSMenu *help = [[NSMenu alloc] initWithTitle:@"Help"];
-    [help addItem:[self item:@"Pipette Website" action:@selector(website:) key:@"" mods:0 target:self]];
-    [help addItem:[self item:@"How to Cite Pipette…" action:@selector(cite:) key:@"" mods:0 target:self]];
+    [help addItem:[self item:@"Ank Website" action:@selector(website:) key:@"" mods:0 target:self]];
+    [help addItem:[self item:@"How to Cite Ank…" action:@selector(cite:) key:@"" mods:0 target:self]];
     NSApp.helpMenu = help;
 
     for (NSMenu *m in @[app, file, edit, view, win, help]) {

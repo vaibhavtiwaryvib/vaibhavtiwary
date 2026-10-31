@@ -1,7 +1,7 @@
-// Pipette for Windows — a real application window around the Pipette web app.
+// Ank for Windows — a real application window around the Ank web app.
 // © 2026 VITIRAN (Vaibhav Tiwary). MIT licence.
 //
-// The statistics and graphs live in Pipette.html (the same file as the browser and Mac versions).
+// The statistics and graphs live in Ank.html (the same file as the browser and Mac versions).
 // This program gives it its own window, menus, Save/Open dialogs, clipboard and autosave, using
 // Microsoft Edge WebView2 — the web engine built into Windows 10 and 11. Microsoft's small
 // WebView2Loader.dll (redistributable, from the WebView2 SDK) is bundled inside the .exe.
@@ -22,12 +22,12 @@
 #include <string.h>
 #include <wchar.h>
 
-#define APP_VERSION L"1.3"
+#define APP_VERSION L"1.4"
 #define IDR_HTML 101
 #define IDR_LOADER 102
 #define WM_APP_REQUEST (WM_APP + 1)
 #define WV2_DOWNLOAD L"https://go.microsoft.com/fwlink/p/?LinkId=2124703"
-#define SITE L"https://vaibhavtiwaryvib.github.io/vaibhavtiwary/pipette/"
+#define SITE L"https://vaibhavtiwaryvib.github.io/vaibhavtiwary/ank/"
 
 // ---------------------------------------------------------------------------------------------
 // Minimal WebView2 COM access: call methods by their position in the interface (from WebView2.idl).
@@ -90,8 +90,8 @@ static HWND g_hwnd;
 static void *g_ctl, *g_wv;
 static BOOL g_ready, g_closing, g_allowClose;
 static WCHAR g_dataDir[MAX_PATH], g_appDir[MAX_PATH], g_htmlPath[MAX_PATH], g_autosave[MAX_PATH];
-static WCHAR g_project[MAX_PATH * 2];     // the .pipette file this project came from / was last saved to
-static WCHAR g_pendingPath[MAX_PATH * 2]; // a .pipette file being opened (becomes g_project once the page accepts it)
+static WCHAR g_project[MAX_PATH * 2];     // the .ank / .pipette file this project came from / was last saved to
+static WCHAR g_pendingPath[MAX_PATH * 2]; // an .ank / .pipette file being opened (becomes g_project once the page accepts it)
 static WCHAR g_startFile[MAX_PATH * 2];   // a file given on the command line (double-click in Explorer)
 
 enum { M_NEWTABLE = 100, M_NEWPROJECT, M_OPEN, M_IMPORT, M_SAVE, M_SAVEAS, M_EXIT,
@@ -189,7 +189,7 @@ typedef struct { int id; WCHAR cmd[32], ext[16], mode[16]; WCHAR *name, *data; B
 
 static BOOL ask_save_path(const WCHAR *suggested, const WCHAR *ext, WCHAR *out) {
     WCHAR filter[256]; size_t k = 0;
-    const WCHAR *label = _wcsicmp(ext, L"pipette") == 0 ? L"Pipette project" : _wcsicmp(ext, L"pdf") == 0 ? L"PDF document" :
+    const WCHAR *label = _wcsicmp(ext, L"ank") == 0 ? L"Ank project" : _wcsicmp(ext, L"pdf") == 0 ? L"PDF document" :
                          _wcsicmp(ext, L"svg") == 0 ? L"SVG image" : L"Image";
     k += swprintf(filter + k, 120, L"%ls (*.%ls)", label, ext) + 1;
     k += swprintf(filter + k, 40, L"*.%ls", ext) + 1;
@@ -208,8 +208,8 @@ static BOOL ask_save_path(const WCHAR *suggested, const WCHAR *ext, WCHAR *out) 
 static void open_path(const WCHAR *path, const WCHAR *mode) {
     if (!g_ready) { wcsncpy(g_startFile, path, MAX_PATH * 2 - 1); return; }
     DWORD n = 0; BYTE *bytes = read_file(path, &n);
-    if (!bytes) { MessageBoxW(g_hwnd, L"This file could not be opened.", L"Pipette", MB_OK | MB_ICONWARNING); return; }
-    if (wcscmp(mode, L"open") == 0 && (has_ext(path, L"pipette") || has_ext(path, L"json"))) wcscpy(g_pendingPath, path); else g_pendingPath[0] = 0;
+    if (!bytes) { MessageBoxW(g_hwnd, L"This file could not be opened.", L"Ank", MB_OK | MB_ICONWARNING); return; }
+    if (wcscmp(mode, L"open") == 0 && (has_ext(path, L"ank") || has_ext(path, L"pipette") || has_ext(path, L"json"))) wcscpy(g_pendingPath, path); else g_pendingPath[0] = 0;
     WCHAR *b64 = b64_encode(bytes, n), *name = json_str(base_name(path)); free(bytes);
     size_t len = wcslen(b64) + wcslen(name) + 96; WCHAR *js = malloc(len * sizeof(WCHAR));
     swprintf(js, len, L"window.__pipetteOpen(%ls,'%ls','%ls')", name, b64, mode);
@@ -220,7 +220,7 @@ static void show_open(BOOL import) {
     OPENFILENAMEW ofn = { sizeof ofn };
     ofn.hwndOwner = g_hwnd; ofn.lpstrFile = path; ofn.nMaxFile = MAX_PATH * 2;
     ofn.lpstrFilter = import ? L"GraphPad Prism files (*.pzfx, *.prism)\0*.pzfx;*.prism;*.pzf\0\0"
-                             : L"Pipette projects and Prism files\0*.pipette;*.pzfx;*.prism;*.pzf;*.json\0Pipette project (*.pipette)\0*.pipette\0GraphPad Prism file (*.pzfx, *.prism)\0*.pzfx;*.prism;*.pzf\0\0";
+                             : L"Ank projects and Prism files\0*.ank;*.pipette;*.pzfx;*.prism;*.pzf;*.json\0Ank project (*.ank, *.pipette)\0*.ank;*.pipette\0GraphPad Prism file (*.pzfx, *.prism)\0*.pzfx;*.prism;*.pzf\0\0";
     ofn.lpstrTitle = import ? L"Import Prism tables into this project" : L"Open";
     ofn.Flags = OFN_FILEMUSTEXIST | OFN_PATHMUSTEXIST | OFN_EXPLORER | OFN_NOCHANGEDIR;
     if (GetOpenFileNameW(&ofn)) open_path(path, import ? L"import" : L"open");
@@ -232,8 +232,8 @@ static void handle_request(Request *r) {
         if (g_project[0] && !r->as) wcscpy(path, g_project);
         else {
             WCHAR sug[MAX_PATH * 2]; wcsncpy(sug, g_project[0] ? base_name(g_project) : r->name, MAX_PATH * 2 - 10); sug[MAX_PATH * 2 - 10] = 0;
-            if (!has_ext(sug, L"pipette")) wcscat(sug, L".pipette");
-            if (!ask_save_path(sug, L"pipette", path)) { reply_json(r->id, L"{\"status\":\"cancel\"}"); return; }
+            if (!has_ext(sug, L"ank")) { WCHAR *d = wcsrchr(sug, L'.'); if (d && has_ext(sug, L"pipette")) *d = 0; wcscat(sug, L".ank"); }
+            if (!ask_save_path(sug, L"ank", path)) { reply_json(r->id, L"{\"status\":\"cancel\"}"); return; }
         }
         int len; char *u = to_utf8(r->data, &len);
         BOOL ok = write_file(path, u, len); free(u);
@@ -297,7 +297,7 @@ static void on_page_message(const WCHAR *msg) {
     } else if (wcscmp(cmd, L"readText") == 0) {
         WCHAR *t = get_clipboard_text(); reply_str(id, t); free(t);
     } else if (wcscmp(cmd, L"title") == 0) {
-        WCHAR t[600]; swprintf(t, 600, L"%ls%ls — Pipette", f[6][0] == L'1' ? L"• " : L"", f[2][0] ? f[2] : L"Untitled");
+        WCHAR t[600]; swprintf(t, 600, L"%ls%ls — Ank", f[6][0] == L'1' ? L"• " : L"", f[2][0] ? f[2] : L"Untitled");
         SetWindowTextW(g_hwnd, t); reply_str(id, L"ok");
     } else if (wcscmp(cmd, L"quitResult") == 0) {
         reply_str(id, L"ok");
@@ -331,7 +331,7 @@ static HRESULT STDMETHODCALLTYPE OnNavStarting(Handler *h, void *sender, void *a
     LPWSTR uri = NULL;
     if (SUCCEEDED(((F_P)VT(args)[NAV_get_Uri])(args, &uri)) && uri) {
         if (!is_internal(uri)) { ((F_B)VT(args)[NAV_put_Cancel])(args, TRUE); open_external(uri); }
-        else if (g_ready && !_wcsnicmp(uri, L"file:", 5) && !wcsstr(uri, L"Pipette.html")) ((F_B)VT(args)[NAV_put_Cancel])(args, TRUE); // a file dropped on the window
+        else if (g_ready && !_wcsnicmp(uri, L"file:", 5) && !wcsstr(uri, L"Ank.html")) ((F_B)VT(args)[NAV_put_Cancel])(args, TRUE); // a file dropped on the window
         CoTaskMemFree(uri);
     }
     return S_OK;
@@ -356,7 +356,7 @@ static HRESULT STDMETHODCALLTYPE OnProcessFailed(Handler *h, void *sender, void 
 }
 HANDLER(hProcessFailed, OnProcessFailed)
 
-// Runs in the page before Pipette starts: makes the Mac bridge API (webkit.messageHandlers) work on Windows too.
+// Runs in the page before Ank starts: makes the Mac bridge API (webkit.messageHandlers) work on Windows too.
 static const WCHAR *SHIM =
 L"(() => {"
 L" const pend = new Map(); let n = 0;"
@@ -380,9 +380,9 @@ L"})();";
 
 static void fallback_to_browser(const WCHAR *why) {
     WCHAR msg[1024];
-    swprintf(msg, 1024, L"%ls\n\nPipette needs the Microsoft Edge WebView2 Runtime, which is built into Windows 11 and up-to-date Windows 10.\n\n"
-             L"Yes = download it from Microsoft (free), then start Pipette again.\nNo = open Pipette in your web browser for now.", why);
-    int r = MessageBoxW(g_hwnd, msg, L"Pipette", MB_YESNOCANCEL | MB_ICONINFORMATION);
+    swprintf(msg, 1024, L"%ls\n\nAnk needs the Microsoft Edge WebView2 Runtime, which is built into Windows 11 and up-to-date Windows 10.\n\n"
+             L"Yes = download it from Microsoft (free), then start Ank again.\nNo = open Ank in your web browser for now.", why);
+    int r = MessageBoxW(g_hwnd, msg, L"Ank", MB_YESNOCANCEL | MB_ICONINFORMATION);
     if (r == IDYES) ShellExecuteW(NULL, L"open", WV2_DOWNLOAD, NULL, NULL, SW_SHOWNORMAL);
     else if (r == IDNO) ShellExecuteW(NULL, L"open", g_htmlPath, NULL, NULL, SW_SHOWNORMAL);
     g_allowClose = TRUE; PostMessageW(g_hwnd, WM_CLOSE, 0, 0);
@@ -406,7 +406,7 @@ static WCHAR *file_url(const WCHAR *path) {
 }
 
 static HRESULT STDMETHODCALLTYPE OnControllerCreated(Handler *h, HRESULT hr, void *ctl) {
-    if (FAILED(hr) || !ctl) { fallback_to_browser(L"The Pipette window could not be created."); return S_OK; }
+    if (FAILED(hr) || !ctl) { fallback_to_browser(L"The Ank window could not be created."); return S_OK; }
     g_ctl = ctl; ((ULONG(STDMETHODCALLTYPE *)(void *))VT(ctl)[1])(ctl); // keep it
     ((F_P)VT(ctl)[CTL_get_CoreWebView2])(ctl, &g_wv);
     void *settings = NULL;
@@ -455,21 +455,24 @@ static BOOL extract_resource(int id, const WCHAR *path, BOOL onlyIfMissing) {
     WIN32_FILE_ATTRIBUTE_DATA a;
     if (GetFileAttributesExW(path, GetFileExInfoStandard, &a) && a.nFileSizeLow == size && (onlyIfMissing || id != IDR_HTML)) return TRUE;
     if (write_file(path, data, size)) return TRUE;
-    return GetFileAttributesW(path) != INVALID_FILE_ATTRIBUTES; // in use by another Pipette window: keep the copy that is there
+    return GetFileAttributesW(path) != INVALID_FILE_ATTRIBUTES; // in use by another Ank window: keep the copy that is there
 }
 static void set_reg(HKEY root, const WCHAR *key, const WCHAR *name, const WCHAR *value) {
     HKEY k; if (RegCreateKeyExW(root, key, 0, NULL, 0, KEY_SET_VALUE, NULL, &k, NULL) != ERROR_SUCCESS) return;
     RegSetValueExW(k, name, 0, REG_SZ, (const BYTE *)value, (DWORD)((wcslen(value) + 1) * sizeof(WCHAR))); RegCloseKey(k);
 }
-// .pipette files open in Pipette when double-clicked (for this Windows user only; no admin rights needed)
+// .ank (and older .pipette) files open in Ank when double-clicked (for this Windows user only; no admin rights needed)
 static void register_file_type(void) {
     WCHAR exe[MAX_PATH], cmd[MAX_PATH + 16], icon[MAX_PATH + 8];
     GetModuleFileNameW(NULL, exe, MAX_PATH);
     swprintf(cmd, MAX_PATH + 16, L"\"%ls\" \"%%1\"", exe); swprintf(icon, MAX_PATH + 8, L"%ls,0", exe);
     WCHAR cur[MAX_PATH + 16] = L""; DWORD sz = sizeof cur;
-    if (RegGetValueW(HKEY_CURRENT_USER, L"Software\\Classes\\VITIRAN.Pipette.Project\\shell\\open\\command", NULL, RRF_RT_REG_SZ, NULL, cur, &sz) == ERROR_SUCCESS && wcscmp(cur, cmd) == 0) return;
+    if (RegGetValueW(HKEY_CURRENT_USER, L"Software\\Classes\\VITIRAN.Pipette.Project\\shell\\open\\command", NULL, RRF_RT_REG_SZ, NULL, cur, &sz) == ERROR_SUCCESS && wcscmp(cur, cmd) == 0
+        && RegGetValueW(HKEY_CURRENT_USER, L"Software\\Classes\\.ank", NULL, RRF_RT_REG_SZ, NULL, NULL, NULL) == ERROR_SUCCESS) return;
+    // (the internal type name keeps the app's earlier name, so files registered by older versions keep working)
+    set_reg(HKEY_CURRENT_USER, L"Software\\Classes\\.ank", NULL, L"VITIRAN.Pipette.Project");
     set_reg(HKEY_CURRENT_USER, L"Software\\Classes\\.pipette", NULL, L"VITIRAN.Pipette.Project");
-    set_reg(HKEY_CURRENT_USER, L"Software\\Classes\\VITIRAN.Pipette.Project", NULL, L"Pipette Project");
+    set_reg(HKEY_CURRENT_USER, L"Software\\Classes\\VITIRAN.Pipette.Project", NULL, L"Ank Project");
     set_reg(HKEY_CURRENT_USER, L"Software\\Classes\\VITIRAN.Pipette.Project\\DefaultIcon", NULL, icon);
     set_reg(HKEY_CURRENT_USER, L"Software\\Classes\\VITIRAN.Pipette.Project\\shell\\open\\command", NULL, cmd);
     SHChangeNotify(SHCNE_ASSOCCHANGED, SHCNF_IDLIST, NULL, NULL);
@@ -495,10 +498,10 @@ static HMENU build_menu(void) {
     AppendMenuW(view, MF_STRING, M_ZOOMIN, L"Zoom &In\tCtrl++");
     AppendMenuW(view, MF_STRING, M_ZOOMOUT, L"Zoom &Out\tCtrl+-");
     AppendMenuW(view, MF_STRING, M_ZOOM0, L"&Actual Size\tCtrl+0");
-    AppendMenuW(help, MF_STRING, M_SITE, L"Pipette &Website");
-    AppendMenuW(help, MF_STRING, M_CITE, L"How to &Cite Pipette…");
+    AppendMenuW(help, MF_STRING, M_SITE, L"Ank &Website");
+    AppendMenuW(help, MF_STRING, M_CITE, L"How to &Cite Ank…");
     AppendMenuW(help, MF_SEPARATOR, 0, NULL);
-    AppendMenuW(help, MF_STRING, M_ABOUT, L"&About Pipette");
+    AppendMenuW(help, MF_STRING, M_ABOUT, L"&About Ank");
     AppendMenuW(bar, MF_POPUP, (UINT_PTR)file, L"&File");
     AppendMenuW(bar, MF_POPUP, (UINT_PTR)edit, L"&Edit");
     AppendMenuW(bar, MF_POPUP, (UINT_PTR)view, L"&View");
@@ -542,14 +545,14 @@ static LRESULT CALLBACK WndProc(HWND h, UINT m, WPARAM w, LPARAM l) {
         case M_ZOOM0: zoom(0); break;
         case M_SITE: ShellExecuteW(NULL, L"open", SITE, NULL, NULL, SW_SHOWNORMAL); break;
         case M_CITE: page_cmd(L"cite"); break;
-        case M_ABOUT: MessageBoxW(h, L"Pipette " APP_VERSION L"\nStatistics & graphs for lab data.\n\nFree and open source (MIT licence) — published by VITIRAN.\n" SITE, L"About Pipette", MB_OK | MB_ICONINFORMATION); break;
+        case M_ABOUT: MessageBoxW(h, L"Ank " APP_VERSION L"\nStatistics & graphs for lab data.\nAnk (\x0905\x0902\x0915) means \x201cnumber\x201d.\n\nFree and open source (MIT licence) — published by VITIRAN.\n" SITE, L"About Ank", MB_OK | MB_ICONINFORMATION); break;
         }
         return 0;
     case WM_CLOSE:
         // Ask the page first: it shows "Save changes?" if there is unsaved work.
         if (g_allowClose || !g_ready || !g_wv) { DestroyWindow(h); return 0; }
         if (g_closing) {
-            if (MessageBoxW(h, L"Pipette is waiting for an answer about saving. Close anyway?", L"Pipette", MB_YESNO | MB_ICONQUESTION) == IDYES) DestroyWindow(h);
+            if (MessageBoxW(h, L"Ank is waiting for an answer about saving. Close anyway?", L"Ank", MB_YESNO | MB_ICONQUESTION) == IDYES) DestroyWindow(h);
             return 0;
         }
         g_closing = TRUE; run_script(L"window.__pipetteQuit()");
@@ -567,18 +570,18 @@ int WINAPI wWinMain(HINSTANCE inst, HINSTANCE prev, PWSTR cmdLine, int show) {
     if (sdc) sdc((HANDLE)-4); // per-monitor v2 (the manifest says the same; this covers older loaders)
     CoInitializeEx(NULL, COINIT_APARTMENTTHREADED);
 
-    // %LOCALAPPDATA%\Pipette — the app files, the web engine's profile, and the autosave
+    // %LOCALAPPDATA%\Ank — the app files, the web engine's profile, and the autosave
     WCHAR local[MAX_PATH];
     if (FAILED(SHGetFolderPathW(NULL, CSIDL_LOCAL_APPDATA, NULL, 0, local))) GetTempPathW(MAX_PATH, local);
-    swprintf(g_dataDir, MAX_PATH, L"%ls\\Pipette", local); CreateDirectoryW(g_dataDir, NULL);
+    swprintf(g_dataDir, MAX_PATH, L"%ls\\Ank", local); CreateDirectoryW(g_dataDir, NULL);
     swprintf(g_appDir, MAX_PATH, L"%ls\\app-" APP_VERSION, g_dataDir); CreateDirectoryW(g_appDir, NULL);
-    swprintf(g_htmlPath, MAX_PATH, L"%ls\\Pipette.html", g_appDir);
-    swprintf(g_autosave, MAX_PATH, L"%ls\\autosave.pipette", g_dataDir);
+    swprintf(g_htmlPath, MAX_PATH, L"%ls\\Ank.html", g_appDir);
+    swprintf(g_autosave, MAX_PATH, L"%ls\\autosave.ank", g_dataDir);
     WCHAR loader[MAX_PATH], profile[MAX_PATH];
     swprintf(loader, MAX_PATH, L"%ls\\WebView2Loader.dll", g_appDir);
     swprintf(profile, MAX_PATH, L"%ls\\WebView2", g_dataDir);
     if (!extract_resource(IDR_HTML, g_htmlPath, FALSE) || !extract_resource(IDR_LOADER, loader, TRUE)) {
-        MessageBoxW(NULL, L"Pipette could not write its files to your AppData folder.", L"Pipette", MB_OK | MB_ICONERROR); return 1;
+        MessageBoxW(NULL, L"Ank could not write its files to your AppData folder.", L"Ank", MB_OK | MB_ICONERROR); return 1;
     }
     register_file_type();
 
@@ -594,12 +597,12 @@ int WINAPI wWinMain(HINSTANCE inst, HINSTANCE prev, PWSTR cmdLine, int show) {
     UINT dpi = 96; typedef UINT(WINAPI * GetDpiSys)(void);
     GetDpiSys gds = (GetDpiSys)(void *)GetProcAddress(GetModuleHandleW(L"user32.dll"), "GetDpiForSystem"); if (gds) dpi = gds();
     int W = MulDiv(1280, dpi, 96), H = MulDiv(820, dpi, 96);
-    g_hwnd = CreateWindowExW(0, wc.lpszClassName, L"Pipette", WS_OVERLAPPEDWINDOW, CW_USEDEFAULT, CW_USEDEFAULT, W, H, NULL, build_menu(), inst, NULL);
+    g_hwnd = CreateWindowExW(0, wc.lpszClassName, L"Ank", WS_OVERLAPPEDWINDOW, CW_USEDEFAULT, CW_USEDEFAULT, W, H, NULL, build_menu(), inst, NULL);
     ShowWindow(g_hwnd, show); UpdateWindow(g_hwnd);
 
     HMODULE lib = LoadLibraryW(loader);
     F_CreateEnv create = lib ? (F_CreateEnv)(void *)GetProcAddress(lib, "CreateCoreWebView2EnvironmentWithOptions") : NULL;
-    if (!create || FAILED(create(NULL, profile, NULL, &hEnvironmentCreated))) fallback_to_browser(L"The Pipette window could not start its web engine.");
+    if (!create || FAILED(create(NULL, profile, NULL, &hEnvironmentCreated))) fallback_to_browser(L"The Ank window could not start its web engine.");
 
     MSG msg;
     while (GetMessageW(&msg, NULL, 0, 0) > 0) { TranslateMessage(&msg); DispatchMessageW(&msg); }

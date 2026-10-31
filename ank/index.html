@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ank — free statistics &amp; graphs for lab data | VITIRAN</title>
+  <meta name="description" content="Ank is a free, lightweight statistics and graphing app for Mac and Windows: t-tests, ANOVA with Tukey/Dunnett, non-parametric tests, two-way ANOVA, Kaplan–Meier survival curves and publication-ready graphs. Published by VITIRAN.">
+  <meta name="author" content="Vaibhav Tiwary">
+  <link rel="canonical" href="https://vaibhavtiwaryvib.github.io/vaibhavtiwary/ank/">
+  <link rel="icon" type="image/png" href="img/icon-64.png">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Ank — free statistics &amp; graphs for lab data">
+  <meta property="og:description" content="t-tests, ANOVA, survival curves and publication-ready graphs. Free for Mac and Windows. Published by VITIRAN.">
+  <meta property="og:image" content="https://vaibhavtiwaryvib.github.io/vaibhavtiwary/ank/img/ui-graph.jpg">
+  <meta property="og:url" content="https://vaibhavtiwaryvib.github.io/vaibhavtiwary/ank/">
+  <meta name="twitter:card" content="summary_large_image">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "Ank",
+    "softwareVersion": "1.4",
+    "applicationCategory": "ScientificApplication",
+    "operatingSystem": "macOS, Windows, web browser",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "EUR" },
+    "license": "https://opensource.org/licenses/MIT",
+    "publisher": { "@type": "Organization", "name": "VITIRAN" },
+    "author": { "@type": "Person", "name": "Vaibhav Tiwary", "url": "https://vaibhavtiwaryvib.github.io/vaibhavtiwary/" },
+    "url": "https://vaibhavtiwaryvib.github.io/vaibhavtiwary/ank/",
+    "codeRepository": "https://github.com/vaibhavtiwaryvib/vaibhavtiwary",
+    "image": "https://vaibhavtiwaryvib.github.io/vaibhavtiwary/ank/img/ui-graph.jpg",
+    "description": "Free statistics and graphing app for lab data: t-tests, one-way and two-way ANOVA with multiple comparisons, non-parametric tests, Kaplan–Meier survival analysis and publication-ready graph export."
+  }
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;0,8..60,700;1,8..60,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <style>
+    :root {
+      --ink: #111418; --ink-soft: #4b525c; --muted: #858b94; --paper: #faf7f2; --wash: #f3efe7; --line: #e7e1d6; --scope: #05070a;
+      --gfp: #22c55e; --gfp-glow: #4ade80; --mag: #e8368f; --mag-glow: #ff5fb0; --cy: #06b6d4; --cy-glow: #3fe0f5; --blue: #2f6fdf;
+      --serif: "Source Serif 4", Georgia, serif; --sans: "Inter", system-ui, sans-serif; --mono: "JetBrains Mono", ui-monospace, monospace;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; scroll-padding-top: 72px; }
+    body { font-family: var(--sans); background: var(--paper); color: var(--ink); line-height: 1.65; -webkit-font-smoothing: antialiased; }
+    a { color: inherit; text-decoration: none; }
+    img { max-width: 100%; display: block; }
+    .wrap { max-width: 1080px; margin: 0 auto; padding: 0 24px; }
+
+    .nav { position: sticky; top: 0; z-index: 50; background: rgba(250,247,242,.92); backdrop-filter: blur(10px); border-bottom: 1px solid var(--line); }
+    .nav .wrap { display: flex; align-items: center; justify-content: space-between; height: 60px; }
+    .nav .home { font-family: var(--serif); font-weight: 700; display: flex; align-items: center; gap: 8px; }
+    .nav .home i { font-size: .8rem; color: var(--muted); }
+    .nav-links { display: flex; gap: 24px; font-size: .9rem; color: var(--ink-soft); }
+    .nav-links a:hover { color: var(--mag); }
+
+    .hero { background: var(--scope); color: #fff; position: relative; overflow: hidden; padding: 72px 0 0; }
+    .hero::before { content: ""; position: absolute; right: -140px; top: -120px; width: 520px; height: 520px; border-radius: 50%;
+      background: radial-gradient(circle, rgba(63,224,245,.55) 0 18px, rgba(74,222,128,.16) 30px 160px, transparent 190px), radial-gradient(circle, transparent 176px, rgba(255,95,176,.45) 184px, transparent 200px); filter: blur(1px); }
+    .hero .wrap { position: relative; z-index: 1; }
+    .hero-top { display: flex; gap: 22px; align-items: center; margin-bottom: 18px; }
+    .hero-top img { width: 84px; height: 84px; filter: drop-shadow(0 6px 18px rgba(47,111,223,.4)); }
+    .kicker { font-family: var(--mono); font-size: .74rem; letter-spacing: .1em; text-transform: uppercase; color: var(--gfp-glow); }
+    h1 { font-family: var(--serif); font-size: clamp(2.6rem, 6vw, 4rem); line-height: 1.05; letter-spacing: -.02em; }
+    .hero p.lede { font-family: var(--serif); font-size: 1.25rem; color: rgba(255,255,255,.8); max-width: 38em; margin: 6px 0 26px; }
+    .meta { font-family: var(--mono); font-size: .78rem; color: rgba(255,255,255,.55); margin-top: 14px; }
+    .meta b { color: #fff; font-weight: 500; }
+    .actions { display: flex; flex-wrap: wrap; gap: 12px; }
+    .btn { display: inline-flex; align-items: center; gap: 10px; padding: 12px 20px; border-radius: 8px; font-weight: 500; font-size: .96rem; transition: all .2s; }
+    .btn small { display: block; font-size: .72rem; opacity: .75; font-weight: 400; line-height: 1.2; }
+    .btn span { line-height: 1.25; }
+    .btn i { font-size: 1.25rem; }
+    .btn-glow { background: var(--gfp); color: #04130a; }
+    .btn-glow:hover { background: var(--gfp-glow); box-shadow: 0 0 24px rgba(74,222,128,.45); }
+    .btn-light { background: #fff; color: var(--ink); }
+    .btn-light:hover { box-shadow: 0 0 24px rgba(255,255,255,.3); }
+    .btn-outline { border: 1px solid rgba(255,255,255,.3); color: #fff; }
+    .btn-outline:hover { border-color: var(--mag-glow); color: var(--mag-glow); }
+    .shot-hero { margin-top: 48px; border-radius: 12px 12px 0 0; overflow: hidden; box-shadow: 0 -10px 60px rgba(63,224,245,.15); border: 1px solid rgba(255,255,255,.12); border-bottom: 0; }
+
+    section { padding: 80px 0; border-top: 1px solid var(--line); }
+    .label { font-family: var(--mono); font-size: .75rem; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+    .label i { width: 8px; height: 8px; border-radius: 50%; }
+    .c-gfp { background: var(--gfp); box-shadow: 0 0 8px var(--gfp-glow); } .c-mag { background: var(--mag); box-shadow: 0 0 8px var(--mag-glow); } .c-cy { background: var(--cy); box-shadow: 0 0 8px var(--cy-glow); }
+    h2 { font-family: var(--serif); font-size: 2rem; font-weight: 600; line-height: 1.2; margin-bottom: 14px; }
+    .prose { color: var(--ink-soft); font-size: 1.05rem; max-width: 44em; }
+
+    .features { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; margin-top: 30px; }
+    .feat { background: #fff; border: 1px solid var(--line); border-radius: 10px; padding: 24px 26px; }
+    .feat h3 { font-family: var(--serif); font-size: 1.2rem; margin-bottom: 10px; display: flex; align-items: center; gap: 10px; }
+    .feat h3 i { font-size: 1rem; width: 32px; height: 32px; border-radius: 8px; display: grid; place-items: center; color: #fff; }
+    .feat ul { list-style: none; color: var(--ink-soft); font-size: .95rem; }
+    .feat li { padding: 3px 0 3px 18px; position: relative; }
+    .feat li::before { content: ""; position: absolute; left: 2px; top: 12px; width: 6px; height: 6px; border-radius: 50%; background: var(--line); }
+
+    .gallery { display: grid; grid-template-columns: repeat(2, 1fr); gap: 22px; margin-top: 30px; }
+    .gallery figure { background: #fff; border: 1px solid var(--line); border-radius: 10px; overflow: hidden; }
+    .gallery img { border-bottom: 1px solid var(--line); cursor: zoom-in; }
+    .gallery figcaption { padding: 12px 16px; font-size: .9rem; color: var(--ink-soft); }
+    .gallery figcaption b { color: var(--ink); font-weight: 600; }
+
+    .steps { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 28px; }
+    .step { background: #fff; border: 1px solid var(--line); border-radius: 10px; padding: 24px 26px; }
+    .step h3 { font-family: var(--serif); font-size: 1.2rem; margin-bottom: 12px; display: flex; gap: 10px; align-items: center; }
+    .step ol { padding-left: 20px; color: var(--ink-soft); }
+    .step li { margin: 6px 0; }
+    .step .note { margin-top: 12px; font-size: .88rem; color: var(--muted); }
+    kbd { font-family: var(--mono); font-size: .8em; background: var(--wash); border: 1px solid var(--line); border-radius: 4px; padding: 1px 5px; }
+
+    .facts { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-top: 28px; }
+    .fact { border-left: 3px solid var(--c); padding: 4px 0 4px 16px; }
+    .fact b { display: block; font-family: var(--serif); font-size: 1.1rem; margin-bottom: 4px; }
+    .fact p { color: var(--ink-soft); font-size: .95rem; }
+
+    .source-card { display: flex; gap: 28px; align-items: center; justify-content: space-between; margin-top: 34px; background: #fff; border: 1px solid var(--line); border-radius: 10px; padding: 22px 26px; }
+    .source-text b { font-family: var(--serif); font-size: 1.15rem; display: flex; align-items: center; gap: 10px; margin-bottom: 6px; }
+    .source-text b i { color: var(--blue); font-size: .95rem; }
+    .source-text p { color: var(--ink-soft); font-size: .95rem; max-width: 46em; }
+    .source-text .source-sub { margin-top: 8px; font-size: .9rem; color: var(--muted); }
+    .source-text a { color: var(--mag); text-decoration: underline; text-underline-offset: 3px; }
+    .source-actions { display: flex; flex-direction: column; align-items: center; gap: 8px; flex-shrink: 0; }
+    .src-btn { display: inline-flex; align-items: center; gap: 8px; background: var(--ink); color: #fff; border-radius: 8px; padding: 10px 18px; font-weight: 500; font-size: .92rem; white-space: nowrap; transition: background .2s; }
+    .src-btn:hover { background: var(--blue); }
+    .src-link { font-size: .85rem; color: var(--muted); text-decoration: underline; text-underline-offset: 3px; }
+    .src-link:hover { color: var(--ink); }
+    @media (max-width: 800px) { .source-card { flex-direction: column; align-items: flex-start; } .source-actions { align-items: flex-start; } }
+
+    .cite-card { background: #fff; border: 1px solid var(--line); border-radius: 10px; padding: 22px 24px; margin-top: 26px; max-width: 760px; }
+    .cite-tabs { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 12px; }
+    .cite-tabs button { font: inherit; font-size: .85rem; border: 1px solid var(--line); background: var(--paper); color: var(--ink-soft); border-radius: 6px; padding: 4px 12px; cursor: pointer; }
+    .cite-tabs button.on { border-color: var(--mag); color: var(--mag); background: #fff; }
+    .cite-out { font-family: var(--serif); font-size: 1rem; line-height: 1.6; color: var(--ink); background: var(--wash); border-radius: 8px; padding: 14px 16px; overflow-wrap: anywhere; }
+    .cite-out.mono { font-family: var(--mono); font-size: .8rem; white-space: pre-wrap; color: var(--ink-soft); }
+    .cite-row { display: flex; flex-wrap: wrap; align-items: center; gap: 14px; margin-top: 14px; }
+    .cite-copy { font: inherit; font-size: .9rem; font-weight: 500; border: 0; background: var(--ink); color: #fff; border-radius: 7px; padding: 8px 16px; cursor: pointer; }
+    .cite-copy:hover { background: var(--mag); }
+    .cite-hint { font-size: .85rem; color: var(--muted); }
+    .cite-hello { margin-top: 18px; color: var(--ink-soft); font-size: .98rem; }
+    .cite-hello a { color: var(--mag); text-decoration: underline; text-underline-offset: 3px; }
+
+    .cta { background: var(--scope); color: #fff; border-top: 0; text-align: center; }
+    .cta h2 { color: #fff; }
+    .cta .actions { justify-content: center; margin-top: 26px; }
+    footer { background: var(--scope); color: #6f7a85; font-family: var(--mono); font-size: .8rem; padding: 22px 0 36px; border-top: 1px solid #161a20; }
+    footer .wrap { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 10px; }
+    footer a:hover { color: #fff; }
+
+    .lightbox { position: fixed; inset: 0; background: rgba(5,7,10,.9); display: none; align-items: center; justify-content: center; z-index: 100; padding: 24px; cursor: zoom-out; }
+    .lightbox.open { display: flex; }
+    .lightbox img { max-height: 92vh; border-radius: 8px; }
+
+    @media (max-width: 800px) {
+      .features, .gallery, .steps, .facts { grid-template-columns: 1fr; }
+      .nav-links { display: none; }
+      .hero-top img { width: 64px; height: 64px; }
+      section { padding: 56px 0; }
+    }
+  </style>
+</head>
+<body>
+  <header class="nav">
+    <div class="wrap">
+      <a class="home" href="../"><i class="fas fa-arrow-left"></i> Vaibhav Tiwary</a>
+      <nav class="nav-links"><a href="#features">Features</a><a href="#screens">Screenshots</a><a href="#install">Install</a><a href="#cite">Cite</a><a href="#download">Download</a></nav>
+    </div>
+  </header>
+
+  <div class="hero">
+    <div class="wrap">
+      <div class="hero-top">
+        <img src="img/icon.png" alt="Ank app icon">
+        <div><p class="kicker">Free · Mac · Windows · Browser</p><h1>Ank</h1><p class="kicker" style="margin:4px 0 0;opacity:.85">अंक — “number” · formerly Pipette</p></div>
+      </div>
+      <p class="lede">A lightweight statistics and graphing app for everyday lab data. Paste your numbers, get the right test, and export a publication-ready graph in a few clicks.</p>
+      <div class="actions" id="download">
+        <a class="btn btn-glow" href="Ank.dmg" download><i class="fab fa-apple"></i><span>Download for Mac<small>Ank.dmg · 1.2 MB · Apple silicon &amp; Intel</small></span></a>
+        <a class="btn btn-light" href="Ank.exe" download><i class="fab fa-windows"></i><span>Download for Windows<small>Ank.exe · 1.1 MB · Windows 10 &amp; 11</small></span></a>
+        <a class="btn btn-outline" href="app/" target="_blank" rel="noopener"><i class="fas fa-globe"></i><span>Open in your browser<small>no install needed</small></span></a>
+      </div>
+      <p class="meta">Version <b>1.4</b> · Published by <b>VITIRAN</b> · Created by <a href="../" style="color:#fff;text-decoration:underline;text-underline-offset:3px">Vaibhav Tiwary</a></p>
+      <img class="shot-hero" src="img/ui-graph.jpg" alt="Ank showing a scatter dot plot with mean and SD and significance stars">
+    </div>
+  </div>
+
+  <section id="features">
+    <div class="wrap">
+      <p class="label"><i class="c-gfp"></i>Features</p>
+      <h2>Everything a typical experiment needs, nothing more</h2>
+      <p class="prose">I built Ank for my own fly-lab data: a familiar spreadsheet-and-graph workflow, the statistical tests biologists actually use, and graphs that go straight into a figure or a slide.</p>
+      <div class="features">
+        <div class="feat"><h3><i class="fas fa-table" style="background:var(--blue)"></i>Data tables</h3><ul>
+          <li><b>Grouped</b>: one column per group, replicates in rows</li>
+          <li><b>Two-way</b>: a row factor (e.g. genotype) × groups (e.g. treatment)</li>
+          <li><b>Survival</b>: time + 1 = death / 0 = censored</li>
+          <li>Paste straight from Excel, including headers and comma decimals</li>
+          <li>Select like a spreadsheet — drag, Shift-click, whole rows or columns — then copy, paste, clear or delete with one key</li>
+          <li>Exclude values the Prism way (shown in blue, left out of the analysis)</li>
+          <li>Open GraphPad Prism files (.pzfx; .prism experimental) — column, grouped and survival data tables come straight in</li></ul></div>
+        <div class="feat"><h3><i class="fas fa-square-root-variable" style="background:var(--mag)"></i>Statistics</h3><ul>
+          <li>Unpaired, Welch’s and paired t tests; Mann–Whitney; Wilcoxon</li>
+          <li>One-way, Welch’s and repeated-measures ANOVA; Kruskal–Wallis; Friedman</li>
+          <li>Multiple comparisons like Prism: every pair, each vs. a control, or only the pairs you pick — Tukey, Dunnett, Šídák, Holm–Šídák, Bonferroni, Fisher’s LSD, Games–Howell, Dunn</li>
+          <li>Two-way ANOVA, Shapiro–Wilk normality test, descriptive statistics</li></ul></div>
+        <div class="feat"><h3><i class="fas fa-chart-column" style="background:var(--gfp)"></i>Graphs</h3><ul>
+          <li>Scatter dot plots, bars, box &amp; whiskers, violin, before–after, mean ± error</li>
+          <li>Significance brackets with stars or P values, added automatically</li>
+          <li>Clustered bars, dots and lines for two-way data</li>
+          <li>Classic, bold or thin styles; colorblind-safe palettes</li></ul></div>
+        <div class="feat"><h3><i class="fas fa-heart-pulse" style="background:var(--cy)"></i>Survival &amp; export</h3><ul>
+          <li>Kaplan–Meier curves with censor ticks, n and median survival on the graph</li>
+          <li>Log-rank and Gehan–Breslow–Wilcoxon tests, hazard ratio, pairwise comparisons</li>
+          <li>Number-at-risk table</li>
+          <li>Export PNG, TIFF, JPEG (150–600 dpi) or vector PDF and SVG</li></ul></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="screens">
+    <div class="wrap">
+      <p class="label"><i class="c-mag"></i>Screenshots</p>
+      <h2>A quick look</h2>
+      <div class="gallery">
+        <figure><img src="img/ui-results.jpg" alt="ANOVA results with Tukey's multiple comparisons" loading="lazy"><figcaption><b>Results</b>: ANOVA table and multiple comparisons, ready to copy into Excel or Word.</figcaption></figure>
+        <figure><img src="img/ui-survival.jpg" alt="Kaplan–Meier survival curves of fly lifespan" loading="lazy"><figcaption><b>Survival</b>: Kaplan–Meier curves with n, median and log-rank P value.</figcaption></figure>
+        <figure><img src="img/ui-twoway.jpg" alt="Two-way grouped bar graph" loading="lazy"><figcaption><b>Two-way</b>: clustered bars with Šídák comparisons within each genotype.</figcaption></figure>
+        <figure><img src="img/ui-data.jpg" alt="Data table with groups in columns" loading="lazy"><figcaption><b>Data</b>: a familiar table — paste from Excel with <kbd>⌘V</kbd>.</figcaption></figure>
+      </div>
+    </div>
+  </section>
+
+  <section id="install">
+    <div class="wrap">
+      <p class="label"><i class="c-cy"></i>Install</p>
+      <h2>Installing takes a minute</h2>
+      <p class="prose">Ank is free and not sold through the App Store or Microsoft Store, so the first launch needs one extra click to confirm you trust it.</p>
+      <div class="steps">
+        <div class="step"><h3><i class="fab fa-apple"></i> Mac</h3><ol>
+          <li>Open <b>Ank.dmg</b> and drag <b>Ank</b> into <b>Applications</b>.</li>
+          <li>Double-click Ank. macOS will say it can’t verify the developer.</li>
+          <li><b>macOS 15 or newer:</b> open System Settings → Privacy &amp; Security, scroll down and click <b>Open Anyway</b>.<br><b>macOS 14 or older:</b> right-click Ank → <b>Open</b> → <b>Open</b>.</li></ol>
+          <p class="note">A real Mac app: its own window, menus and Save/Open dialogs — no browser needed. Works fully offline, macOS 11 or newer.</p></div>
+        <div class="step"><h3><i class="fab fa-windows"></i> Windows</h3><ol>
+          <li>Download <b>Ank.exe</b> and double-click it.</li>
+          <li>If a blue “Windows protected your PC” screen appears, click <b>More info</b> → <b>Run anyway</b>.</li>
+          <li>Ank opens in its own window, with File / Edit / View menus and normal Save and Open dialogs.</li></ol>
+          <p class="note">A real Windows app — no browser needed. No installer, no admin rights, works offline. Windows 10 or 11 (it uses the Microsoft Edge web engine that comes with Windows). Keep Ank.exe anywhere, e.g. your Desktop or Documents.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="about-app">
+    <div class="wrap">
+      <p class="label"><i class="c-gfp"></i>Good to know</p>
+      <h2>Private, checked, and free</h2>
+      <div class="facts">
+        <div class="fact" style="--c:var(--gfp)"><b>Your data stays with you</b><p>Everything runs on your own computer. Nothing is uploaded. Save projects as <code>.ank</code> files and reopen them on Mac or Windows.</p></div>
+        <div class="fact" style="--c:var(--mag)"><b>Statistics are verified</b><p>Every test was checked against established statistics packages (scipy, statsmodels, pingouin) on many random datasets, matching to many decimal places.</p></div>
+        <div class="fact" style="--c:var(--cy)"><b>Free and open</b><p>Ank is free for everyone and released under the <a href="https://github.com/vaibhavtiwaryvib/vaibhavtiwary/blob/main/LICENSE" target="_blank" rel="noopener" style="text-decoration:underline;text-underline-offset:3px">MIT licence</a>. Feedback and suggestions are welcome by email.</p></div>
+      </div>
+      <div class="source-card">
+        <div class="source-text">
+          <b><i class="fas fa-code"></i> See exactly how it works</b>
+          <p>Ank’s full source code is public, so you don’t have to take the statistics on trust. The whole app is one readable file: the statistical tests, the graphs and the export are all in plain JavaScript. The Mac and Windows downloads run this same code inside a small native window (<a href="https://github.com/vaibhavtiwaryvib/vaibhavtiwary/tree/main/ank/mac" target="_blank" rel="noopener" style="text-decoration:underline;text-underline-offset:3px">Mac source</a>, <a href="https://github.com/vaibhavtiwaryvib/vaibhavtiwary/tree/main/ank/windows" target="_blank" rel="noopener" style="text-decoration:underline;text-underline-offset:3px">Windows source</a>).</p>
+          <p class="source-sub">Spotted something that looks wrong, or a result that differs from your usual software? Please <a href="mailto:v.tiwary@uke.de?subject=Ank%3A%20possible%20issue">tell me</a> and I’ll check it.</p>
+        </div>
+        <div class="source-actions">
+          <a class="src-btn" href="https://github.com/vaibhavtiwaryvib/vaibhavtiwary/blob/main/ank/app/index.html" target="_blank" rel="noopener"><i class="fab fa-github"></i> View the source</a>
+          <a class="src-link" href="https://github.com/vaibhavtiwaryvib/vaibhavtiwary/commits/main/ank" target="_blank" rel="noopener">Change history</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="cite">
+    <div class="wrap">
+      <p class="label"><i class="c-mag"></i>Citing Ank</p>
+      <h2>Used it in your work?</h2>
+      <p class="prose">Ank is free, and it always will be. If it helped with something you publish, a citation is a lovely way to say thanks — never required.</p>
+      <div class="cite-card">
+        <div class="cite-tabs" role="tablist">
+          <button class="on" data-f="text" role="tab">Reference</button>
+          <button data-f="bibtex" role="tab">BibTeX</button>
+          <button data-f="methods" role="tab">Methods sentence</button>
+        </div>
+        <div class="cite-out" id="cite-out"></div>
+        <div class="cite-row"><button class="cite-copy" id="cite-copy"><i class="far fa-copy"></i> Copy</button><span class="cite-hint" id="cite-hint">On GitHub, the repository’s <a href="https://github.com/vaibhavtiwaryvib/vaibhavtiwary" style="text-decoration:underline">“Cite this repository”</a> button gives the same reference.</span></div>
+      </div>
+      <p class="cite-hello">Used Ank in a paper, thesis or poster? I’d genuinely love to hear about it — <a href="mailto:v.tiwary@uke.de?subject=Ank%20was%20used%20in%20a%20publication">send me a quick note</a>. 🙂</p>
+    </div>
+  </section>
+
+  <section class="cta">
+    <div class="wrap">
+      <h2>Give it a try</h2>
+      <p class="prose" style="margin:0 auto;color:#b5bec8">Start with the built-in examples — a treatment experiment, a fly lifespan assay and a genotype × drug study.</p>
+      <div class="actions">
+        <a class="btn btn-glow" href="Ank.dmg" download><i class="fab fa-apple"></i><span>Download for Mac</span></a>
+        <a class="btn btn-light" href="Ank.exe" download><i class="fab fa-windows"></i><span>Download for Windows</span></a>
+        <a class="btn btn-outline" href="app/" target="_blank" rel="noopener"><i class="fas fa-globe"></i><span>Open in browser</span></a>
+      </div>
+    </div>
+  </section>
+  <footer>
+    <div class="wrap"><span>© 2026 VITIRAN · Ank 1.4 · <a href="#cite">Cite</a></span><span>Made by <a href="../">Vaibhav Tiwary</a> · <a href="mailto:v.tiwary@uke.de">v.tiwary@uke.de</a></span></div>
+  </footer>
+  <div class="lightbox" id="lb"><img alt=""></div>
+  <script>
+    const lb = document.getElementById('lb'), li = lb.querySelector('img');
+    document.querySelectorAll('.gallery img, .shot-hero').forEach(im => im.addEventListener('click', () => { li.src = im.src; li.alt = im.alt; lb.classList.add('open'); }));
+    lb.addEventListener('click', () => lb.classList.remove('open'));
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') lb.classList.remove('open'); });
+
+    const CITE = {
+      text: 'Tiwary, V. (2026). Ank: a free statistics and graphing app for lab data (Version 1.4) [Computer software]. VITIRAN. https://vaibhavtiwaryvib.github.io/vaibhavtiwary/ank/',
+      bibtex: '@software{tiwary_ank_2026,\n  author    = {Tiwary, Vaibhav},\n  title     = {Ank: a free statistics and graphing app for lab data},\n  version   = {1.4},\n  year      = {2026},\n  publisher = {VITIRAN},\n  url       = {https://vaibhavtiwaryvib.github.io/vaibhavtiwary/ank/}\n}',
+      methods: 'Statistical analyses were performed and graphs were prepared with Ank (version 1.4; Tiwary, 2026).'
+    };
+    let citeFmt = 'text';
+    const co = document.getElementById('cite-out'), cc = document.getElementById('cite-copy');
+    const showCite = () => {
+      co.textContent = CITE[citeFmt]; co.classList.toggle('mono', citeFmt === 'bibtex');
+      document.querySelectorAll('.cite-tabs button').forEach(b => { b.classList.toggle('on', b.dataset.f === citeFmt); b.setAttribute('aria-selected', b.dataset.f === citeFmt); });
+    };
+    document.querySelectorAll('.cite-tabs button').forEach(b => b.addEventListener('click', () => { citeFmt = b.dataset.f; showCite(); }));
+    cc.addEventListener('click', async () => {
+      const txt = CITE[citeFmt];
+      try { await navigator.clipboard.writeText(txt); }
+      catch (e) { const ta = document.createElement('textarea'); ta.value = txt; ta.style.cssText = 'position:fixed;left:-9999px'; document.body.appendChild(ta); ta.select(); try { document.execCommand('copy'); } finally { ta.remove(); } }
+      cc.innerHTML = '<i class="fas fa-check"></i> Copied — thank you!';
+      setTimeout(() => { cc.innerHTML = '<i class="far fa-copy"></i> Copy'; }, 2200);
+    });
+    showCite();
+  </script>
+</body>
+</html>

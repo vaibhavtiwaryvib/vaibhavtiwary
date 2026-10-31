@@ -1,33 +1,37 @@
-Pipette 1.3 – statistics & graphs for lab data
+Ank 1.4 – statistics & graphs for lab data
+(Ank, अंक, means "number". Formerly called Pipette.)
 Published by VITIRAN
 ================================================
 
 INSTALL
-1. Drag "Pipette" onto the "Applications" folder in this window.
-2. Open your Applications folder and double-click Pipette.
+1. Drag "Ank" onto the "Applications" folder in this window.
+2. Open your Applications folder and double-click Ank.
    The first time, macOS will say it can't verify the developer
    (the app is free and isn't from the App Store). To allow it once:
      • macOS 15 Sequoia or newer: click "Done", then open
        System Settings → Privacy & Security, scroll down and click
-       "Open Anyway" next to Pipette, and confirm.
-     • macOS 14 or older: right-click (Control-click) Pipette →
+       "Open Anyway" next to Ank, and confirm.
+     • macOS 14 or older: right-click (Control-click) Ank →
        Open → Open.
    After that it opens normally with a double-click.
 
-Pipette is a real Mac app: it opens in its own window, with its
+Ank is a real Mac app: it opens in its own window, with its
 own menus, Dock icon and Save/Open dialogs. No browser needed, and it
 works fully offline — nothing is uploaded anywhere.
 Works on Apple silicon (M1/M2/M3/M4) and Intel Macs, macOS 11 or newer.
 
 YOUR DATA
 • Save your project with File → Save (⌘S). After the first time, ⌘S
-  saves straight back into the same .pipette file; File → Save As (⇧⌘S)
-  makes a copy. Double-click a .pipette file in Finder to open it.
-• New Project and Open start clean: if you have unsaved changes, Pipette
-  asks whether to save them first (also when you quit). If Pipette ever
+  saves straight back into the same .ank file; File → Save As (⇧⌘S)
+  makes a copy. Double-click a .ank file in Finder to open it.
+• New Project and Open start clean: if you have unsaved changes, Ank
+  asks whether to save them first (also when you quit). If Ank ever
   closes unexpectedly, the welcome screen offers to restore your work.
 • Coming from the browser version? Save your project there (⌘S), then
-  open that .pipette file here.
+  open that file here.
+
+NEW IN 1.4
+• New name: Pipette is now Ank. Your old .pipette files still open.
 
 NEW IN 1.3
 • Select like a spreadsheet: drag across cells, Shift-click, or click row
