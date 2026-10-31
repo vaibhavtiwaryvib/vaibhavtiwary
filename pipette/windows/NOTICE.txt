@@ -1,0 +1,4 @@
+Pipette for Windows bundles WebView2Loader.dll (Microsoft Edge WebView2 SDK, version 1.0.3800.47),
+which Microsoft distributes for inclusion in applications ("distributable code" under the WebView2 SDK
+licence). It only finds and starts the Microsoft Edge WebView2 Runtime that ships with Windows 10/11.
+Everything else in Pipette is © 2026 VITIRAN (Vaibhav Tiwary), MIT licence.

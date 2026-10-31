@@ -3367,6 +3367,7 @@ function(t){t.__bidiEngine__=t.prototype.__bidiEngine__=function(t){var n,r,i,a,
     if (restore) try { localStorage.setItem(STORE + '.previous', JSON.stringify(restore)); } catch (e) { }
     P = { version: 2, name: 'Untitled', tables: [], sel: null };
     bindToolbar(); markClean(); render();
+    if (!IS_MAC) localizeKeys(document.body);
     welcomeDialog({ restore, examples: firstRun });
   }
   // Commands from the Mac menu bar. Returns 'native' when the text field should handle it (e.g. undo while typing).
@@ -3406,6 +3407,18 @@ function(t){t.__bidiEngine__=t.prototype.__bidiEngine__=function(t){var n,r,i,a,
     return 'ok';
   }
   function importBytes(name, b64, mode) { const bin = atob(b64), u = new Uint8Array(bin.length); for (let i = 0; i < bin.length; i++) u[i] = bin.charCodeAt(i); return importPrism(name, u, null, mode || 'open'); }
+  // On Windows (and Linux) show Ctrl-style shortcuts instead of the Mac symbols used in the text.
+  const IS_MAC = /Mac|iPhone|iPad/.test(navigator.platform || navigator.userAgent);
+  function winKeys(text) { return text.replace(/⇧⌘/g, 'Ctrl+Shift+').replace(/⌘/g, 'Ctrl+').replace(/⌫/g, 'Delete'); }
+  function localizeKeys(root) {
+    const walk = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
+    for (let n = walk.nextNode(); n; n = walk.nextNode()) if (/[⌘⌫]/.test(n.nodeValue)) n.nodeValue = winKeys(n.nodeValue);
+    if (root.querySelectorAll) root.querySelectorAll('[title*="⌘"],[title*="⌫"]').forEach(el => el.title = winKeys(el.title));
+  }
+  if (!IS_MAC) new MutationObserver(list => list.forEach(m => {
+    if (m.type === 'characterData') { if (/[⌘⌫]/.test(m.target.nodeValue)) m.target.nodeValue = winKeys(m.target.nodeValue); }
+    else m.addedNodes.forEach(n => n.nodeType === 3 ? (/[⌘⌫]/.test(n.nodeValue) && (n.nodeValue = winKeys(n.nodeValue))) : n.nodeType === 1 && localizeKeys(n));
+  })).observe(document.documentElement, { childList: true, subtree: true, characterData: true });
   function loadExamples() { closeOverlays(); newProject(true); resetHistory(); markClean(); render(); }
   window.Pipette = { analyze, svgFor, command, openText, importBytes, quitCheck, isDirty, loadExamples, get project() { return P; }, set project(v) { P = v; render(); }, render };
   boot();
